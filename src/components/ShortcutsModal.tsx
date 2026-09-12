@@ -2,87 +2,123 @@
 
 import React, { useEffect } from "react";
 import { Keyboard, X, Sparkles } from "lucide-react";
+import { UiLanguage } from "@/types";
 
 interface ShortcutsModalProps {
   isOpen: boolean;
   onClose: () => void;
+  uiLanguage?: UiLanguage;
 }
 
 interface ShortcutItem {
   keys: string[];
-  description: string;
-  category: "Dışa Aktarma" | "Gezinti & Modlar" | "Düzenleme";
+  descriptionTr: string;
+  descriptionEn: string;
+  categoryTr: string;
+  categoryEn: string;
 }
 
 const SHORTCUTS: ShortcutItem[] = [
   {
     keys: ["Ctrl", "S"],
-    description: "Yüksek çözünürlüklü PNG indir",
-    category: "Dışa Aktarma",
+    descriptionTr: "Yüksek çözünürlüklü PNG indir",
+    descriptionEn: "Download high-resolution PNG",
+    categoryTr: "Dışa Aktarma",
+    categoryEn: "Export",
   },
   {
     keys: ["Ctrl", "Shift", "C"],
-    description: "Görseli doğrudan panoya kopyala",
-    category: "Dışa Aktarma",
+    descriptionTr: "Görseli doğrudan panoya kopyala",
+    descriptionEn: "Copy image directly to clipboard",
+    categoryTr: "Dışa Aktarma",
+    categoryEn: "Export",
   },
   {
     keys: ["Ctrl", "Z"],
-    description: "Son değişikliği geri al (Undo)",
-    category: "Düzenleme",
+    descriptionTr: "Son değişikliği geri al (Undo)",
+    descriptionEn: "Undo last change",
+    categoryTr: "Düzenleme",
+    categoryEn: "Editing",
   },
   {
     keys: ["Ctrl", "Y"],
-    description: "Geri alınan değişikliği yinele (Redo)",
-    category: "Düzenleme",
+    descriptionTr: "Geri alınan değişikliği yinele (Redo)",
+    descriptionEn: "Redo last undone change",
+    categoryTr: "Düzenleme",
+    categoryEn: "Editing",
   },
   {
     keys: ["Ctrl", "1"],
-    description: "Kod Moduna geç",
-    category: "Gezinti & Modlar",
+    descriptionTr: "Kod Moduna geç",
+    descriptionEn: "Switch to Code Mode",
+    categoryTr: "Gezinti & Modlar",
+    categoryEn: "Navigation & Modes",
   },
   {
     keys: ["Ctrl", "2"],
-    description: "Diff (Önce/Sonra) Moduna geç",
-    category: "Gezinti & Modlar",
+    descriptionTr: "Diff (Önce/Sonra) Moduna geç",
+    descriptionEn: "Switch to Diff Mode",
+    categoryTr: "Gezinti & Modlar",
+    categoryEn: "Navigation & Modes",
   },
   {
     keys: ["Ctrl", "3"],
-    description: "Alıntı (Quote) Moduna geç",
-    category: "Gezinti & Modlar",
+    descriptionTr: "Alıntı (Quote) Moduna geç",
+    descriptionEn: "Switch to Quote Mode",
+    categoryTr: "Gezinti & Modlar",
+    categoryEn: "Navigation & Modes",
   },
   {
     keys: ["Ctrl", "4"],
-    description: "Tweet (Twitter/X) Moduna geç",
-    category: "Gezinti & Modlar",
+    descriptionTr: "Tweet (Twitter/X) Moduna geç",
+    descriptionEn: "Switch to Tweet Mode",
+    categoryTr: "Gezinti & Modlar",
+    categoryEn: "Navigation & Modes",
   },
   {
     keys: ["Ctrl", "5"],
-    description: "Terminal (CLI) Moduna geç",
-    category: "Gezinti & Modlar",
+    descriptionTr: "Terminal (CLI) Moduna geç",
+    descriptionEn: "Switch to Terminal Mode",
+    categoryTr: "Gezinti & Modlar",
+    categoryEn: "Navigation & Modes",
   },
   {
     keys: ["Ctrl", "K"],
-    description: "Komut Paletini aç / hızlı işlem ara",
-    category: "Gezinti & Modlar",
+    descriptionTr: "Komut Paletini aç / hızlı işlem ara",
+    descriptionEn: "Open Command Palette / quick actions",
+    categoryTr: "Gezinti & Modlar",
+    categoryEn: "Navigation & Modes",
   },
   {
     keys: ["F11"],
-    description: "Tam ekran sunum modunu aç / kapat",
-    category: "Gezinti & Modlar",
+    descriptionTr: "Tam ekran sunum modunu aç / kapat",
+    descriptionEn: "Toggle full-screen presentation mode",
+    categoryTr: "Gezinti & Modlar",
+    categoryEn: "Navigation & Modes",
   },
   {
     keys: ["Ctrl", "Alt", "← / →"],
-    description: "Carousel slaytları arasında geçiş yap",
-    category: "Gezinti & Modlar",
+    descriptionTr: "Carousel slaytları arasında geçiş yap",
+    descriptionEn: "Navigate between carousel slides",
+    categoryTr: "Gezinti & Modlar",
+    categoryEn: "Navigation & Modes",
   },
   {
     keys: ["?"],
-    description: "Klavye kısayolları rehberini aç/kapat",
-    category: "Gezinti & Modlar",
+    descriptionTr: "Klavye kısayolları rehberini aç/kapat",
+    descriptionEn: "Toggle keyboard shortcuts guide",
+    categoryTr: "Gezinti & Modlar",
+    categoryEn: "Navigation & Modes",
   },
 ];
 
-export const ShortcutsModal: React.FC<ShortcutsModalProps> = ({ isOpen, onClose }) => {
+export const ShortcutsModal: React.FC<ShortcutsModalProps> = ({
+  isOpen,
+  onClose,
+  uiLanguage = "tr",
+}) => {
+  const isEn = uiLanguage === "en";
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isOpen) {
@@ -95,7 +131,9 @@ export const ShortcutsModal: React.FC<ShortcutsModalProps> = ({ isOpen, onClose 
 
   if (!isOpen) return null;
 
-  const categories = ["Dışa Aktarma", "Düzenleme", "Gezinti & Modlar"] as const;
+  const categories = isEn
+    ? ["Export", "Editing", "Navigation & Modes"]
+    : ["Dışa Aktarma", "Düzenleme", "Gezinti & Modlar"];
 
   return (
     <div
@@ -114,10 +152,12 @@ export const ShortcutsModal: React.FC<ShortcutsModalProps> = ({ isOpen, onClose 
             </div>
             <div>
               <h3 className="text-sm font-bold text-white tracking-tight">
-                Klavye Kısayolları Rehberi
+                {isEn ? "Keyboard Shortcuts Guide" : "Klavye Kısayolları Rehberi"}
               </h3>
               <p className="text-[11px] text-slate-400">
-                SnapMark Pro Studio'da ışık hızında üretim yapın
+                {isEn
+                  ? "Produce at lightspeed in SnapMark Pro Studio"
+                  : "SnapMark Pro Studio'da ışık hızında üretim yapın"}
               </p>
             </div>
           </div>
@@ -138,26 +178,28 @@ export const ShortcutsModal: React.FC<ShortcutsModalProps> = ({ isOpen, onClose 
                 {cat}
               </h4>
               <div className="space-y-1.5">
-                {SHORTCUTS.filter((s) => s.category === cat).map((shortcut, idx) => (
-                  <div
-                    key={idx}
-                    className="flex items-center justify-between p-2 rounded-xl bg-slate-900/60 border border-slate-800/80 text-xs"
-                  >
-                    <span className="text-slate-300 font-medium">
-                      {shortcut.description}
-                    </span>
-                    <div className="flex items-center gap-1">
-                      {shortcut.keys.map((k, kIdx) => (
-                        <kbd
-                          key={kIdx}
-                          className="px-2 py-0.5 rounded-md bg-slate-800 border border-slate-700 text-slate-200 text-[10px] font-mono shadow-sm"
-                        >
-                          {k}
-                        </kbd>
-                      ))}
+                {SHORTCUTS.filter((s) => (isEn ? s.categoryEn : s.categoryTr) === cat).map(
+                  (shortcut, idx) => (
+                    <div
+                      key={idx}
+                      className="flex items-center justify-between p-2 rounded-xl bg-slate-900/60 border border-slate-800/80 text-xs"
+                    >
+                      <span className="text-slate-300 font-medium">
+                        {isEn ? shortcut.descriptionEn : shortcut.descriptionTr}
+                      </span>
+                      <div className="flex items-center gap-1">
+                        {shortcut.keys.map((k, kIdx) => (
+                          <kbd
+                            key={kIdx}
+                            className="px-2 py-0.5 rounded-md bg-slate-800 border border-slate-700 text-slate-200 text-[10px] font-mono shadow-sm"
+                          >
+                            {k}
+                          </kbd>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  )
+                )}
               </div>
             </div>
           ))}
@@ -167,7 +209,7 @@ export const ShortcutsModal: React.FC<ShortcutsModalProps> = ({ isOpen, onClose 
         <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-500">
           <div className="flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
-            <span>Kapatmak için ESC tuşuna basabilirsiniz</span>
+            <span>{isEn ? "Press ESC to close" : "Kapatmak için ESC tuşuna basabilirsiniz"}</span>
           </div>
           <span className="font-mono text-[10px] text-indigo-400">SnapMark v2.6</span>
         </div>

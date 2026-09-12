@@ -1,8 +1,8 @@
 "use client";
-
 import React, { useRef } from "react";
 import { CardConfig } from "@/types";
 import { FileCode, Sparkles, Plus, Wand2 } from "lucide-react";
+import { getT } from "@/lib/i18n";
 
 interface CodeEditorProps {
   config: CardConfig;
@@ -52,6 +52,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
     }
   };
 
+  const t = getT(config.uiLanguage);
   const lineCount = config.code.split("\n").length;
 
   return (
@@ -59,11 +60,11 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
       <div className="flex items-center justify-between border-b border-slate-800/80 pb-2.5">
         <div className="flex items-center space-x-2 text-xs font-semibold text-slate-300">
           <FileCode className="w-4 h-4 text-indigo-400" />
-          <span>{config.mode === "code" ? "Kod Giriş Editörü" : "Alıntı & Metin Editörü"}</span>
+          <span>{config.mode === "code" ? t.editorTitleCode : t.editorTitleQuote}</span>
         </div>
         <div className="flex items-center gap-3 text-[11px] text-slate-500 font-mono">
-          <span>{lineCount} satır</span>
-          <span>{config.code.length} karakter</span>
+          <span>{lineCount} {t.lineLabel}</span>
+          <span>{config.code.length} {t.charLabel}</span>
         </div>
       </div>
 
@@ -116,10 +117,10 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
               type="button"
               onClick={onAddTab}
               className="px-2 py-1 rounded-lg text-xs font-medium bg-slate-800/70 hover:bg-slate-700 text-slate-300 border border-slate-700/50 flex items-center gap-1 transition-colors shrink-0"
-              title="Yeni Dosya Sekmesi Ekle"
+              title={t.newTab}
             >
               <Plus className="w-3 h-3 text-indigo-400" />
-              <span className="hidden sm:inline">Yeni Sekme</span>
+              <span className="hidden sm:inline">{t.newTab}</span>
             </button>
           )}
         </div>
@@ -133,8 +134,8 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
           onKeyDown={handleKeyDown}
           placeholder={
             config.mode === "code"
-              ? "Kodunu buraya yapıştır veya yaz..."
-              : "Paylaşmak istediğin düşünceyi veya alıntıyı buraya yaz..."
+              ? t.placeholderCode
+              : t.placeholderQuote
           }
           rows={10}
           className="w-full bg-[#0a0d15] text-slate-200 font-mono text-xs p-3.5 rounded-xl border border-slate-800/80 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none leading-relaxed resize-y selection:bg-indigo-600 selection:text-white"
@@ -145,17 +146,17 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
       <div className="flex items-center justify-between text-[11px] text-slate-500 pt-1">
         <span className="flex items-center gap-1">
           <kbd className="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-[10px] text-slate-400 font-mono">Tab</kbd>
-          <span>ile 2 boşluk girinti verilir</span>
+          <span>{t.tabIndentTip}</span>
         </span>
         <div className="flex items-center gap-3">
           <button
             type="button"
             onClick={handleFormatCode}
             className="text-slate-400 hover:text-white flex items-center gap-1 transition-all"
-            title="Gereksiz satır sonu boşluklarını temizle ve hizala"
+            title={t.cleanCode}
           >
             <Wand2 className="w-3 h-3 text-cyan-400" />
-            <span>Kodu Temizle</span>
+            <span>{t.cleanCode}</span>
           </button>
 
           <button

@@ -91,6 +91,30 @@ export interface Translations {
   tabLinkedIn: string;
   tabInstagram: string;
   close: string;
+
+  // Code Editor
+  editorTitleCode: string;
+  editorTitleQuote: string;
+  lineLabel: string;
+  charLabel: string;
+  newTab: string;
+  cleanCode: string;
+  tabIndentTip: string;
+  placeholderCode: string;
+  placeholderQuote: string;
+
+  // Presentation Mode
+  presentationTitle: string;
+  presentationExit: string;
+  presentationTip: string;
+
+  // Command Palette Categories
+  catActions: string;
+  catModes: string;
+  catFormats: string;
+  catThemes: string;
+  catFonts: string;
+  catEffects: string;
 }
 
 export const DICTIONARY: Record<UiLanguage, Translations> = {
@@ -179,6 +203,27 @@ export const DICTIONARY: Record<UiLanguage, Translations> = {
     tabLinkedIn: "LinkedIn Post",
     tabInstagram: "Instagram Akışı",
     close: "Kapat",
+
+    editorTitleCode: "Kod Giriş Editörü",
+    editorTitleQuote: "Alıntı & Metin Editörü",
+    lineLabel: "satır",
+    charLabel: "karakter",
+    newTab: "Yeni Sekme",
+    cleanCode: "Kodu Temizle",
+    tabIndentTip: "ile 2 boşluk girinti verilir",
+    placeholderCode: "Kodunu buraya yapıştır veya yaz...",
+    placeholderQuote: "Paylaşmak istediğin düşünceyi veya alıntıyı buraya yaz...",
+
+    presentationTitle: "Sunum Modu",
+    presentationExit: "Çıkış",
+    presentationTip: "İpucu: ← → ile slayt, Boşluk ile daktilo",
+
+    catActions: "Eylemler",
+    catModes: "Modlar",
+    catFormats: "Formatlar",
+    catThemes: "Temalar",
+    catFonts: "Fontlar",
+    catEffects: "Efektler",
   },
   en: {
     brandSubtitle: "4K Code Image Studio for Developers",
@@ -265,6 +310,27 @@ export const DICTIONARY: Record<UiLanguage, Translations> = {
     tabLinkedIn: "LinkedIn Post",
     tabInstagram: "Instagram Feed",
     close: "Close",
+
+    editorTitleCode: "Code Input Editor",
+    editorTitleQuote: "Quote & Text Editor",
+    lineLabel: "lines",
+    charLabel: "chars",
+    newTab: "New Tab",
+    cleanCode: "Format Code",
+    tabIndentTip: "inserts 2 spaces indent",
+    placeholderCode: "Paste or write your code here...",
+    placeholderQuote: "Write the quote or thought you want to share...",
+
+    presentationTitle: "Presentation Mode",
+    presentationExit: "Exit",
+    presentationTip: "Tip: ← → to navigate, Space to toggle typewriter",
+
+    catActions: "Actions",
+    catModes: "Modes",
+    catFormats: "Formats",
+    catThemes: "Themes",
+    catFonts: "Fonts",
+    catEffects: "Effects",
   },
 };
 

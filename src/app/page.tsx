@@ -441,9 +441,41 @@ export default function Home() {
       }
 
       const sorted = Array.from(set).sort((a, b) => a - b);
+      const ranges: string[] = [];
+      let rangeStart: number | null = null;
+      let rangePrev: number | null = null;
+
+      for (const num of sorted) {
+        if (rangeStart === null) {
+          rangeStart = num;
+          rangePrev = num;
+        } else if (num === rangePrev! + 1) {
+          rangePrev = num;
+        } else {
+          if (rangeStart === rangePrev) {
+            ranges.push(`${rangeStart}`);
+          } else if (rangePrev! === rangeStart + 1) {
+            ranges.push(`${rangeStart}, ${rangePrev}`);
+          } else {
+            ranges.push(`${rangeStart}-${rangePrev}`);
+          }
+          rangeStart = num;
+          rangePrev = num;
+        }
+      }
+      if (rangeStart !== null) {
+        if (rangeStart === rangePrev) {
+          ranges.push(`${rangeStart}`);
+        } else if (rangePrev! === rangeStart + 1) {
+          ranges.push(`${rangeStart}, ${rangePrev}`);
+        } else {
+          ranges.push(`${rangeStart}-${rangePrev}`);
+        }
+      }
+
       return {
         ...prev,
-        highlightedLines: sorted.join(", "),
+        highlightedLines: ranges.join(", "),
       };
     });
   }, []);
@@ -1318,6 +1350,7 @@ export default function Home() {
       <ShortcutsModal
         isOpen={isShortcutsModalOpen}
         onClose={() => setIsShortcutsModalOpen(false)}
+        uiLanguage={config.uiLanguage}
       />
 
       {/* Komut Paleti (Command Palette - Faz 7A) */}
@@ -1384,6 +1417,7 @@ export default function Home() {
         onToggleTypewriter={() =>
           handleConfigChange({ typewriterPlaying: !config.typewriterPlaying })
         }
+        uiLanguage={config.uiLanguage}
       >
         <PreviewCard
           config={config}

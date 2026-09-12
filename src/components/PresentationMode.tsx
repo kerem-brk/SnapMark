@@ -7,10 +7,9 @@ import {
   Minimize2,
   Play,
   Pause,
-  Sliders,
-  RotateCcw,
 } from "lucide-react";
-import { CarouselSlide } from "@/types";
+import { CarouselSlide, UiLanguage } from "@/types";
+import { getT } from "@/lib/i18n";
 
 interface PresentationModeProps {
   isOpen: boolean;
@@ -21,6 +20,7 @@ interface PresentationModeProps {
   onNextSlide: () => void;
   typewriterPlaying: boolean;
   onToggleTypewriter: () => void;
+  uiLanguage?: UiLanguage;
   children: React.ReactNode;
 }
 
@@ -33,8 +33,12 @@ export const PresentationMode: React.FC<PresentationModeProps> = ({
   onNextSlide,
   typewriterPlaying,
   onToggleTypewriter,
+  uiLanguage = "tr",
   children,
 }) => {
+  const t = getT(uiLanguage);
+  const isEn = uiLanguage === "en";
+
   useEffect(() => {
     if (!isOpen) return;
 
@@ -73,24 +77,24 @@ export const PresentationMode: React.FC<PresentationModeProps> = ({
       <div className="w-full max-w-5xl flex items-center justify-between text-xs text-zinc-400 py-2 px-4 rounded-full bg-black/40 backdrop-blur-md border border-white/10 shadow-lg">
         <div className="flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-          <span className="font-semibold text-zinc-200">Sunum Modu</span>
+          <span className="font-semibold text-zinc-200">{t.presentationTitle}</span>
           <span className="text-zinc-600">|</span>
           <span className="text-zinc-300 font-mono truncate max-w-xs">
-            {currentSlide?.title || currentSlide?.name || `Slayt ${activeSlideIndex + 1}`}
+            {currentSlide?.title || currentSlide?.name || `${isEn ? "Slide" : "Slayt"} ${activeSlideIndex + 1}`}
           </span>
         </div>
 
         <div className="flex items-center gap-3">
           <span className="hidden sm:inline-flex text-[11px] text-zinc-500">
-            İpucu: <kbd className="font-mono text-zinc-400">←</kbd> <kbd className="font-mono text-zinc-400">→</kbd> ile slayt, <kbd className="font-mono text-zinc-400">Boşluk</kbd> ile daktilo
+            {t.presentationTip}
           </span>
           <button
             onClick={onClose}
             className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-zinc-200 transition-colors"
-            title="Sunumdan Çık (Esc)"
+            title={isEn ? "Exit Presentation (Esc)" : "Sunumdan Çık (Esc)"}
           >
             <Minimize2 className="w-3.5 h-3.5" />
-            <span className="text-[11px] font-medium">Çıkış</span>
+            <span className="text-[11px] font-medium">{t.presentationExit}</span>
             <kbd className="text-[9px] font-mono px-1 py-0.5 bg-black/40 rounded">ESC</kbd>
           </button>
         </div>
@@ -109,8 +113,8 @@ export const PresentationMode: React.FC<PresentationModeProps> = ({
         <button
           onClick={onPrevSlide}
           disabled={activeSlideIndex <= 0}
-          className="p-2 rounded-xl bg-white/5 hover:bg-white/15 disabled:opacity-30 disabled:hover:bg-white/5 text-zinc-200 transition-colors"
-          title="Önceki Slayt (←)"
+          className="p-2 rounded-xl bg-white/5 hover:bg-white/15 disabled:opacity-30 disabled:hover:bg-white/5 text-zinc-200 transition-colors cursor-pointer"
+          title={isEn ? "Previous Slide (←)" : "Önceki Slayt (←)"}
         >
           <ChevronLeft className="w-5 h-5" />
         </button>
@@ -126,8 +130,8 @@ export const PresentationMode: React.FC<PresentationModeProps> = ({
         <button
           onClick={onNextSlide}
           disabled={activeSlideIndex >= totalSlides - 1}
-          className="p-2 rounded-xl bg-white/5 hover:bg-white/15 disabled:opacity-30 disabled:hover:bg-white/5 text-zinc-200 transition-colors"
-          title="Sonraki Slayt (→)"
+          className="p-2 rounded-xl bg-white/5 hover:bg-white/15 disabled:opacity-30 disabled:hover:bg-white/5 text-zinc-200 transition-colors cursor-pointer"
+          title={isEn ? "Next Slide (→)" : "Sonraki Slayt (→)"}
         >
           <ChevronRight className="w-5 h-5" />
         </button>
@@ -137,15 +141,15 @@ export const PresentationMode: React.FC<PresentationModeProps> = ({
         {/* Typewriter Play / Pause */}
         <button
           onClick={onToggleTypewriter}
-          className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-medium transition-all ${
+          className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer ${
             typewriterPlaying
               ? "bg-amber-500/20 text-amber-300 border border-amber-500/30 shadow-lg shadow-amber-500/10"
               : "bg-white/5 text-zinc-300 hover:bg-white/10"
           }`}
-          title="Daktilo Efektini Oynat / Durdur (Boşluk Tuşu)"
+          title={isEn ? "Toggle Typewriter (Space)" : "Daktilo Efektini Oynat / Durdur (Boşluk Tuşu)"}
         >
           {typewriterPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
-          <span>{typewriterPlaying ? "Durdur" : "Daktilo"}</span>
+          <span>{typewriterPlaying ? (isEn ? "Pause" : "Durdur") : (isEn ? "Typewriter" : "Daktilo")}</span>
         </button>
       </div>
     </div>
