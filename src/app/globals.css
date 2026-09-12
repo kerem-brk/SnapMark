@@ -1,0 +1,260 @@
+@import url('https://fonts.googleapis.com/css2?family=Cascadia+Code:wght@400;500;600;700&family=Fira+Code:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600;700&family=Inconsolata:wght@400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Roboto+Mono:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400&family=Victor+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #090d14;
+  --foreground: #f8fafc;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+/* Font Family Classes */
+.font-jetbrains {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+}
+.font-fira {
+  font-family: 'Fira Code', ui-monospace, SFMono-Regular, monospace;
+}
+.font-geist {
+  font-family: 'Geist Mono', ui-monospace, SFMono-Regular, monospace;
+}
+.font-source {
+  font-family: 'Source Code Pro', ui-monospace, SFMono-Regular, monospace;
+}
+.font-cascadia {
+  font-family: 'Cascadia Code', ui-monospace, SFMono-Regular, monospace;
+}
+.font-inconsolata {
+  font-family: 'Inconsolata', ui-monospace, SFMono-Regular, monospace;
+}
+.font-ubuntu {
+  font-family: 'Ubuntu Mono', ui-monospace, SFMono-Regular, monospace;
+}
+.font-space {
+  font-family: 'Space Mono', ui-monospace, SFMono-Regular, monospace;
+}
+.font-roboto {
+  font-family: 'Roboto Mono', ui-monospace, SFMono-Regular, monospace;
+}
+.font-victor {
+  font-family: 'Victor Mono', ui-monospace, SFMono-Regular, monospace;
+}
+
+/* Ligature Classes */
+.font-ligatures-on {
+  font-variant-ligatures: normal !important;
+  font-feature-settings: "liga" 1, "calt" 1 !important;
+}
+.font-ligatures-off {
+  font-variant-ligatures: none !important;
+  font-feature-settings: "liga" 0, "calt" 0 !important;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.6);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(100, 116, 139, 0.4);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.6);
+}
+
+/* Native Number Input Spinners Removal (Artırma/Azaltma Oklarını Kaldırma) */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0 !important;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield !important;
+  appearance: textfield !important;
+}
+
+/* ==========================================================================
+   PRISMJS SYNTAX HIGHLIGHTING THEMES (KOD DİLİ TEMALARI)
+   ========================================================================== */
+
+/* 1. One Dark Pro (Varsayılan Klasik Atom / VS Code) */
+.code-theme-onedark .token.comment,
+.code-theme-onedark .token.prolog,
+.code-theme-onedark .token.doctype,
+.code-theme-onedark .token.cdata {
+  color: #64748b;
+  font-style: italic;
+}
+.code-theme-onedark .token.punctuation { color: #94a3b8; }
+.code-theme-onedark .token.property,
+.code-theme-onedark .token.tag,
+.code-theme-onedark .token.boolean,
+.code-theme-onedark .token.number,
+.code-theme-onedark .token.constant,
+.code-theme-onedark .token.symbol { color: #f59e0b; }
+.code-theme-onedark .token.selector,
+.code-theme-onedark .token.attr-name,
+.code-theme-onedark .token.string,
+.code-theme-onedark .token.char,
+.code-theme-onedark .token.builtin { color: #10b981; }
+.code-theme-onedark .token.operator,
+.code-theme-onedark .token.entity,
+.code-theme-onedark .token.url { color: #38bdf8; }
+.code-theme-onedark .token.atrule,
+.code-theme-onedark .token.attr-value,
+.code-theme-onedark .token.keyword { color: #ec4899; font-weight: 600; }
+.code-theme-onedark .token.function,
+.code-theme-onedark .token.class-name { color: #818cf8; }
+.code-theme-onedark .token.regex,
+.code-theme-onedark .token.important,
+.code-theme-onedark .token.variable { color: #fbbf24; }
+
+/* 2. Dracula Official */
+.code-theme-dracula .token.comment { color: #6272a4; font-style: italic; }
+.code-theme-dracula .token.punctuation { color: #f8f8f2; }
+.code-theme-dracula .token.property,
+.code-theme-dracula .token.tag,
+.code-theme-dracula .token.boolean,
+.code-theme-dracula .token.number,
+.code-theme-dracula .token.constant { color: #bd93f9; }
+.code-theme-dracula .token.string,
+.code-theme-dracula .token.char { color: #f1fa8c; }
+.code-theme-dracula .token.operator,
+.code-theme-dracula .token.entity { color: #ff79c6; }
+.code-theme-dracula .token.keyword { color: #ff79c6; font-weight: 600; }
+.code-theme-dracula .token.function { color: #50fa7b; }
+.code-theme-dracula .token.class-name,
+.code-theme-dracula .token.variable { color: #8be9fd; }
+
+/* 3. Monokai Pro */
+.code-theme-monokai .token.comment { color: #75715e; font-style: italic; }
+.code-theme-monokai .token.punctuation { color: #f8f8f2; }
+.code-theme-monokai .token.property,
+.code-theme-monokai .token.boolean,
+.code-theme-monokai .token.number { color: #ae81ff; }
+.code-theme-monokai .token.string,
+.code-theme-monokai .token.char { color: #e6db74; }
+.code-theme-monokai .token.operator { color: #f92672; }
+.code-theme-monokai .token.keyword { color: #f92672; font-weight: 600; }
+.code-theme-monokai .token.function { color: #a6e22e; }
+.code-theme-monokai .token.class-name,
+.code-theme-monokai .token.variable { color: #66d9ef; }
+
+/* 4. GitHub Dark */
+.code-theme-githubDark .token.comment { color: #8b949e; font-style: italic; }
+.code-theme-githubDark .token.punctuation { color: #c9d1d9; }
+.code-theme-githubDark .token.property,
+.code-theme-githubDark .token.boolean,
+.code-theme-githubDark .token.number { color: #79c0ff; }
+.code-theme-githubDark .token.string,
+.code-theme-githubDark .token.char { color: #a5d6ff; }
+.code-theme-githubDark .token.operator { color: #ff7b72; }
+.code-theme-githubDark .token.keyword { color: #ff7b72; font-weight: 600; }
+.code-theme-githubDark .token.function { color: #d2a8ff; }
+.code-theme-githubDark .token.class-name { color: #ffa657; }
+.code-theme-githubDark .token.variable { color: #7ee787; }
+
+/* 5. Nord Frost */
+.code-theme-nord .token.comment { color: #616e88; font-style: italic; }
+.code-theme-nord .token.punctuation { color: #eceff4; }
+.code-theme-nord .token.property,
+.code-theme-nord .token.boolean,
+.code-theme-nord .token.number { color: #b48ead; }
+.code-theme-nord .token.string,
+.code-theme-nord .token.char { color: #a3be8c; }
+.code-theme-nord .token.operator { color: #81a1c1; }
+.code-theme-nord .token.keyword { color: #81a1c1; font-weight: 600; }
+.code-theme-nord .token.function { color: #88c0d0; }
+.code-theme-nord .token.class-name { color: #8fbcbb; }
+.code-theme-nord .token.variable { color: #d8dee9; }
+
+/* 6. Tokyo Night */
+.code-theme-tokyonight .token.comment { color: #565f89; font-style: italic; }
+.code-theme-tokyonight .token.punctuation { color: #c0caf5; }
+.code-theme-tokyonight .token.property,
+.code-theme-tokyonight .token.boolean,
+.code-theme-tokyonight .token.number { color: #ff9e64; }
+.code-theme-tokyonight .token.string,
+.code-theme-tokyonight .token.char { color: #9ece6a; }
+.code-theme-tokyonight .token.operator { color: #89ddff; }
+.code-theme-tokyonight .token.keyword { color: #bb9af7; font-weight: 600; }
+.code-theme-tokyonight .token.function { color: #7aa2f7; }
+.code-theme-tokyonight .token.class-name { color: #2ac3de; }
+.code-theme-tokyonight .token.variable { color: #7dcfff; }
+
+/* 7. Synthwave '84 */
+.code-theme-synthwave .token.comment { color: #848bbd; font-style: italic; }
+.code-theme-synthwave .token.punctuation { color: #f92aad; }
+.code-theme-synthwave .token.property,
+.code-theme-synthwave .token.boolean,
+.code-theme-synthwave .token.number { color: #f97e72; }
+.code-theme-synthwave .token.string,
+.code-theme-synthwave .token.char { color: #ff8b39; }
+.code-theme-synthwave .token.operator { color: #fede5d; }
+.code-theme-synthwave .token.keyword { color: #fe4450; font-weight: 600; text-shadow: 0 0 4px rgba(254, 68, 80, 0.4); }
+.code-theme-synthwave .token.function { color: #36f9f6; text-shadow: 0 0 4px rgba(54, 249, 246, 0.4); }
+.code-theme-synthwave .token.class-name { color: #ff7edb; }
+.code-theme-synthwave .token.variable { color: #72f1b8; }
+
+/* 8. Solarized Dark */
+.code-theme-solarized .token.comment { color: #586e75; font-style: italic; }
+.code-theme-solarized .token.punctuation { color: #93a1a1; }
+.code-theme-solarized .token.property,
+.code-theme-solarized .token.boolean,
+.code-theme-solarized .token.number { color: #d33682; }
+.code-theme-solarized .token.string,
+.code-theme-solarized .token.char { color: #2aa198; }
+.code-theme-solarized .token.operator { color: #859900; }
+.code-theme-solarized .token.keyword { color: #b58900; font-weight: 600; }
+.code-theme-solarized .token.function { color: #268bd2; }
+.code-theme-solarized .token.class-name { color: #cb4b16; }
+.code-theme-solarized .token.variable { color: #6c71c4; }
+
+/* ==========================================================================
+   ANIMATED MESH & GRADIENT WAVES (HAREKETLİ ARKA PLAN DALGALARI)
+   ========================================================================== */
+@keyframes mesh-wave {
+  0% {
+    transform: scale(1) rotate(0deg) translate(0, 0);
+    filter: hue-rotate(0deg);
+  }
+  33% {
+    transform: scale(1.15) rotate(4deg) translate(3%, -2%);
+    filter: hue-rotate(30deg);
+  }
+  66% {
+    transform: scale(0.95) rotate(-3deg) translate(-2%, 3%);
+    filter: hue-rotate(15deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg) translate(0, 0);
+    filter: hue-rotate(0deg);
+  }
+}
+
+.animate-mesh-slow {
+  animation: mesh-wave 14s ease-in-out infinite alternate;
+}
+
+.animate-mesh-normal {
+  animation: mesh-wave 8s ease-in-out infinite alternate;
+}
+
+.animate-mesh-fast {
+  animation: mesh-wave 4.5s ease-in-out infinite alternate;
+}
