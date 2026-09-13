@@ -6,8 +6,8 @@
 
 <br />
 
-[![Live Demo](https://img.shields.io/badge/🌐_Canlı_Site-SnapMark_Online-indigo?style=for-the-badge&logo=vercel&logoColor=white)](https://snapmark-app.vercel.app)
-[![Studio](https://img.shields.io/badge/🎨_Stüdyo_Editör-4K_Studio-purple?style=for-the-badge)](https://snapmark-app.vercel.app/studio)
+[![Live Demo](https://img.shields.io/badge/🌐_Canlı_Site-SnapMark_Online-indigo?style=for-the-badge&logo=vercel&logoColor=white)](https://snap-mark-khaki.vercel.app)
+[![Studio](https://img.shields.io/badge/🎨_Stüdyo_Editör-4K_Studio-purple?style=for-the-badge)](https://snap-mark-khaki.vercel.app/studio)
 [![GitHub Stars](https://img.shields.io/github/stars/kerem-brk/snapmark?style=for-the-badge&color=ffd700)](https://github.com/kerem-brk/snapmark)
 
 <br />
@@ -26,7 +26,7 @@
   <b>[EN]</b> Beyond Ray.so and Carbon: A modern visual suite that transforms code snippets, Markdown notes, social quotes, and terminal sessions into crisp 4K screenshots and animated WebM videos with one click.
 </p>
 
-[🌐 Canlı Site (Ana Sayfa)](https://snapmark-app.vercel.app) • [🎨 Stüdyo Editör](https://snapmark-app.vercel.app/studio) • [🇹🇷 Türkçe Kılavuz](#-türkçe-kılavuz) • [🇬🇧 English Guide](#-english-guide) • [⌨️ Kısayollar](#-klavye-kısayolları--keyboard-shortcuts)
+[🌐 Canlı Site (Ana Sayfa)](https://snap-mark-khaki.vercel.app) • [🎨 Stüdyo Editör](https://snap-mark-khaki.vercel.app/studio) • [🇹🇷 Türkçe Kılavuz](#-türkçe-kılavuz) • [🇬🇧 English Guide](#-english-guide) • [⌨️ Kısayollar](#-klavye-kısayolları--keyboard-shortcuts)
 
 </div>
 
