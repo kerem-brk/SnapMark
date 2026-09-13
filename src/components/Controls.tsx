@@ -144,6 +144,7 @@ const AccordionSection: React.FC<AccordionSectionProps> = ({
 
 export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
   const t = getT(config.uiLanguage);
+  const isEn = config.uiLanguage === "en";
   const fileInputRef = useRef<HTMLInputElement>(null);
   const tweetAvatarInputRef = useRef<HTMLInputElement>(null);
   const logoFileInputRef = useRef<HTMLInputElement>(null);
@@ -383,7 +384,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
       {/* Üst Çubuk: Başlık & Tümünü Aç/Kapat */}
       <div className="flex items-center justify-between px-1 pb-1">
         <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-          Ayarlar & Menüler
+          {isEn ? "Settings & Menus" : "Ayarlar & Menüler"}
         </span>
         <div className="flex items-center gap-1.5 text-[10px]">
           <button
@@ -391,7 +392,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
             onClick={expandAll}
             className="text-slate-400 hover:text-indigo-400 transition-colors px-1.5 py-0.5 rounded hover:bg-slate-800 cursor-pointer"
           >
-            Tümünü Aç
+            {isEn ? "Expand All" : "Tümünü Aç"}
           </button>
           <span className="text-slate-600">•</span>
           <button
@@ -399,7 +400,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
             onClick={collapseAll}
             className="text-slate-400 hover:text-indigo-400 transition-colors px-1.5 py-0.5 rounded hover:bg-slate-800 cursor-pointer"
           >
-            Kapat
+            {isEn ? "Collapse All" : "Kapat"}
           </button>
         </div>
       </div>
@@ -409,7 +410,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
         <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
         <input
           type="text"
-          placeholder="Ayarlarda ara... (font, renk, 3D, logo)"
+          placeholder={isEn ? "Search settings... (font, color, 3D, logo)" : "Ayarlarda ara... (font, renk, 3D, logo)"}
           value={searchQuery}
           onChange={(e) => handleSearch(e.target.value)}
           className="w-full bg-[#131b2a] border border-slate-700/80 focus:border-indigo-500 rounded-xl pl-8 pr-8 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none transition-colors shadow-inner"

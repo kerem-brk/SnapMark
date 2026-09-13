@@ -94,13 +94,18 @@ export default function Home() {
   const [canRedo, setCanRedo] = useState<boolean>(false);
 
   // Otomatik Kaydetme Anahtarı (Faz 6)
-  const AUTOSAVE_KEY = "snapmark_autosave_v2";
+  const AUTOSAVE_KEY = "snapmark_autosave_v5";
 
   // Paylaşılan URL Hash'ini veya LocalStorage Kaydını Çöz ve Yükle
   useEffect(() => {
     const loadInitialConfig = () => {
       try {
         if (typeof window !== "undefined") {
+          // Eski versiyonların bozuk veya fazla efektli durumlarını temizle
+          localStorage.removeItem("snapmark_autosave_v2");
+          localStorage.removeItem("snapmark_autosave_v3");
+          localStorage.removeItem("snapmark_autosave");
+
           const hash = window.location.hash;
           if (hash && hash.startsWith("#c=")) {
             const encoded = hash.replace("#c=", "");

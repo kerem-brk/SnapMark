@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import {
   Sparkles,
@@ -24,6 +24,8 @@ import {
   Smartphone,
   Languages,
   Loader2,
+  MoreHorizontal,
+  ChevronDown,
 } from "lucide-react";
 import { CardConfig } from "@/types";
 import { detectLanguageFromFilename } from "@/lib/constants";
@@ -78,13 +80,29 @@ export const Header: React.FC<HeaderProps> = ({
   onExportThemeJson,
   onImportThemeJson,
 }) => {
+  const isEn = config.uiLanguage === "en";
   const t = getT(config.uiLanguage);
   const [sharedFeedback, setSharedFeedback] = useState(false);
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
+  const [isToolsMenuOpen, setIsToolsMenuOpen] = useState(false);
+  const toolsMenuRef = useRef<HTMLDivElement>(null);
   const themeFileInputRef = useRef<HTMLInputElement>(null);
   const [importUrl, setImportUrl] = useState("");
   const [isImporting, setIsImporting] = useState(false);
   const [importError, setImportError] = useState<string | null>(null);
+
+  // Close tools dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (toolsMenuRef.current && !toolsMenuRef.current.contains(e.target as Node)) {
+        setIsToolsMenuOpen(false);
+      }
+    };
+    if (isToolsMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isToolsMenuOpen]);
 
   const handleShare = async () => {
     try {
@@ -117,7 +135,7 @@ export const Header: React.FC<HeaderProps> = ({
 
   const handleImportFromGithub = async () => {
     if (!importUrl.trim()) {
-      setImportError("Lütfen geçerli bir GitHub veya Gist URL'si girin.");
+      setImportError(isEn ? "Please enter a valid GitHub or Gist URL." : "Lütfen geçerli bir GitHub veya Gist URL'si girin.");
       return;
     }
 
@@ -134,7 +152,7 @@ export const Header: React.FC<HeaderProps> = ({
       }
 
       const res = await fetch(rawUrl);
-      if (!res.ok) throw new Error("Dosya indirilemedi (404 veya bağlantı hatası)");
+      if (!res.ok) throw new Error(isEn ? "Failed to download file (404 or connection error)" : "Dosya indirilemedi (404 veya bağlantı hatası)");
       const fetchedCode = await res.text();
 
       const filename = rawUrl.split("/").pop()?.split("?")[0] || "snippet.ts";
@@ -150,7 +168,7 @@ export const Header: React.FC<HeaderProps> = ({
       setIsImportModalOpen(false);
       setImportUrl("");
     } catch (err: any) {
-      setImportError(err.message || "Kod çekilirken hata oluştu");
+      setImportError(err.message || (isEn ? "Error fetching code" : "Kod çekilirken hata oluştu"));
     } finally {
       setIsImporting(false);
     }
@@ -158,9 +176,9 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <>
-      <header className="h-16 border-b border-slate-800 bg-[#0d131f]/95 backdrop-blur-md px-4 md:px-6 flex items-center justify-between z-30 sticky top-0 gap-3">
-        {/* Sol Grup: Menü Aç/Kapat, Logo, İsim ve Vitrin Rozeti */}
-        <div className="flex items-center space-x-3 shrink-0">
+      <header className="h-16 border-b border-slate-800 bg-[#0d131f]/95 backdrop-blur-md px-3 sm:px-6 flex items-center justify-between z-30 sticky top-0 gap-2 sm:gap-4">
+        {/* Sol Grup: Menü Aç/Kapat, Logo ve SnapMark Başlığı */}
+        <div className="flex items-center space-x-2 sm:space-x-3 shrink-0">
           {onToggleSidebar && (
             <button
               onClick={onToggleSidebar}
@@ -169,15 +187,15 @@ export const Header: React.FC<HeaderProps> = ({
                   ? "bg-indigo-600/20 text-indigo-300 border-indigo-500/40 hover:bg-indigo-600/30"
                   : "bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700 hover:text-white"
               }`}
-              title={isSidebarOpen ? "Menüyü Kapat" : "Menüyü Aç"}
+              title={isSidebarOpen ? (isEn ? "Hide Menu" : "Menüyü Kapat") : (isEn ? "Open Menu" : "Menüyü Aç")}
             >
               {isSidebarOpen ? (
                 <PanelLeftClose className="w-4 h-4" />
               ) : (
                 <PanelLeftOpen className="w-4 h-4 text-indigo-400" />
               )}
-              <span className="hidden xl:inline">
-                {isSidebarOpen ? "Menü" : "Menüyü Aç"}
+              <span className="hidden 2xl:inline">
+                {isSidebarOpen ? (isEn ? "Menu" : "Menü") : (isEn ? "Open Menu" : "Menüyü Aç")}
               </span>
             </button>
           )}
@@ -186,23 +204,16 @@ export const Header: React.FC<HeaderProps> = ({
             <Sparkles className="w-4 h-4 text-white" />
           </div>
 
-          <div className="flex items-center gap-2">
+          {/* Sadece SnapMark başlığı - Vitrin rozeti silindi! */}
+          <div className="flex items-center">
             <h1 className="font-bold text-base tracking-tight text-white shrink-0">SnapMark</h1>
-            <Link
-              href="/landing"
-              className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-gradient-to-r from-emerald-500/20 via-cyan-500/20 to-indigo-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm shadow-emerald-500/10 flex items-center gap-1.5 hover:border-emerald-400 hover:text-emerald-200 transition-colors shrink-0"
-              title="Vitrin & Tanıtım Sayfasını Aç"
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              <span>Vitrin</span>
-            </Link>
           </div>
         </div>
 
-        {/* Orta Grup: Hızlı Stüdyo Araçları (Geri/İleri Al, Komut Paleti, Sunum) */}
-        <div className="hidden lg:flex items-center gap-2">
+        {/* Orta Grup: Temiz Hızlı Araçlar (Geri/İleri Al, Komut Paleti, Sunum) */}
+        <div className="hidden lg:flex items-center gap-2 shrink-0">
           {/* Geri Al / İleri Al */}
-          <div className="flex items-center bg-slate-900/90 p-1 rounded-xl border border-slate-800">
+          <div className="flex items-center bg-slate-900/90 p-0.5 rounded-xl border border-slate-800">
             <button
               type="button"
               onClick={onUndo}
@@ -212,7 +223,7 @@ export const Header: React.FC<HeaderProps> = ({
                   ? "text-slate-300 hover:text-white hover:bg-slate-800 cursor-pointer"
                   : "text-slate-600 cursor-not-allowed"
               }`}
-              title="Geri Al (Ctrl+Z)"
+              title={isEn ? "Undo (Ctrl+Z)" : "Geri Al (Ctrl+Z)"}
             >
               <Undo2 className="w-3.5 h-3.5" />
             </button>
@@ -225,88 +236,86 @@ export const Header: React.FC<HeaderProps> = ({
                   ? "text-slate-300 hover:text-white hover:bg-slate-800 cursor-pointer"
                   : "text-slate-600 cursor-not-allowed"
               }`}
-              title="İleri Al (Ctrl+Y)"
+              title={isEn ? "Redo (Ctrl+Y)" : "İleri Al (Ctrl+Y)"}
             >
               <Redo2 className="w-3.5 h-3.5" />
             </button>
           </div>
 
-          {/* Komut Paleti Butonu */}
+          {/* Komut Paleti */}
           <button
             type="button"
             onClick={onOpenCommandPalette}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-xs text-slate-300 transition-all cursor-pointer shadow-sm group"
-            title="Komut Paletini Aç (Ctrl+K)"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-xs text-slate-300 transition-all cursor-pointer shadow-sm group"
+            title={isEn ? "Open Commands (Ctrl+K)" : "Komut Paletini Aç (Ctrl+K)"}
           >
             <Search className="w-3.5 h-3.5 text-indigo-400 group-hover:scale-110 transition-transform" />
-            <span className="text-[11px] font-medium">Komutlar</span>
-            <kbd className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-slate-400">
+            <span className="text-[11px] font-medium">{isEn ? "Commands" : "Komutlar"}</span>
+            <kbd className="text-[9px] font-mono px-1 py-0.5 rounded bg-white/5 border border-white/10 text-slate-400">
               Ctrl+K
             </kbd>
           </button>
 
-          {/* Sunum / Tam Ekran Modu */}
+          {/* Sunum Modu */}
           <button
             type="button"
             onClick={onTogglePresentation}
             className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-xs text-slate-300 hover:text-white transition-all cursor-pointer"
-            title="Tam Ekran Sunum Modu (F11)"
+            title={isEn ? "Presentation Mode (F11)" : "Tam Ekran Sunum Modu (F11)"}
           >
             <Maximize2 className="w-3.5 h-3.5 text-sky-400" />
-            <span className="text-[11px] font-medium">Sunum</span>
-          </button>
-
-          {/* Sosyal Medya Canlı Akış Simülasyonu */}
-          {onOpenFeedPreview && (
-            <button
-              type="button"
-              onClick={onOpenFeedPreview}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-emerald-500/40 text-xs text-slate-300 hover:text-white transition-all cursor-pointer group shadow-sm active:scale-95"
-              title={t.feedSimulation}
-            >
-              <Smartphone className="w-3.5 h-3.5 text-emerald-400 group-hover:scale-110 transition-transform" />
-              <span className="text-[11px] font-medium">{t.feedSimulation}</span>
-            </button>
-          )}
-
-          {/* Dil Değiştirici (TR / EN) */}
-          <button
-            type="button"
-            onClick={() =>
-              onChangeConfig({
-                uiLanguage: config.uiLanguage === "en" ? "tr" : "en",
-              })
-            }
-            className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-indigo-500/40 text-xs font-semibold text-slate-200 hover:text-white transition-all cursor-pointer shadow-sm active:scale-95"
-            title={config.uiLanguage === "en" ? "Türkçe diline geç" : "Switch to English"}
-          >
-            <Languages className="w-3.5 h-3.5 text-indigo-400" />
-            <span className="text-[11px] uppercase tracking-wider font-bold">
-              {config.uiLanguage === "en" ? "EN" : "TR"}
-            </span>
+            <span className="text-[11px] font-medium">{isEn ? "Present" : "Sunum"}</span>
           </button>
         </div>
 
-        {/* Sağ Grup: Çözünürlük, Tema Paylaşımı, GitHub, Paylaş & İndir */}
-        <div className="flex items-center gap-2 shrink-0">
-          {/* Çözünürlük Çarpanı (1x, 2x Retina, 4x Ultra HD) */}
-          <div className="hidden sm:flex items-center bg-slate-900/90 p-0.5 rounded-xl border border-slate-800 text-[11px] font-semibold text-slate-400">
+        {/* Sağ Grup: Dil Seçici, Çözünürlük, Araçlar Menüsü, Paylaş, Kopyala ve PNG İndir */}
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          {/* DİL DEĞİŞTİRİCİ (TR / EN) - Süper Net ve Her Zaman Görünür */}
+          <div className="flex items-center bg-slate-900/90 p-0.5 rounded-xl border border-slate-800 text-[11px] font-bold shrink-0">
+            <button
+              type="button"
+              onClick={() => onChangeConfig({ uiLanguage: "tr" })}
+              className={`px-2 py-1 rounded-lg transition-all cursor-pointer ${
+                config.uiLanguage !== "en"
+                  ? "bg-indigo-600 text-white shadow-sm font-bold"
+                  : "text-slate-400 hover:text-white"
+              }`}
+              title="Türkçe Dil Seçimi"
+            >
+              TR
+            </button>
+            <button
+              type="button"
+              onClick={() => onChangeConfig({ uiLanguage: "en" })}
+              className={`px-2 py-1 rounded-lg transition-all cursor-pointer ${
+                config.uiLanguage === "en"
+                  ? "bg-indigo-600 text-white shadow-sm font-bold"
+                  : "text-slate-400 hover:text-white"
+              }`}
+              title="Switch to English"
+            >
+              EN
+            </button>
+          </div>
+
+          {/* Çözünürlük Çarpanı (1x, 2x Retina, 4x 4K) - xl+ ekranlarda */}
+          <div className="hidden xl:flex items-center bg-slate-900/90 p-0.5 rounded-xl border border-slate-800 text-[11px] font-semibold text-slate-400">
             {([1, 2, 4] as const).map((scale) => (
               <button
                 key={scale}
                 type="button"
                 onClick={() => onChangeConfig({ exportScale: scale })}
-                className={`px-2 py-1 rounded-lg transition-all ${
+                className={`px-2 py-1 rounded-lg transition-all cursor-pointer ${
                   (config.exportScale || 2) === scale
-                    ? "bg-indigo-600 text-white shadow-sm"
+                    ? "bg-indigo-600 text-white shadow-sm font-bold"
                     : "hover:text-slate-200"
                 }`}
                 title={
                   scale === 4
-                    ? "4x Ultra HD / 4K Keskinlik"
+                    ? "4x Ultra HD (4K)"
                     : scale === 2
-                    ? "2x Retina HD Çıktı"
-                    : "1x Standart Web Çıktısı"
+                    ? "2x Retina HD"
+                    : "1x Standard"
                 }
               >
                 {scale}x{scale === 4 ? " 4K" : scale === 2 ? " HD" : ""}
@@ -314,24 +323,157 @@ export const Header: React.FC<HeaderProps> = ({
             ))}
           </div>
 
-          {/* Tema JSON İçe / Dışa Aktar Butonları */}
-          <div className="hidden xl:flex items-center bg-slate-900/90 p-0.5 rounded-xl border border-slate-800 text-xs">
+          {/* İkincil Araçlar Açılır Menüsü (Sıkışmayı Önleyen Dropdown) */}
+          <div className="relative" ref={toolsMenuRef}>
             <button
               type="button"
-              onClick={onExportThemeJson}
-              className="p-1.5 rounded-lg text-slate-400 hover:text-amber-300 hover:bg-slate-800 transition-colors cursor-pointer"
-              title="Tüm ayarları JSON teması olarak indir"
+              onClick={() => setIsToolsMenuOpen((prev) => !prev)}
+              className={`p-2 rounded-xl border transition-all flex items-center gap-1 text-xs font-semibold cursor-pointer ${
+                isToolsMenuOpen
+                  ? "bg-indigo-600/20 text-indigo-300 border-indigo-500/50"
+                  : "bg-slate-900/90 text-slate-300 border-slate-800 hover:border-slate-700 hover:text-white"
+              }`}
+              title={isEn ? "More Tools" : "Daha Fazla Araç"}
             >
-              <FileDown className="w-3.5 h-3.5 text-amber-400" />
+              <MoreHorizontal className="w-4 h-4" />
+              <ChevronDown className="w-3 h-3 text-slate-400" />
             </button>
-            <button
-              type="button"
-              onClick={() => themeFileInputRef.current?.click()}
-              className="p-1.5 rounded-lg text-slate-400 hover:text-emerald-300 hover:bg-slate-800 transition-colors cursor-pointer"
-              title="JSON teması yükle"
-            >
-              <FileUp className="w-3.5 h-3.5 text-emerald-400" />
-            </button>
+
+            {isToolsMenuOpen && (
+              <div className="absolute right-0 mt-2 w-56 bg-[#0e1424] border border-slate-700/80 rounded-2xl shadow-2xl p-1.5 z-50 space-y-0.5 animate-in fade-in duration-150">
+                {onExportVideo && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsToolsMenuOpen(false);
+                      onExportVideo();
+                    }}
+                    disabled={isVideoExporting || isExporting}
+                    className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-slate-200 hover:bg-slate-800 transition-colors text-left cursor-pointer"
+                  >
+                    <Video className="w-4 h-4 text-purple-400 shrink-0" />
+                    <span className="flex-1 font-medium">{t.exportVideo}</span>
+                  </button>
+                )}
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsToolsMenuOpen(false);
+                    onDownloadSvg();
+                  }}
+                  disabled={isExporting}
+                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-slate-200 hover:bg-slate-800 transition-colors text-left cursor-pointer"
+                >
+                  <Download className="w-4 h-4 text-cyan-400 shrink-0" />
+                  <span className="flex-1 font-medium">{t.exportSvg}</span>
+                </button>
+
+                {onOpenFeedPreview && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsToolsMenuOpen(false);
+                      onOpenFeedPreview();
+                    }}
+                    className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-slate-200 hover:bg-slate-800 transition-colors text-left cursor-pointer"
+                  >
+                    <Smartphone className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <span className="flex-1 font-medium">{t.feedSimulation}</span>
+                  </button>
+                )}
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsToolsMenuOpen(false);
+                    setIsImportModalOpen(true);
+                  }}
+                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-slate-200 hover:bg-slate-800 transition-colors text-left cursor-pointer"
+                >
+                  <Github className="w-4 h-4 text-slate-300 shrink-0" />
+                  <span className="flex-1 font-medium">GitHub / Gist Import</span>
+                </button>
+
+                <div className="h-px bg-slate-800 my-1" />
+
+                {onExportThemeJson && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsToolsMenuOpen(false);
+                      onExportThemeJson();
+                    }}
+                    className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-slate-200 hover:bg-slate-800 transition-colors text-left cursor-pointer"
+                  >
+                    <FileDown className="w-4 h-4 text-amber-400 shrink-0" />
+                    <span className="flex-1 font-medium">{t.themeDownload}</span>
+                  </button>
+                )}
+
+                {onImportThemeJson && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsToolsMenuOpen(false);
+                      themeFileInputRef.current?.click();
+                    }}
+                    className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-slate-200 hover:bg-slate-800 transition-colors text-left cursor-pointer"
+                  >
+                    <FileUp className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <span className="flex-1 font-medium">{t.themeUpload}</span>
+                  </button>
+                )}
+
+                <Link
+                  href="/landing"
+                  onClick={() => setIsToolsMenuOpen(false)}
+                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-slate-200 hover:bg-slate-800 transition-colors text-left"
+                >
+                  <Sparkles className="w-4 h-4 text-indigo-400 shrink-0" />
+                  <span className="flex-1 font-medium">{isEn ? "Showcase Page" : "Vitrin Sayfası"}</span>
+                </Link>
+
+                <div className="h-px bg-slate-800 my-1" />
+
+                {onOpenShortcuts && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsToolsMenuOpen(false);
+                      onOpenShortcuts();
+                    }}
+                    className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-slate-200 hover:bg-slate-800 transition-colors text-left cursor-pointer"
+                  >
+                    <Keyboard className="w-4 h-4 text-indigo-400 shrink-0" />
+                    <span className="flex-1 font-medium">{t.shortcuts}</span>
+                    <kbd className="text-[10px] font-mono text-slate-400">?</kbd>
+                  </button>
+                )}
+
+                {onResetDefaults && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsToolsMenuOpen(false);
+                      if (
+                        confirm(
+                          isEn
+                            ? "Reset all settings to factory defaults?"
+                            : "Tüm ayarları fabrika ayarlarına sıfırlamak istediğinize emin misiniz?"
+                        )
+                      ) {
+                        onResetDefaults();
+                      }
+                    }}
+                    className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-rose-300 hover:bg-rose-950/40 transition-colors text-left cursor-pointer"
+                  >
+                    <RotateCcw className="w-4 h-4 text-rose-400 shrink-0" />
+                    <span className="flex-1 font-medium">{t.resetDefaults}</span>
+                  </button>
+                )}
+              </div>
+            )}
           </div>
 
           <input
@@ -348,86 +490,36 @@ export const Header: React.FC<HeaderProps> = ({
             className="hidden"
           />
 
-          {/* GitHub İçe Aktar Butonu */}
-          <button
-            type="button"
-            onClick={() => setIsImportModalOpen(true)}
-            className="hidden xl:flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 text-xs font-semibold transition-all cursor-pointer"
-            title="GitHub dosya veya Gist linkinden kod çek"
-          >
-            <Github className="w-3.5 h-3.5 text-slate-300" />
-            <span className="hidden 2xl:inline">GitHub</span>
-          </button>
-
-          {/* Paylaş (Link Kopyala) Butonu */}
+          {/* Paylaş (Share) */}
           <button
             type="button"
             onClick={handleShare}
-            className={`px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all border cursor-pointer ${
+            className={`px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all border cursor-pointer ${
               sharedFeedback
                 ? "bg-emerald-600 text-white border-emerald-500 shadow-sm"
                 : "bg-slate-800/90 hover:bg-slate-700 text-slate-300 hover:text-white border-slate-700 shadow-sm"
             }`}
-            title="Bu kartın açılabilir bağlantısını kopyala"
+            title={isEn ? "Share link" : "Paylaşım linki kopyala"}
           >
             {sharedFeedback ? (
               <>
                 <Check className="w-3.5 h-3.5 text-white" />
-                <span>{t.copiedFeedback}</span>
+                <span className="hidden sm:inline">{t.copiedFeedback}</span>
               </>
             ) : (
               <>
                 <Share2 className="w-3.5 h-3.5 text-cyan-400" />
-                <span>{t.share}</span>
+                <span className="hidden sm:inline">{t.share}</span>
               </>
             )}
           </button>
 
-          {/* Video İndir (WebM) */}
-          {onExportVideo && (
-            <button
-              type="button"
-              onClick={onExportVideo}
-              disabled={isVideoExporting || isExporting}
-              className={`hidden md:flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold transition-all border shadow-sm cursor-pointer active:scale-95 ${
-                isVideoExporting
-                  ? "bg-purple-950/80 border-purple-500/50 text-purple-200"
-                  : "bg-purple-900/30 hover:bg-purple-900/50 text-purple-200 hover:text-white border-purple-500/40"
-              }`}
-              title="WebM Canlı Video Olarak İndir"
-            >
-              {isVideoExporting ? (
-                <>
-                  <Loader2 className="w-3.5 h-3.5 animate-spin text-purple-300" />
-                  <span>{config.uiLanguage === "en" ? "Recording..." : "Kaydediliyor..."}</span>
-                </>
-              ) : (
-                <>
-                  <Video className="w-3.5 h-3.5 text-purple-400" />
-                  <span>{t.exportVideo}</span>
-                </>
-              )}
-            </button>
-          )}
-
-          {/* SVG İndir */}
-          <button
-            type="button"
-            onClick={onDownloadSvg}
-            disabled={isExporting}
-            className="hidden sm:flex px-2.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-800/90 hover:bg-slate-700 text-slate-200 border border-slate-700 hover:border-slate-600 shadow-sm items-center gap-1.5 transition-all active:scale-95 cursor-pointer"
-            title="Vektörel SVG Çıktısı Al"
-          >
-            <Download className="w-3.5 h-3.5 text-cyan-400" />
-            <span>{t.exportSvg}</span>
-          </button>
-
-          {/* Panoya Kopyala */}
+          {/* Panoya Kopyala (Copy) */}
           <button
             type="button"
             onClick={onCopyImage}
             disabled={isExporting}
-            className={`px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all border cursor-pointer ${
+            className={`px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all border cursor-pointer ${
               copied
                 ? "bg-emerald-600 text-white border-emerald-500"
                 : "bg-slate-800/90 hover:bg-slate-700 text-slate-200 border-slate-700 hover:border-slate-600 shadow-sm"
@@ -437,12 +529,12 @@ export const Header: React.FC<HeaderProps> = ({
             {copied ? (
               <>
                 <Check className="w-3.5 h-3.5 text-white" />
-                <span>{t.copiedFeedback}</span>
+                <span className="hidden sm:inline">{t.copiedFeedback}</span>
               </>
             ) : (
               <>
                 <Copy className="w-3.5 h-3.5 text-indigo-400" />
-                <span>{t.copyToClipboard}</span>
+                <span className="hidden sm:inline">{t.copyImage}</span>
               </>
             )}
           </button>
@@ -452,42 +544,14 @@ export const Header: React.FC<HeaderProps> = ({
             type="button"
             onClick={onDownloadImage}
             disabled={isExporting}
-            className="px-4 py-1.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-pink-500 via-purple-600 to-indigo-600 hover:from-pink-400 hover:to-indigo-500 text-white shadow-lg shadow-pink-500/20 flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer"
+            className="px-3 sm:px-4 py-1.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-pink-500 via-purple-600 to-indigo-600 hover:from-pink-400 hover:to-indigo-500 text-white shadow-lg shadow-pink-500/20 flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer shrink-0"
           >
             <Download className="w-3.5 h-3.5" />
             <span>{t.downloadPng}</span>
-            <span className="text-[10px] bg-black/30 px-1.5 py-0.5 rounded font-mono">
+            <span className="hidden sm:inline text-[10px] bg-black/30 px-1.5 py-0.5 rounded font-mono">
               {config.exportScale || 2}x
             </span>
           </button>
-
-          {/* Klavye Kısayolları Rehberi Butonu */}
-          {onOpenShortcuts && (
-            <button
-              type="button"
-              onClick={onOpenShortcuts}
-              className="p-1.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 transition-all cursor-pointer hidden md:flex items-center justify-center"
-              title="Klavye Kısayolları (?)"
-            >
-              <Keyboard className="w-3.5 h-3.5 text-indigo-400" />
-            </button>
-          )}
-
-          {/* Fabrika Ayarlarına Sıfırla */}
-          {onResetDefaults && (
-            <button
-              type="button"
-              onClick={() => {
-                if (confirm("Tüm ayarları ve kodu sıfırlayıp fabrika ayarlarına dönmek istediğinize emin misiniz?")) {
-                  onResetDefaults();
-                }
-              }}
-              className="p-1.5 rounded-xl bg-slate-800/80 hover:bg-rose-500/20 text-slate-400 hover:text-rose-400 border border-slate-700/80 hover:border-rose-500/40 transition-all cursor-pointer hidden xl:flex items-center justify-center"
-              title="Fabrika Ayarlarına Sıfırla"
-            >
-              <RotateCcw className="w-3.5 h-3.5" />
-            </button>
-          )}
         </div>
       </header>
 
@@ -498,7 +562,7 @@ export const Header: React.FC<HeaderProps> = ({
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div className="flex items-center gap-2">
                 <Github className="w-5 h-5 text-indigo-400" />
-                <h3 className="font-bold text-sm text-white">GitHub / Gist'ten Kod Çek</h3>
+                <h3 className="font-bold text-sm text-white">{isEn ? "Import from GitHub / Gist" : "GitHub / Gist'ten Kod Çek"}</h3>
               </div>
               <button
                 onClick={() => {
@@ -513,47 +577,45 @@ export const Header: React.FC<HeaderProps> = ({
 
             <div className="space-y-2">
               <label className="text-xs font-medium text-slate-300">
-                Dosya veya Gist Bağlantısı (URL):
+                {isEn ? "File or Gist URL:" : "Dosya veya Gist Bağlantısı (URL):"}
               </label>
               <input
                 type="text"
                 value={importUrl}
                 onChange={(e) => setImportUrl(e.target.value)}
                 placeholder="https://github.com/user/repo/blob/main/index.ts"
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") handleImportFromGithub();
-                }}
-                className="w-full bg-[#0a0e1a] border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-500 font-mono focus:outline-none focus:border-indigo-500"
+                className="w-full bg-[#131b2a] border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 font-mono"
               />
-              <p className="text-[10px] text-slate-400">
-                💡 İpucu: Herhangi bir GitHub dosya linkini veya Gist linkini doğrudan yapıştırabilirsiniz.
-              </p>
+              {importError && (
+                <p className="text-rose-400 text-xs">{importError}</p>
+              )}
             </div>
 
-            {importError && (
-              <div className="p-2.5 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-300 text-xs">
-                {importError}
-              </div>
-            )}
-
-            <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
+            <div className="flex justify-end gap-2 pt-2">
               <button
                 type="button"
                 onClick={() => {
                   setIsImportModalOpen(false);
                   setImportError(null);
                 }}
-                className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
+                className="px-3 py-1.5 rounded-xl text-xs text-slate-400 hover:text-white hover:bg-slate-800 cursor-pointer"
               >
-                İptal
+                {isEn ? "Cancel" : "İptal"}
               </button>
               <button
                 type="button"
                 onClick={handleImportFromGithub}
                 disabled={isImporting}
-                className="px-4 py-2 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white transition-all shadow-md shadow-indigo-600/30 flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                className="px-4 py-1.5 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
               >
-                {isImporting ? "Çekiliyor..." : "Kodu Yükle"}
+                {isImporting ? (
+                  <>
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    <span>{isEn ? "Importing..." : "Çekiliyor..."}</span>
+                  </>
+                ) : (
+                  <span>{isEn ? "Import" : "İçe Aktar"}</span>
+                )}
               </button>
             </div>
           </div>
