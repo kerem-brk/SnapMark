@@ -1,30 +1,82 @@
-# 📸 SnapMark Pro Studio — 4K Code, Markdown & Social Media Visual Suite
+<div align="center">
 
-> **[TR]** Ray.so ve Carbon estetiğinin çok ötesinde; kod parçacıklarını, Markdown notlarını, tweet alıntılarını ve terminal komutlarını tek tıkla 4K kristal netliğinde görsellere ve WebM animasyon videolarına dönüştüren modern web stüdyosu.  
-> **[EN]** Beyond Ray.so and Carbon: A modern web studio that turns code snippets, Markdown notes, social quotes, and terminal sessions into crisp 4K screenshots and animated WebM videos with one click.
+# 📸 SnapMark Pro Studio
+### 4K Kod, Markdown, Sosyal Kart & Hareketli Video Görsel Stüdyosu
+**Next-Generation 4K Visual Suite for Code, Markdown, Social Posts & Animated WebM Clips**
 
-[![Next.js](https://img.shields.io/badge/Next.js-15.1-black?style=flat-square&logo=next.js)](https://nextjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.8-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38bdf8?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
-[![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
+<br />
+
+[![Live Demo](https://img.shields.io/badge/🌐_Canlı_Demo-SnapMark_Online-indigo?style=for-the-badge&logo=vercel&logoColor=white)](https://snapmark.vercel.app)
+[![Showcase](https://img.shields.io/badge/✨_Vitrin-Landing_Page-pink?style=for-the-badge)](https://snapmark.vercel.app/landing)
+[![GitHub Stars](https://img.shields.io/github/stars/kerem-brk/snapmark?style=for-the-badge&color=ffd700)](https://github.com/kerem-brk/snapmark)
+
+<br />
+
+[![Next.js 15](https://img.shields.io/badge/Next.js-15.1-black?style=flat-square&logo=next.js)](https://nextjs.org/)
+[![TypeScript 5.8](https://img.shields.io/badge/TypeScript-5.8-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind CSS 3.4](https://img.shields.io/badge/Tailwind-3.4-38BDF8?style=flat-square&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![License MIT](https://img.shields.io/badge/License-MIT-emerald?style=flat-square)](LICENSE)
 [![PWA Ready](https://img.shields.io/badge/PWA-Installable-purple?style=flat-square)](https://web.dev/progressive-web-apps/)
+[![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen?style=flat-square)](https://github.com/kerem-brk/snapmark/pulls)
+
+<br />
+
+<p align="center">
+  <b>[TR]</b> Ray.so ve Carbon estetiğinin çok ötesinde; kod parçacıklarını, Markdown notlarını, tweet alıntılarını ve terminal komutlarını tek tıkla 4K kristal netliğinde görsellere ve WebM animasyon videolarına dönüştüren modern web stüdyosu.<br />
+  <b>[EN]</b> Beyond Ray.so and Carbon: A modern visual suite that transforms code snippets, Markdown notes, social quotes, and terminal sessions into crisp 4K screenshots and animated WebM videos with one click.
+</p>
+
+[🚀 Canlı Deneyin / Try Live](https://snapmark.vercel.app) • [✨ Vitrin / Showcase](https://snapmark.vercel.app/landing) • [🇹🇷 Türkçe Kılavuz](#-türkçe-kılavuz) • [🇬🇧 English Guide](#-english-guide) • [⌨️ Kısayollar](#-klavye-kısayolları--keyboard-shortcuts)
+
+</div>
+
+---
+
+## ⚡ SnapMark vs. Ray.so vs. Carbon
+
+Neden geliştiriciler ve içerik üreticileri SnapMark tercih ediyor?
+
+| Yetenek & Özellik | Ray.so | Carbon | 📸 **SnapMark Pro** |
+| :--- | :---: | :---: | :---: |
+| **4K Ultra HD Export (Scale 1x / 2x / 4x)** | ⚠️ 2x Maks | ⚠️ 2x Maks | ✅ **1x, 2x, 4x Kristal Netlik** |
+| **Animasyonlu WebM Video Kaydı** | ❌ Yok | ❌ Yok | ✅ **Var (25 FPS Daktilo + Gradient Dalga)** |
+| **Çoklu Slayt (Carousel & Swipe)** | ❌ Yok | ❌ Yok | ✅ **Var (Sürükle-Bırak + Toplu ZIP)** |
+| **Çok Modlu İçerik Motoru** | ❌ Sadece Kod | ❌ Sadece Kod | ✅ **5 Mod (Kod, Diff, Tweet, Alıntı, CLI)** |
+| **Diff (Kod Karşılaştırma) Modu** | ❌ Yok | ❌ Yok | ✅ **Var (Önce / Sonra Renkli Diff)** |
+| **Sosyal Medya Hazır Tuval Boyutları** | ❌ Sadece Otomatik | ❌ Sadece Otomatik | ✅ **Twitter, IG Story, Post, LinkedIn, YT** |
+| **Sosyal Medya Akış Simülasyonu** | ❌ Yok | ❌ Yok | ✅ **Canlı Feed Önizleme (X, LinkedIn, IG)** |
+| **3D Perspektif & İzometrik Eğim (Tilt)** | ❌ Yok | ❌ Yok | ✅ **GPU Hızlandırmalı 3D Eksenler** |
+| **Dinamik QR Kod & Marka Filigranı** | ❌ Yok | ❌ Yok | ✅ **Var (Özel Logo, QR Rozet, Opaklık)** |
+| **Komut Paleti (`Ctrl + K`)** | ❌ Yok | ❌ Yok | ✅ **Tüm Eylemler Klavyede** |
+| **Gizlilik (%100 İstemci Taraflı)** | ✅ Evet | ✅ Evet | ✅ **%100 Güvenli, Sıfır Sunucu İsteği** |
+| **Ücretsiz & Açık Kaynak** | ❌ Kapalı | ✅ Açık | ✅ **%100 Ücretsiz (MIT Lisansı)** |
+
+---
+
+<div align="center">
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fkerem-brk%2Fsnapmark)
+
+*Tek tıkla kendi Vercel hesabınıza kurun, ömür boyu 0 TL ile canlıda kullanın.*
+
+</div>
 
 ---
 
 ## 📑 İçindekiler / Table of Contents
 - [🇹🇷 Türkçe Kılavuz](#-türkçe-kılavuz)
   - [Öne Çıkan Özellikler](#-öne-çıkan-özellikler)
-  - [Klavye Kısayolları](#-klavye-kısayolları)
-  - [Kurulum ve Çalıştırma](#-kurulum-ve-çalıştırma)
-  - [Ücretsiz Canlıya Alma (0 TL Hosting)](#-ücretsiz-canlıya-alma-0-tl-hosting)
+  - [Klavye Kısayolları](#-klavye-kısayolları--keyboard-shortcuts)
+  - [Kurulum ve Çalıştırma](#-kurulum-ve-yerel-geliştirme)
+  - [0 TL ile Canlıya Alma (Vercel)](#-ücretsiz-canlıya-alma-0-tl-hosting)
   - [Teknoloji Mimarisi](#-teknoloji-mimarisi)
   - [Gizlilik & Güvenlik](#-gizlilik--güvenlik)
 - [🇬🇧 English Guide](#-english-guide)
-  - [Key Features](#-key-features)
-  - [Keyboard Shortcuts](#-keyboard-shortcuts)
-  - [Getting Started](#-getting-started)
-  - [Free 0$ Cloud Deployment](#-free-0-cloud-deployment)
-  - [Tech Stack & Architecture](#-tech-stack--architecture)
+  - [Key Highlights](#-key-highlights)
+  - [Keyboard Shortcuts](#-klavye-kısayolları--keyboard-shortcuts)
+  - [Getting Started](#-getting-started--local-development)
+  - [Free 0$ Cloud Deployment](#-free-0-cloud-deployment-vercel)
+  - [Architecture & Tech Stack](#-architecture--tech-stack)
   - [Privacy & Security](#-privacy--security)
 
 ---
@@ -33,69 +85,71 @@
 
 ## 🌟 Öne Çıkan Özellikler
 
-### 1. 🎨 Çoklu İçerik Modları
-* **Kod Modu:** 15+ programlama dili desteği (TypeScript, Rust, Python, Go, C#, CSS, SQL vb.), sözdizimi renklendirmesi ve çoklu dosya sekmeleri.
-* **Diff (Karşılaştırma) Modu:** Kod değişikliklerini önce / sonra (yeşil `+` / kırmızı `-`) formatında profesyonelce sergileme.
-* **Tweet / Sosyal Kart Modu:** Yazar adı, kullanıcı adı, profil fotoğrafı ve onaylı rozetiyle estetik tweet kartları.
-* **Alıntı & Markdown Modu:** Düşünce, ilham verici alıntılar ve zengin tipografi afişleri.
-* **Terminal (CLI) Modu:** `developer@snapmark:~`, `npm run build`, `docker up` gibi gerçekçi konsol çıktıları.
+### 1. 🎨 5 Farklı İçerik Modu
+* **💻 Kod Modu:** 15+ popüler yazılım dili (TypeScript, Rust, Python, Go, C#, CSS, SQL, Docker, HTML vb.), PrismJS sözdizimi renklendirmesi, satır numaraları ve çoklu dosya sekmeleri.
+* **⚡ Diff Karşılaştırma Modu:** Kod değişikliklerini önce / sonra formatında, yeşil ekleme (`+`) ve kırmızı silme (`-`) bloklarıyla LinkedIn ve Twitter'a uygun formatta sergileme.
+* **🐦 Tweet / Sosyal Kart Modu:** Yazar adı, kullanıcı adı (`@handle`), onaylı profil rozeti ve etkileşim sayaçlarıyla gerçekçi sosyal medya vitrin kartları.
+* **💬 Alıntı & Markdown Modu:** İlham verici düşünceler, mimari prensipler ve veciz sözler için zarif tipografik afişler.
+* **🖥️ Terminal (CLI) Modu:** `developer@snapmark:~$`, `npm run build`, `docker compose up` gibi gerçekçi konsol oturumları ve komut çıktıları.
 
-### 2. 🎞️ Animasyon & Video (WebM)
-* **Canlı WebM Video Kaydı:** Daktilo (typewriter) efektini ve dalgalı degrade arka planları istemci tarafında doğrudan 25 FPS video olarak kaydetme ve indirme.
-* **Hareketli Gradient Dalgaları (Animated Mesh):** GPU hızlandırmalı keyframe animasyonu ve hız kontrolü (Yavaş, Normal, Hızlı).
+### 2. 🎞️ Animasyon & 25 FPS Canlı WebM Video Kaydı
+* **Daktilo (Typewriter) Animasyonu:** Kodların ve metinlerin harf harf canlı yazılmasını ekranda oynatma ve tek tıkla **25 FPS WebM videosu** olarak indirme.
+* **Hareketli Gradient Dalgaları (Animated Mesh):** GPU hızlandırmalı CSS gradient wave animasyonu ve hız seçimi (Yavaş, Dengeli, Hızlı).
 
 ### 3. 📐 Sosyal Medya Hazır Tuval Boyutları
 * **Twitter / X Gönderisi:** 1200 × 675 (16:9)
 * **Instagram Story:** 1080 × 1920 (9:16)
-* **Instagram Kare:** 1080 × 1080 (1:1)
+* **Instagram Kare (Post):** 1080 × 1080 (1:1)
 * **LinkedIn Banner:** 1584 × 396
-* **YouTube Thumbnail:** 1280 × 720
-* **Özel En-Boy Oranı:** Serbest genişlik ve yükseklik ayarı.
+* **YouTube Thumbnail:** 1280 × 720 (16:9)
+* **Serbest Boyut (Auto):** İçeriğin uzunluğuna göre kendini kusursuz ayarlayan otomatik tuval.
 
-### 4. 🎛️ Carousel & Slayt Yöneticisi
-* Çoklu slayt desteği ve HTML5 Drag & Drop ile fareyle sürükleyip bırakarak sıralama.
-* Tüm slaytları tek tıkla toplu ZIP arşivi olarak indirme.
+### 4. 🎛️ Carousel & Slayt Stüdyosu
+* LinkedIn kaydırmalı (swipe) PDF/görsel gönderileri ve Instagram çoklu postları için slayt yönetimi.
+* HTML5 Drag & Drop ile slaytları fareyle tutup sürükleyerek sıralama.
+* Tüm slaytları tek tıkla toplu **ZIP arşivi** olarak indirme.
 
-### 5. 💎 Profesyonel İnce Ayarlar & Efektler
-* **Sade İlk Açılış:** Varsayılan olarak tertemiz, minimal bir tuval; dilediğinizde efektleri tek tıkla aktif edebilirsiniz.
-* **3D Eğim (Tilt) & Perspektif:** İnce gölge derinliğiyle kartı tuvalde 3 boyutlu eğme.
-* **Degrade Kenarlık (Gradient Border):** İki renkli neon çerçeve çizgisi ve kalınlık ayarı.
-* **Organik Doku (Grain Texture):** Analog film kumlanma katmanı.
-* **Dinamik QR Kod Rozeti:** Kartın köşesine canlı taranabilir QR kod iliştirme.
+### 5. 💎 Üst Düzey Görsel İnce Ayarlar
+* **Sade İlk Açılış:** Varsayılan olarak tertemiz, dikkati dağıtmayan minimal tuval.
+* **3D Perspektif (Tilt):** İzometrik açılar ve derin gölgelerle kartı tuvalde 3 boyutlu eğme.
+* **Degrade Kenarlık (Gradient Border):** Çift renkli neon çerçeve çizgisi ve ayarlanabilir kalınlık.
+* **Organik Film Kumlanması (Grain Texture):** Analog film kumu estetiği katmanı.
+* **Canlı QR Kod:** Kartın köşesine dilediğiniz bağlantıyı taranabilir QR rozet olarak iliştirme.
 * **Özel Marka Logosu & Filigran:** Kendi logonuzu yükleyip opaklık ve köşe konumu belirleme.
-* **Pencere Başlık Stilleri:** macOS, Windows 11, Terminal ve Safari çerçeveleri.
+* **Pencere Başlık Stilleri:** macOS pencereleri, Windows 11 kontrolleri, Terminal ve Safari adres çubuğu.
 
-### 6. ⚡ Hızlı Kullanım, Kısayollar ve Çoklu Dil
-* **Çift Dilli Arayüz (TR / EN):** Üst çubuktaki dil düğmesiyle tek tıkla Türkçe veya İngilizceye geçiş.
-* **Komut Paleti (`Ctrl + K`):** Tüm modlara, temalara, dışa aktarmaya ve formatlara klavyeden anında erişim.
-* **Tam Ekran Sunum Modu (`F11`):** Dikkat dağıtıcı menüler olmadan slaytları tam ekran gezme ve sunma.
-* **Sosyal Akış Simülasyonu:** Kartın Twitter, LinkedIn ve Instagram feedlerinde nasıl görüneceğini canlı inceleme.
-* **PWA Masaüstü & Mobil:** Tarayıcıdan bağımsız, masaüstüne ya da telefona tek tıkla uygulama olarak kurabilme.
-
----
-
-## ⌨️ Klavye Kısayolları
-
-| Kısayol | İşlev |
-| :--- | :--- |
-| `Ctrl + S` | Yüksek Çözünürlüklü PNG İndir |
-| `Ctrl + Shift + C` | Görseli Doğrudan Panoya Kopyala |
-| `Ctrl + K` | Komut Paletini Aç |
-| `F11` | Tam Ekran Sunum Modu |
-| `Ctrl + Z` / `Ctrl + Y` | Geri Al (Undo) / İleri Al (Redo) |
-| `Ctrl + 1..5` | Modlar Arası Hızlı Geçiş (Kod, Diff, Alıntı, Tweet, Terminal) |
-| `Ctrl + Alt + ← / →` | Carousel Slaytları Arasında Gezinti |
-| `?` | Kısayollar Yardım Penceresi |
+### 6. ⚡ Verimlilik, Klavye Kısayolları ve Çoklu Dil
+* **Çift Dilli Arayüz (TR / EN):** Sağ üst köşedeki dil seçiciyle tüm arayüzü anında Türkçe veya İngilizce yapma.
+* **Komut Paleti (`Ctrl + K`):** Tüm modlara, temalara, dışa aktarma işlemlerine klavyeden arama yaparak anında erişim.
+* **Tam Ekran Sunum Modu (`F11`):** Tüm panelleri gizleyip slaytları tam ekranda konferans sunumu gibi gezme.
+* **Sosyal Akış Simülasyonu:** Paylaşmadan önce kartın Twitter, LinkedIn ve Instagram akışlarında nasıl görüneceğini canlı test etme.
+* **PWA Desteği:** Masaüstü bilgisayarınıza veya telefonunuza bağımsız bir yerel uygulama olarak kurabilme.
 
 ---
 
-## 🚀 Kurulum ve Çalıştırma
+## ⌨️ Klavye Kısayolları / Keyboard Shortcuts
+
+| Kısayol | İşlev (TR) | Action (EN) |
+| :--- | :--- | :--- |
+| `Ctrl + S` | Yüksek Çözünürlüklü PNG İndir | Download High-Res PNG |
+| `Ctrl + Shift + C` | Görseli Doğrudan Panoya Kopyala | Copy Image to Clipboard |
+| `Ctrl + K` | Komut Paletini Aç | Open Command Palette |
+| `F11` | Tam Ekran Sunum Modu | Full-Screen Presentation Mode |
+| `Ctrl + Z` / `Ctrl + Y` | Geri Al (Undo) / İleri Al (Redo) | Undo / Redo |
+| `Ctrl + 1..5` | Modlar Arası Hızlı Geçiş (Kod, Diff, vb.) | Quick Switch Modes (Code, Diff, etc.) |
+| `Ctrl + Alt + ← / →` | Carousel Slaytları Arasında Gezinti | Navigate Carousel Slides |
+| `?` | Kısayollar Yardım Penceresi | Open Shortcuts Cheatsheet |
+
+---
+
+## 🚀 Kurulum ve Yerel Geliştirme
 
 Gereksinimler: **Node.js 18+** ve **npm**
 
 ```bash
-# 1. Proje dizinine gidin
-cd 01-SnapMark
+# 1. Depoyu klonlayın
+git clone https://github.com/kerem-brk/snapmark.git
+cd snapmark
 
 # 2. Bağımlılıkları yükleyin
 npm install
@@ -104,10 +158,11 @@ npm install
 npm run dev
 
 # 4. Tarayıcınızda açın:
-# http://localhost:3000
+# Stüdyo Editörü: http://localhost:3000
+# Vitrin (Landing Page): http://localhost:3000/landing
 ```
 
-### Canlı Üretim Derlemesi (Production Build)
+### Üretim Derlemesi (Production Build)
 
 ```bash
 npm run build
@@ -118,105 +173,91 @@ npm start
 
 ## 🌐 Ücretsiz Canlıya Alma (0 TL Hosting)
 
-SnapMark tamamen istemci taraflı (client-side) çalıştığı için Vercel veya Netlify üzerinde **0 TL maliyetle ve ömür boyu ücretsiz** yayınlanabilir:
+SnapMark tamamen istemci tarafında çalıştığı için **Vercel** üzerinde **0 TL maliyetle ve ömür boyu ücretsiz** yayınlanabilir:
 
-1. Projeyi GitHub hesabınıza yükleyin (`git push origin master`).
-2. [Vercel.com](https://vercel.com) adresine ücretsiz GitHub hesabınızla giriş yapın.
-3. **"Add New Project"** butonuna tıklayıp deponuzu seçin.
-4. Framework olarak **Next.js** otomatik algılanır; **Deploy** butonuna basın.
-5. 60 saniye içinde `https://snapmark-senin-adin.vercel.app` şeklinde ücretsiz HTTPS adresiniz hazır!
+1. Projeyi GitHub hesabınıza yükleyin (`git push origin main`).
+2. [Vercel.com](https://vercel.com) adresine GitHub hesabınızla giriş yapın.
+3. **"Add New..." ➔ "Project"** butonuna tıklayın ve `snapmark` deposunu seçip **"Import"** deyin.
+4. Framework olarak **Next.js** otomatik algılanır; doğrudan **"Deploy"** butonuna basın.
+5. 60 saniye içinde `https://snapmark-senin-adin.vercel.app` adresiniz dünya çapında yayında!
 
 ---
 
 ## 🛠️ Teknoloji Mimarisi
 
-* **Framework:** Next.js 15 (App Router, Client & Server Components)
-* **Dil:** TypeScript (Strict Type Safety)
-* **Stil:** Tailwind CSS
-* **İkon Seti:** Lucide React
-* **Sözdizimi:** PrismJS
-* **Tuval İşleyici:** `html-to-image`
-* **Arşivleme:** JSZip
-* **QR Kod:** `qrcode`
-* **Video Kaydedici:** MediaStream & MediaRecorder API
+* **Framework:** [Next.js 15](https://nextjs.org/) (App Router, React 19)
+* **Dil:** [TypeScript 5.8](https://www.typescriptlang.org/) (Strict Type Safety)
+* **Stil:** [Tailwind CSS 3.4](https://tailwindcss.com/)
+* **İkonlar:** [Lucide React](https://lucide.dev/)
+* **Sözdizimi Renklendirme:** [PrismJS](https://prismjs.com/)
+* **Görsel Tuval Çıktısı:** `html-to-image`
+* **Arşivleme:** `jszip`
+* **QR Kod Motoru:** `qrcode`
+* **Video Kaydedici:** Web MediaStream & `MediaRecorder` API
 
 ---
 
 ## 🔒 Gizlilik & Güvenlik
 
-* **%100 İstemci Taraflı (Client-Side):** Yazdığınız kodlar, özel API anahtarları, tweetler veya yüklediğiniz marka logoları **asla harici bir sunucuya gönderilmez**. Tüm işleme ve dışa aktarma doğrudan tarayıcınızın kendi yerel belleğinde gerçekleşir.
+* **%100 İstemci Taraflı (Client-Side):** Yazdığınız kodlar, özel token'lar, şifreler, tweet'ler veya yüklediğiniz marka logoları **asla harici bir sunucuya gitmez**. Her şey tamamen tarayıcınızın kendi güvenli yerel belleğinde işlenir.
 
 ---
 ---
 
 # 🇬🇧 English Guide
 
-## 🌟 Key Features
+## 🌟 Key Highlights
 
-### 1. 🎨 Multi-Content Modes
-* **Code Mode:** 15+ language syntax highlighting (TypeScript, Rust, Python, Go, C#, CSS, SQL, etc.) with multi-file tabs.
-* **Diff Mode:** Side-by-side or unified code changes with green additions (`+`) and red deletions (`-`).
-* **Tweet / Social Card Mode:** Showcase tweets with verified badge, author name, handle, and avatar.
-* **Quote & Markdown Mode:** Turn memorable thoughts, quotes, or markdown notes into high-impact typography posters.
-* **Terminal (CLI) Mode:** Realistic developer terminal sessions (`developer@snapmark:~`, `git commit`, `docker compose up`).
+### 1. 🎨 5 Flexible Content Modes
+* **💻 Code Mode:** 15+ languages supported (TypeScript, Rust, Python, Go, C#, CSS, SQL, Docker, HTML, etc.) with PrismJS syntax highlighting and multi-file tabs.
+* **⚡ Diff Mode:** Showcase before/after code changes with red deletions (`-`) and green additions (`+`). Perfect for LinkedIn carousels and Twitter tips.
+* **🐦 Tweet / Social Card Mode:** Realistic social cards with verified author badge, custom avatar, handle, and engagement metrics.
+* **💬 Quote & Markdown Mode:** Turn architectural aphorisms, book quotes, or thoughts into refined typographic posters.
+* **🖥️ Terminal (CLI) Mode:** Authentic developer shell sessions (`developer@snapmark:~$`, `npm run build`, `docker compose up`).
 
-### 2. 🎞️ Animation & Video Recording (WebM)
-* **Client-Side Video Export:** Record typewriter animation and moving gradient backdrops into high-quality 25 FPS WebM videos without server roundtrips.
-* **Animated Mesh Gradients:** GPU-accelerated gradient wave animations with customizable speed levels (Slow, Normal, Fast).
+### 2. 🎞️ Live Animation & 25 FPS WebM Video Recording
+* **Typewriter Animation:** Render typewriter animations in real-time and export directly as high-frame-rate **25 FPS WebM video files**.
+* **Animated Mesh Gradients:** GPU-accelerated CSS gradient wave backdrops with adjustable speeds (Slow, Balanced, Fast).
 
-### 3. 📐 Preset Canvas Aspect Ratios
+### 3. 📐 Preset Social Media Canvas Sizes
 * **Twitter / X Post:** 1200 × 675 (16:9)
 * **Instagram Story:** 1080 × 1920 (9:16)
 * **Instagram Square:** 1080 × 1080 (1:1)
 * **LinkedIn Banner:** 1584 × 396
-* **YouTube Thumbnail:** 1280 × 720
-* **Custom Aspect Ratio:** Freely adjustable width and height.
+* **YouTube Thumbnail:** 1280 × 720 (16:9)
+* **Auto Dynamic:** Fits card content snugly without awkward whitespace.
 
 ### 4. 🎛️ Carousel & Slide Studio
 * Build multi-slide carousels for LinkedIn and Instagram swipe posts.
-* Reorder slides via intuitive HTML5 drag-and-drop.
-* Export all slides at once into a packaged ZIP archive.
+* Reorder slides easily with HTML5 drag-and-drop.
+* Export all slides at once into a structured **ZIP archive**.
 
-### 5. 💎 Fine-Tuned Aesthetics & Effects
-* **Minimal Clean Default:** Starts with a clean, distraction-free canvas out of the box so you can customize it to your taste.
-* **3D Perspective Tilt:** Apply isometric tilt and shadow depth.
-* **Gradient Border:** Dual-color neon gradient borders with adjustable stroke thickness.
-* **Grain Texture Overlay:** Authentic analog film grain effect.
-* **Dynamic QR Code:** Stamp a scannable QR badge directly onto your card corners.
-* **Brand Logo & Watermark:** Upload your custom brand watermark, select opacity and placement.
-* **Window Chrome Styles:** macOS dots, Windows 11 controls, Terminal header, and Safari bar.
+### 5. 💎 Advanced Visual Controls
+* **Clean Default Canvas:** Zero distractions upon launch; enable effects whenever needed.
+* **3D Perspective Tilt:** Apply isometric pitch, yaw, roll and shadow depth.
+* **Gradient Border:** Dual-color neon gradient borders with customizable stroke thickness.
+* **Film Grain Overlay:** Authentic analog texture.
+* **Dynamic QR Code:** Stamp a scannable QR badge onto your card.
+* **Custom Brand Logo & Watermark:** Upload your brand badge, customize opacity and corner placement.
+* **Window Chrome Styles:** macOS dots, Windows 11 controls, Terminal header, and Safari address bar.
 
-### 6. ⚡ Productive Shortcuts, Command Palette & i18n
-* **Bilingual UI (TR / EN):** One-click toggle in the header to switch between Turkish and English.
-* **Command Palette (`Ctrl + K`):** Instantly search and execute any command, switch themes, and export.
-* **Full-Screen Presenter (`F11`):** Showcase slides in full-screen mode without UI chrome.
-* **Social Feed Simulation:** Preview your card in realistic Twitter, LinkedIn, and Instagram feeds before posting.
-* **PWA (Progressive Web App):** Install directly to your desktop or mobile home screen.
-
----
-
-## ⌨️ Keyboard Shortcuts
-
-| Shortcut | Action |
-| :--- | :--- |
-| `Ctrl + S` | Download High-Resolution PNG |
-| `Ctrl + Shift + C` | Copy Image Directly to Clipboard |
-| `Ctrl + K` | Open Command Palette |
-| `F11` | Toggle Full-Screen Presentation Mode |
-| `Ctrl + Z` / `Ctrl + Y` | Undo / Redo |
-| `Ctrl + 1..5` | Quick Switch Modes (Code, Diff, Quote, Tweet, Terminal) |
-| `Ctrl + Alt + ← / →` | Navigate Carousel Slides |
-| `?` | Keyboard Shortcuts Cheatsheet |
+### 6. ⚡ Power User Tools & i18n
+* **Bilingual UI (TR / EN):** One-click toggle in the top-right header to switch languages.
+* **Command Palette (`Ctrl + K`):** Quick-action launcher for themes, modes, and exports.
+* **Full-Screen Presenter (`F11`):** Distraction-free presentation view for meetups and workshops.
+* **Social Feed Simulation:** Preview cards in real Twitter, LinkedIn, and Instagram feeds before posting.
+* **PWA Ready:** Install directly to your desktop or mobile home screen.
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Getting Started & Local Development
 
 Requirements: **Node.js 18+** and **npm**
 
 ```bash
-# 1. Clone or navigate to the project directory
-cd 01-SnapMark
+# 1. Clone the repository
+git clone https://github.com/kerem-brk/snapmark.git
+cd snapmark
 
 # 2. Install dependencies
 npm install
@@ -225,7 +266,8 @@ npm install
 npm run dev
 
 # 4. Open in your browser:
-# http://localhost:3000
+# Studio Editor: http://localhost:3000
+# Showcase Landing: http://localhost:3000/landing
 ```
 
 ### Production Build
@@ -237,38 +279,50 @@ npm start
 
 ---
 
-## 🌐 Free 0$ Cloud Deployment
+## 🌐 Free 0$ Cloud Deployment (Vercel)
 
-Because SnapMark runs 100% on the client side, you can host it forever for **free ($0/month)** on Vercel or Netlify:
+Because SnapMark runs 100% client-side, you can host it forever for **free ($0/month)** on Vercel:
 
-1. Push your code to GitHub (`git push origin master`).
-2. Log in to [Vercel.com](https://vercel.com) with your GitHub account.
-3. Click **"Add New Project"** and import your SnapMark repository.
-4. Next.js preset will be automatically detected. Click **Deploy**.
-5. Your production HTTPS site is live in under a minute!
+1. Push your code to GitHub (`git push origin main`).
+2. Sign in to [Vercel.com](https://vercel.com) using your GitHub account.
+3. Click **"Add New..." ➔ "Project"**, select the `snapmark` repo, and click **"Import"**.
+4. Next.js preset is automatically configured. Click **"Deploy"**.
+5. Your production HTTPS URL is live across global CDNs in under 60 seconds!
 
 ---
 
-## 🛠️ Tech Stack & Architecture
+## 🛠️ Architecture & Tech Stack
 
-* **Framework:** Next.js 15 (App Router, Client & Server Components)
-* **Language:** TypeScript (Strict Type Safety)
-* **Styling:** Tailwind CSS
-* **Iconography:** Lucide React
-* **Syntax Engine:** PrismJS
-* **Canvas Renderer:** `html-to-image`
-* **Compression:** JSZip
-* **QR Generation:** `qrcode`
-* **Video Encoding:** MediaStream & MediaRecorder API
+* **Framework:** [Next.js 15](https://nextjs.org/) (App Router, React 19)
+* **Language:** [TypeScript 5.8](https://www.typescriptlang.org/) (Strict Type Safety)
+* **Styling:** [Tailwind CSS 3.4](https://tailwindcss.com/)
+* **Icons:** [Lucide React](https://lucide.dev/)
+* **Syntax Engine:** [PrismJS](https://prismjs.com/)
+* **Canvas Exporter:** `html-to-image`
+* **Compression:** `jszip`
+* **QR Engine:** `qrcode`
+* **Video Encoding:** Web MediaStream & `MediaRecorder` API
 
 ---
 
 ## 🔒 Privacy & Security
 
-* **100% Client-Side:** Your source code snippets, secrets, tweets, and uploaded brand assets **never touch any external server**. All rendering and export happens locally in your browser memory.
+* **100% Client-Side:** Your code snippets, secrets, tweets, and uploaded brand assets **never leave your device**. All computation and image rendering takes place locally in your browser memory.
 
 ---
 
-## 📄 License
+## 🤝 Katkıda Bulunma / Contributing
 
-MIT © [Kerem Birçek](https://github.com/kerembircek)
+1. Depoyu forklayın (`Fork`).
+2. Yeni bir özellik dalı açın (`git checkout -b feature/harika-ozellik`).
+3. Değişikliklerinizi commit edin (`git commit -m 'feat: harika ozellik ekle'`).
+4. Dalınıza push yapın (`git push origin feature/harika-ozellik`).
+5. Bir **Pull Request** açın!
+
+---
+
+## 📄 Lisans / License
+
+Bu proje **MIT Lisansı** altında lisanslanmıştır. Ayrıntılar için [LICENSE](LICENSE) dosyasına göz atabilirsiniz.
+
+Crafted with passion by [Kerem Birçek](https://github.com/kerem-brk) 🚀
