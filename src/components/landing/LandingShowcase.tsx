@@ -145,7 +145,7 @@ export const LandingShowcase: React.FC = () => {
 
           <div className="pt-2">
             <Link
-              href="/"
+              href="/studio"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs sm:text-sm font-semibold shadow-lg shadow-indigo-600/30 transition-all cursor-pointer group"
             >
               <span>Bu Modu Stüdyoda Aç</span>

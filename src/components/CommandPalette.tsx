@@ -251,7 +251,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
         description: isEn ? "Explore SnapMark features and interactive showcase" : "SnapMark özelliklerini ve örnek vitrinini incele",
         icon: <Sparkles className="w-4 h-4 text-emerald-400" />,
         action: () => {
-          window.location.href = "/landing";
+          window.location.href = "/";
           onClose();
         },
       },

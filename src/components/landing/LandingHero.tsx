@@ -36,7 +36,7 @@ export const LandingHero: React.FC = () => {
       {/* Call to Actions */}
       <div className="flex flex-col sm:flex-row items-center gap-3.5 mb-16 w-full sm:w-auto">
         <Link
-          href="/"
+          href="/studio"
           className="w-full sm:w-auto flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm shadow-xl shadow-indigo-600/30 hover:shadow-indigo-500/40 hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer group"
         >
           <span>Stüdyoyu Başlat</span>

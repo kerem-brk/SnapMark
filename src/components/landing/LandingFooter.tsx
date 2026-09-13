@@ -34,7 +34,7 @@ export const LandingFooter: React.FC = () => {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
-              href="/"
+              href="/studio"
               className="w-full sm:w-auto flex items-center justify-center gap-2.5 px-8 py-4 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm shadow-xl shadow-indigo-600/30 hover:shadow-indigo-500/40 hover:-translate-y-0.5 transition-all cursor-pointer group"
             >
               <span>Stüdyoyu Başlat (Ücretsiz)</span>
@@ -65,7 +65,7 @@ export const LandingFooter: React.FC = () => {
 
         {/* Navigation Links */}
         <div className="flex items-center gap-6 text-xs font-medium text-slate-400">
-          <Link href="/" className="hover:text-white transition-colors">
+          <Link href="/studio" className="hover:text-white transition-colors">
             Stüdyo
           </Link>
           <a href="#showcase" className="hover:text-white transition-colors">

@@ -200,14 +200,19 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           )}
 
-          <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-pink-500 via-purple-600 to-indigo-500 flex items-center justify-center font-black text-white shadow-lg shadow-pink-500/20 shrink-0">
-            <Sparkles className="w-4 h-4 text-white" />
-          </div>
+          <Link
+            href="/"
+            title={isEn ? "Go to Home / Showcase" : "Ana Sayfa & Vitrin"}
+            className="flex items-center gap-2 group cursor-pointer hover:opacity-90 transition-opacity"
+          >
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-pink-500 via-purple-600 to-indigo-500 flex items-center justify-center font-black text-white shadow-lg shadow-pink-500/20 shrink-0 group-hover:scale-105 transition-transform">
+              <Sparkles className="w-4 h-4 text-white" />
+            </div>
 
-          {/* Sadece SnapMark başlığı - Vitrin rozeti silindi! */}
-          <div className="flex items-center">
-            <h1 className="font-bold text-base tracking-tight text-white shrink-0">SnapMark</h1>
-          </div>
+            <div className="flex items-center">
+              <h1 className="font-bold text-base tracking-tight text-white shrink-0">SnapMark</h1>
+            </div>
+          </Link>
         </div>
 
         {/* Orta Grup: Temiz Hızlı Araçlar (Geri/İleri Al, Komut Paleti, Sunum) */}
@@ -426,7 +431,7 @@ export const Header: React.FC<HeaderProps> = ({
                 )}
 
                 <Link
-                  href="/landing"
+                  href="/"
                   onClick={() => setIsToolsMenuOpen(false)}
                   className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-slate-200 hover:bg-slate-800 transition-colors text-left"
                 >

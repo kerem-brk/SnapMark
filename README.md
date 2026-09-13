@@ -6,8 +6,8 @@
 
 <br />
 
-[![Live Demo](https://img.shields.io/badge/🌐_Canlı_Demo-SnapMark_Online-indigo?style=for-the-badge&logo=vercel&logoColor=white)](https://snapmark.vercel.app)
-[![Showcase](https://img.shields.io/badge/✨_Vitrin-Landing_Page-pink?style=for-the-badge)](https://snapmark.vercel.app/landing)
+[![Live Demo](https://img.shields.io/badge/🌐_Canlı_Site-SnapMark_Online-indigo?style=for-the-badge&logo=vercel&logoColor=white)](https://snapmark-app.vercel.app)
+[![Studio](https://img.shields.io/badge/🎨_Stüdyo_Editör-4K_Studio-purple?style=for-the-badge)](https://snapmark-app.vercel.app/studio)
 [![GitHub Stars](https://img.shields.io/github/stars/kerem-brk/snapmark?style=for-the-badge&color=ffd700)](https://github.com/kerem-brk/snapmark)
 
 <br />
@@ -26,7 +26,7 @@
   <b>[EN]</b> Beyond Ray.so and Carbon: A modern visual suite that transforms code snippets, Markdown notes, social quotes, and terminal sessions into crisp 4K screenshots and animated WebM videos with one click.
 </p>
 
-[🚀 Canlı Deneyin / Try Live](https://snapmark.vercel.app) • [✨ Vitrin / Showcase](https://snapmark.vercel.app/landing) • [🇹🇷 Türkçe Kılavuz](#-türkçe-kılavuz) • [🇬🇧 English Guide](#-english-guide) • [⌨️ Kısayollar](#-klavye-kısayolları--keyboard-shortcuts)
+[🌐 Canlı Site (Ana Sayfa)](https://snapmark-app.vercel.app) • [🎨 Stüdyo Editör](https://snapmark-app.vercel.app/studio) • [🇹🇷 Türkçe Kılavuz](#-türkçe-kılavuz) • [🇬🇧 English Guide](#-english-guide) • [⌨️ Kısayollar](#-klavye-kısayolları--keyboard-shortcuts)
 
 </div>
 
@@ -158,8 +158,8 @@ npm install
 npm run dev
 
 # 4. Tarayıcınızda açın:
-# Stüdyo Editörü: http://localhost:3000
-# Vitrin (Landing Page): http://localhost:3000/landing
+# Ana Sayfa (Vitrin): http://localhost:3000
+# Stüdyo Editörü: http://localhost:3000/studio
 ```
 
 ### Üretim Derlemesi (Production Build)
@@ -266,8 +266,8 @@ npm install
 npm run dev
 
 # 4. Open in your browser:
-# Studio Editor: http://localhost:3000
-# Showcase Landing: http://localhost:3000/landing
+# Showcase Landing (Home): http://localhost:3000
+# Studio Editor: http://localhost:3000/studio
 ```
 
 ### Production Build

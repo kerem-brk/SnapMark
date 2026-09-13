@@ -11,7 +11,7 @@ export const LandingNavbar: React.FC = () => {
     <header className="sticky top-0 z-50 backdrop-blur-xl bg-slate-950/70 border-b border-slate-800/60">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Brand */}
-        <Link href="/landing" className="flex items-center gap-2.5 group cursor-pointer">
+        <Link href="/" className="flex items-center gap-2.5 group cursor-pointer">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center text-white shadow-md shadow-indigo-600/30 group-hover:scale-105 transition-transform">
             <Code2 className="w-5 h-5" />
           </div>
@@ -42,7 +42,7 @@ export const LandingNavbar: React.FC = () => {
         {/* Right CTA */}
         <div className="hidden sm:flex items-center gap-3">
           <Link
-            href="/"
+            href="/studio"
             className="flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs shadow-md shadow-indigo-600/30 hover:shadow-indigo-500/40 hover:-translate-y-0.5 transition-all cursor-pointer group"
           >
             <span>Stüdyoyu Aç</span>
@@ -53,7 +53,7 @@ export const LandingNavbar: React.FC = () => {
         {/* Mobile Hamburger Button */}
         <div className="md:hidden flex items-center gap-2">
           <Link
-            href="/"
+            href="/studio"
             className="px-3 py-1.5 rounded-lg bg-indigo-600 text-white font-semibold text-xs"
           >
             Stüdyo
@@ -94,7 +94,7 @@ export const LandingNavbar: React.FC = () => {
           </a>
           <div className="pt-2 border-t border-slate-800">
             <Link
-              href="/"
+              href="/studio"
               onClick={() => setMobileMenuOpen(false)}
               className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-indigo-600 text-white font-semibold text-xs"
             >
