@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="tr" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SnapMark — Pro Developer Code & Markdown Studio</title>
+  <!-- Google Fonts: JetBrains Mono + IBM Plex Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS -->
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            background: '#0F172A',
+            primary: '#1E293B',
+            secondary: '#334155',
+            accent: '#22C55E',
+            'on-accent': '#0F172A',
+            card: '#1B2336',
+            muted: '#272F42',
+            'muted-foreground': '#94A3B8',
+            foreground: '#F8FAFC',
+            border: '#475569',
+            destructive: '#EF4444',
+          },
+          fontFamily: {
+            mono: ['"JetBrains Mono"', 'monospace'],
+            sans: ['"IBM Plex Sans"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #0F172A;
+      color: #F8FAFC;
+      font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      margin: 0;
+      overflow-x: hidden;
+    }
+    .font-code {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0F172A;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+    /* Syntax Highlighting Tokens */
+    .token-keyword { color: #C084FC; font-weight: 600; }
+    .token-function { color: #60A5FA; }
+    .token-string { color: #34D399; }
+    .token-comment { color: #64748B; font-style: italic; }
+    .token-number { color: #F59E0B; }
+    .token-type { color: #FBBF24; font-weight: 500; }
+    .token-punctuation { color: #94A3B8; }
+    .token-variable { color: #F8FAFC; }
+    
+    /* Code Editor Container */
+    .editor-wrapper {
+      position: relative;
+      min-height: 240px;
+    }
+    .code-textarea, .code-highlight {
+      margin: 0;
+      padding: 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      line-height: 1.65;
+      tab-size: 2;
+      white-space: pre;
+      word-wrap: normal;
+      overflow-x: auto;
+    }
+    .code-textarea {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      color: transparent;
+      caret-color: #22C55E;
+      resize: none;
+      border: none;
+      outline: none;
+      z-index: 2;
+    }
+    .code-highlight {
+      position: relative;
+      z-index: 1;
+      pointer-events: none;
+    }
+    /* Shadows */
+    .shadow-soft {
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+    }
+    .shadow-medium {
+      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.65);
+    }
+    .shadow-hard {
+      box-shadow: 0 35px 60px -15px rgba(0, 0, 0, 0.85), 0 0 1px 1px rgba(255, 255, 255, 0.1);
+    }
+  </style>
+</head>
+<body class="bg-[#0F172A] text-slate-100 min-h-screen flex flex-col selection:bg-emerald-500/30 selection:text-emerald-300">
+
+  <!-- ================= TOP ACTION BAR ================= -->
+  <header class="sticky top-0 z-40 bg-[#1E293B]/90 backdrop-blur-md border-b border-slate-700/80 px-4 lg:px-6 py-3 flex items-center justify-between gap-4">
+    <!-- Brand Logo -->
+    <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-lg bg-slate-900 border border-slate-700 flex items-center justify-center shadow-inner">
+          <svg class="w-4 h-4 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
+            <circle cx="12" cy="13" r="3"/>
+          </svg>
+        </div>
+        <span class="font-code font-bold text-lg tracking-tight text-white flex items-center gap-1.5">
+          SnapMark
+          <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+            PRO 4K
+          </span>
+        </span>
+      </div>
+      <div class="hidden sm:flex items-center gap-1.5 pl-3 border-l border-slate-700 text-xs text-slate-400">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span class="font-mono">Retina Engine Ready</span>
+      </div>
+    </div>
+
+    <!-- Center Format & Aspect Ratio Controls -->
+    <div class="hidden md:flex items-center gap-3">
+      <!-- Mode Switcher -->
+      <div class="bg-slate-900/80 p-1 rounded-lg border border-slate-700/80 flex items-center gap-1 text-xs">
+        <button id="mode-code" class="px-2.5 py-1 rounded font-medium bg-emerald-500 text-slate-950 shadow-sm transition">Kod</button>
+        <button id="mode-diff" class="px-2.5 py-1 rounded font-medium text-slate-400 hover:text-white transition">Diff</button>
+        <button id="mode-quote" class="px-2.5 py-1 rounded font-medium text-slate-400 hover:text-white transition">Alıntı</button>
+        <button id="mode-cli" class="px-2.5 py-1 rounded font-medium text-slate-400 hover:text-white transition">CLI</button>
+      </div>
+
+      <!-- Aspect Ratio Switcher -->
+      <div class="bg-slate-900/80 p-1 rounded-lg border border-slate-700/80 flex items-center gap-1 text-xs" id="aspect-ratio-group">
+        <button data-ratio="auto" class="ratio-btn px-2.5 py-1 rounded font-medium bg-slate-800 text-white border border-slate-600 transition">Auto</button>
+        <button data-ratio="16/9" class="ratio-btn px-2.5 py-1 rounded font-medium text-slate-400 hover:text-white transition">16:9 X</button>
+        <button data-ratio="4/5" class="ratio-btn px-2.5 py-1 rounded font-medium text-slate-400 hover:text-white transition">4:5 In</button>
+        <button data-ratio="1/1" class="ratio-btn px-2.5 py-1 rounded font-medium text-slate-400 hover:text-white transition">1:1 IG</button>
+      </div>
+    </div>
+
+    <!-- Right Actions -->
+    <div class="flex items-center gap-2">
+      <!-- Shortcuts Info Button -->
+      <button id="btn-shortcuts" class="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-800 text-slate-300 border border-slate-700 text-xs font-mono transition" title="Klavye Kısayolları (Ctrl+K)">
+        <span>Kısayollar</span>
+        <kbd class="px-1.5 py-0.5 rounded bg-slate-900 border border-slate-700 text-[10px] text-slate-400">Ctrl+K</kbd>
+      </button>
+
+      <!-- Copy Button -->
+      <button id="btn-copy" class="cursor-pointer flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 text-xs font-medium transition shadow-sm hover:border-slate-500">
+        <svg class="w-3.5 h-3.5 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+          <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+        </svg>
+        <span>Panoya Kopyala</span>
+      </button>
+
+      <!-- Download 4K PNG Button -->
+      <button id="btn-download" class="cursor-pointer flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold text-xs transition shadow-md shadow-emerald-950/30 transform hover:-translate-y-0.5">
+        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" x2="12" y1="15" y2="3"/>
+        </svg>
+        <span>PNG İndir (4K)</span>
+      </button>
+
+      <!-- Download SVG Button -->
+      <button id="btn-svg" class="hidden sm:flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 text-xs transition" title="Vektörel SVG">
+        <span>SVG</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ================= 2-PANEL STUDIO WORKSPACE ================= -->
+  <main class="flex-1 flex flex-col lg:flex-row overflow-hidden">
+    
+    <!-- LEFT CONTROL PANEL -->
+    <aside class="w-full lg:w-80 xl:w-96 bg-[#1E293B]/60 border-b lg:border-b-0 lg:border-r border-slate-800 p-5 overflow-y-auto space-y-6 shrink-0 text-sm">
+      
+      <!-- Panel Header -->
+      <div class="flex items-center justify-between pb-3 border-b border-slate-700/60">
+        <span class="font-code text-xs font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+          <svg class="w-3.5 h-3.5 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="4" x2="20" y1="12" y2="12"/>
+            <line x1="4" x2="20" y1="6" y2="6"/>
+            <line x1="4" x2="20" y1="18" y2="18"/>
+          </svg>
+          Stüdyo Ayarları
+        </span>
+        <button id="btn-reset" class="text-xs text-slate-400 hover:text-emerald-400 font-mono transition">Sıfırla</button>
+      </div>
+
+      <!-- Language Selector -->
+      <div class="space-y-2">
+        <label class="block text-xs font-medium text-slate-300">Yazılım Dili</label>
+        <div class="relative">
+          <select id="select-lang" class="cursor-pointer w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white appearance-none focus:outline-none focus:ring-2 focus:ring-emerald-500 font-code transition">
+            <option value="typescript" selected>TypeScript (.ts)</option>
+            <option value="javascript">JavaScript (.js)</option>
+            <option value="python">Python (.py)</option>
+            <option value="rust">Rust (.rs)</option>
+            <option value="go">Go (.go)</option>
+            <option value="csharp">C# (.NET) (.cs)</option>
+            <option value="css">CSS / Tailwind (.css)</option>
+            <option value="markdown">Markdown (.md)</option>
+            <option value="bash">Bash / Shell (.sh)</option>
+          </select>
+          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-slate-400">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8 Signature Mesh Gradients -->
+      <div class="space-y-2.5">
+        <div class="flex items-center justify-between">
+          <label class="block text-xs font-medium text-slate-300">Mesh Degrade Temaları (8 Özel)</label>
+          <span id="active-theme-name" class="text-[11px] font-mono text-emerald-400">Vercel Dark</span>
+        </div>
+        <div class="grid grid-cols-4 gap-2.5" id="theme-swatches">
+          <!-- Swatches dynamically injected by JS -->
+        </div>
+      </div>
+
+      <!-- Window Style Selector -->
+      <div class="space-y-2">
+        <label class="block text-xs font-medium text-slate-300">Pencere Başlığı Stili</label>
+        <div class="grid grid-cols-3 gap-1.5 bg-slate-900 p-1 rounded-lg border border-slate-700/80 text-xs" id="window-style-group">
+          <button data-style="mac" class="window-style-btn py-1.5 rounded text-center font-medium bg-slate-800 text-white border border-slate-600 transition flex items-center justify-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-red-500"></span> macOS
+          </button>
+          <button data-style="windows" class="window-style-btn py-1.5 rounded text-center font-medium text-slate-400 hover:text-white transition flex items-center justify-center gap-1">
+            <span class="text-[10px]">🪟</span> Win
+          </button>
+          <button data-style="minimal" class="window-style-btn py-1.5 rounded text-center font-medium text-slate-400 hover:text-white transition flex items-center justify-center gap-1">
+            <span>—</span> Minimal
+          </button>
+        </div>
+      </div>
+
+      <!-- Padding Controls -->
+      <div class="space-y-2">
+        <div class="flex items-center justify-between">
+          <label class="text-xs font-medium text-slate-300">Tuval Kenar Boşluğu (Padding)</label>
+          <span id="padding-val-label" class="text-xs font-mono text-emerald-400">48px</span>
+        </div>
+        <div class="flex items-center gap-1 text-xs" id="padding-presets">
+          <button data-pad="16" class="pad-preset-btn flex-1 py-1 rounded bg-slate-900 border border-slate-700 text-slate-400 hover:text-white transition">16</button>
+          <button data-pad="32" class="pad-preset-btn flex-1 py-1 rounded bg-slate-900 border border-slate-700 text-slate-400 hover:text-white transition">32</button>
+          <button data-pad="48" class="pad-preset-btn flex-1 py-1 rounded bg-slate-800 border border-emerald-500/50 text-emerald-400 font-semibold transition">48</button>
+          <button data-pad="64" class="pad-preset-btn flex-1 py-1 rounded bg-slate-900 border border-slate-700 text-slate-400 hover:text-white transition">64</button>
+          <button data-pad="96" class="pad-preset-btn flex-1 py-1 rounded bg-slate-900 border border-slate-700 text-slate-400 hover:text-white transition">96</button>
+        </div>
+        <input type="range" id="padding-slider" min="16" max="112" step="8" value="48" class="w-full accent-emerald-500 bg-slate-900 cursor-pointer">
+      </div>
+
+      <!-- Shadow Intensity -->
+      <div class="space-y-2">
+        <label class="block text-xs font-medium text-slate-300">Gölge Derinliği (Elevation)</label>
+        <div class="grid grid-cols-4 gap-1 bg-slate-900 p-1 rounded-lg border border-slate-700/80 text-xs" id="shadow-group">
+          <button data-shadow="none" class="shadow-btn py-1 rounded text-center text-slate-400 hover:text-white transition">Yok</button>
+          <button data-shadow="soft" class="shadow-btn py-1 rounded text-center text-slate-400 hover:text-white transition">Soft</button>
+          <button data-shadow="medium" class="shadow-btn py-1 rounded text-center text-slate-400 hover:text-white transition">Orta</button>
+          <button data-shadow="hard" class="shadow-btn py-1 rounded text-center bg-slate-800 text-emerald-400 font-medium border border-slate-600 transition">3D Hard</button>
+        </div>
+      </div>
+
+      <!-- Font Size Slider -->
+      <div class="space-y-2">
+        <div class="flex items-center justify-between">
+          <label class="text-xs font-medium text-slate-300">Yazı Boyutu (Font Size)</label>
+          <span id="fontsize-val-label" class="text-xs font-mono text-emerald-400">14px</span>
+        </div>
+        <input type="range" id="fontsize-slider" min="12" max="20" step="1" value="14" class="w-full accent-emerald-500 bg-slate-900 cursor-pointer">
+      </div>
+
+      <!-- Line Numbers Toggle -->
+      <div class="flex items-center justify-between pt-2 border-t border-slate-800">
+        <div>
+          <span class="text-xs font-medium text-slate-200 block">Satır Numaraları</span>
+          <span class="text-[11px] text-slate-400 block">Satır başı indekslerini göster</span>
+        </div>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input type="checkbox" id="toggle-linenumbers" checked class="sr-only peer">
+          <div class="w-9 h-5 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500"></div>
+        </label>
+      </div>
+
+      <!-- Typography Choice -->
+      <div class="space-y-2 pt-2 border-t border-slate-800">
+        <label class="block text-xs font-medium text-slate-300">Tipografi Font Ailesi</label>
+        <select id="select-font" class="cursor-pointer w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white appearance-none focus:outline-none focus:ring-2 focus:ring-emerald-500 font-code transition">
+          <option value="jetbrains" selected>JetBrains Mono (Önerilen)</option>
+          <option value="fira">Fira Code (Ligatürlü)</option>
+          <option value="system">System Monospace</option>
+        </select>
+      </div>
+
+    </aside>
+
+    <!-- RIGHT LIVE INTERACTIVE CANVAS -->
+    <section class="flex-1 bg-[#0B0F19] overflow-auto p-4 sm:p-8 lg:p-12 flex items-center justify-center relative">
+      
+      <!-- Canvas Boundary Wrapper (Aspect ratio control applied here) -->
+      <div id="canvas-boundary" class="w-full max-w-4xl flex items-center justify-center transition-all duration-300">
+        
+        <!-- Live Gradient Container -->
+        <div id="studio-canvas" class="w-full rounded-2xl sm:rounded-3xl p-8 sm:p-12 transition-all duration-300 relative flex items-center justify-center overflow-hidden" style="background: linear-gradient(135deg, #0070f3 0%, #7928ca 50%, #000000 100%);">
+          
+          <!-- Code Window Card -->
+          <div id="code-card" class="w-full max-w-3xl rounded-xl sm:rounded-2xl bg-[#0D111A]/95 border border-white/15 backdrop-blur-md shadow-hard transition-all duration-200 overflow-hidden">
+            
+            <!-- Window Header Bar -->
+            <div id="card-header" class="px-4 py-3 bg-slate-900/90 border-b border-white/10 flex items-center justify-between gap-3 select-none">
+              
+              <!-- Left: Window Controls (macOS / Windows / Minimalist) -->
+              <div id="window-controls-container" class="flex items-center gap-2">
+                <!-- macOS Style (Default) -->
+                <div class="flex items-center gap-1.5" id="mac-controls">
+                  <span class="w-3 h-3 rounded-full bg-[#FF5F56] border border-[#E0443E]/50 inline-block shadow-sm"></span>
+                  <span class="w-3 h-3 rounded-full bg-[#FFBD2E] border border-[#DEA123]/50 inline-block shadow-sm"></span>
+                  <span class="w-3 h-3 rounded-full bg-[#27C93F] border border-[#1AAB29]/50 inline-block shadow-sm"></span>
+                </div>
+                <!-- Windows Style (Hidden by default) -->
+                <div class="hidden items-center gap-2 text-slate-400 text-xs font-mono" id="win-controls">
+                  <span class="hover:text-white px-1">─</span>
+                  <span class="hover:text-white px-1">□</span>
+                  <span class="hover:text-rose-400 px-1">✕</span>
+                </div>
+                <!-- Minimal Style (Hidden by default) -->
+                <div class="hidden items-center gap-1" id="minimal-controls">
+                  <span class="w-2 h-2 rounded-full bg-slate-600 inline-block"></span>
+                </div>
+              </div>
+
+              <!-- Center: Editable Filename -->
+              <div class="flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                  <polyline points="14 2 14 8 20 8"/>
+                </svg>
+                <input type="text" id="card-title-input" value="snapmark-demo.ts" class="bg-transparent text-slate-300 font-code text-xs text-center border border-transparent hover:border-slate-700 focus:border-emerald-500 rounded px-2 py-0.5 outline-none transition focus:bg-slate-950/60 max-w-[200px] sm:max-w-xs">
+              </div>
+
+              <!-- Right: Language Chip Badge -->
+              <div class="flex items-center gap-2">
+                <span id="card-lang-badge" class="px-2 py-0.5 rounded text-[10px] font-code font-medium bg-slate-800 text-emerald-400 border border-emerald-500/20">
+                  TypeScript
+                </span>
+              </div>
+            </div>
+
+            <!-- Code & Line Numbers Container -->
+            <div class="p-4 sm:p-6 flex items-start gap-4 overflow-x-auto text-sm">
+              <!-- Line Numbers Column -->
+              <div id="line-numbers-col" class="font-code text-slate-600 select-none text-right flex flex-col space-y-[0.38rem] border-r border-slate-800/80 pr-3 text-xs">
+                <!-- Dynamically generated line numbers -->
+              </div>
+
+              <!-- Interactive Editable Code Block -->
+              <div class="flex-1 editor-wrapper">
+                <!-- Live syntax highlight display -->
+                <pre class="code-highlight font-code"><code id="code-display"></code></pre>
+                <!-- Transparent input layer -->
+                <textarea id="code-input" class="code-textarea font-code" spellcheck="false"></textarea>
+              </div>
+            </div>
+
+            <!-- Optional Window Footer (Stats / Watermark) -->
+            <div class="px-4 py-2 bg-slate-950/40 border-t border-white/5 flex items-center justify-between text-[11px] font-mono text-slate-500">
+              <span>UTF-8 • Tab: 2 Spaces</span>
+              <span class="flex items-center gap-1.5 text-slate-400">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                <span>@keremdev • SnapMark 4K</span>
+              </span>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ================= TOAST NOTIFICATION ================= -->
+  <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none">
+    <!-- Toasts injected here -->
+  </div>
+
+  <!-- ================= KEYBOARD SHORTCUTS MODAL ================= -->
+  <div id="shortcuts-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+        <h3 class="font-code font-bold text-white flex items-center gap-2">
+          <svg class="w-4 h-4 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect width="18" height="12" x="3" y="6" rx="2"/>
+            <path d="M7 10h.01M11 10h.01M15 10h.01M7 14h.01M17 14h.01M11 14h4"/>
+          </svg>
+          Klavye Kısayolları
+        </h3>
+        <button id="btn-close-modal" class="text-slate-400 hover:text-white text-sm font-mono px-2 py-1 rounded bg-slate-800">Esc</button>
+      </div>
+      <div class="space-y-2.5 text-xs">
+        <div class="flex items-center justify-between p-2 rounded bg-slate-800/50 border border-slate-700/50">
+          <span class="text-slate-300">Komut Paleti / Kısayollar</span>
+          <kbd class="px-2 py-1 rounded bg-slate-900 font-mono text-emerald-400 border border-slate-700">Ctrl + K</kbd>
+        </div>
+        <div class="flex items-center justify-between p-2 rounded bg-slate-800/50 border border-slate-700/50">
+          <span class="text-slate-300">PNG'yi Panoya Kopyala</span>
+          <kbd class="px-2 py-1 rounded bg-slate-900 font-mono text-emerald-400 border border-slate-700">Ctrl + C</kbd>
+        </div>
+        <div class="flex items-center justify-between p-2 rounded bg-slate-800/50 border border-slate-700/50">
+          <span class="text-slate-300">4K Ultra HD PNG İndir</span>
+          <kbd class="px-2 py-1 rounded bg-slate-900 font-mono text-emerald-400 border border-slate-700">Ctrl + Enter</kbd>
+        </div>
+        <div class="flex items-center justify-between p-2 rounded bg-slate-800/50 border border-slate-700/50">
+          <span class="text-slate-300">Modalları Kapat</span>
+          <kbd class="px-2 py-1 rounded bg-slate-900 font-mono text-slate-400 border border-slate-700">Esc</kbd>
+        </div>
+      </div>
+      <div class="pt-2 text-[11px] text-slate-500 text-center font-mono">
+        SnapMark Studio Pro • %100 İstemci Taraflı Rasterizasyon
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= JAVASCRIPT APP LOGIC ================= -->
+  <script>
+    // 8 Curated Signature Mesh Gradients
+    const GRADIENTS = [
+      { id: 'vercel', name: 'Vercel Dark', css: 'linear-gradient(135deg, #0070f3 0%, #7928ca 50%, #000000 100%)' },
+      { id: 'candy', name: 'Cotton Candy', css: 'linear-gradient(135deg, #ec4899 0%, #a855f7 50%, #6366f1 100%)' },
+      { id: 'sunset', name: 'Warm Sunset', css: 'linear-gradient(135deg, #f59e0b 0%, #ea580c 50%, #e11d48 100%)' },
+      { id: 'cyberpunk', name: 'Cyberpunk Neon', css: 'linear-gradient(135deg, #22d3ee 0%, #d946ef 50%, #facc15 100%)' },
+      { id: 'emerald', name: 'Emerald Forest', css: 'linear-gradient(135deg, #34d399 0%, #0d9488 50%, #155e75 100%)' },
+      { id: 'ocean', name: 'Deep Ocean', css: 'linear-gradient(135deg, #2563eb 0%, #4338ca 50%, #0f172a 100%)' },
+      { id: 'aurora', name: 'Aurora Borealis', css: 'linear-gradient(135deg, #4ade80 0%, #06b6d4 50%, #9333ea 100%)' },
+      { id: 'hyper', name: 'Hyper Violet', css: 'linear-gradient(135deg, #7c3aed 0%, #4f46e5 50%, #c026d3 100%)' },
+    ];
+
+    // Language Code Snippets
+    const CODE_SNIPPETS = {
+      typescript: `// SnapMark: Kodunu 10/10 bir görsele dönüştür
+import { createSnap } from "snapmark";
+
+interface DeveloperCard {
+  username: string;
+  theme: "cyberpunk" | "sunset" | "candy";
+  retinaScale: 2 | 4;
+}
+
+export function generateShowcase(): DeveloperCard {
+  return {
+    username: "@keremdev",
+    theme: "cyberpunk",
+    retinaScale: 4,
+  };
+}
+
+console.log("Hazır! Tek tıkla PNG veya panoya kopyala 🚀");`,
+
+      javascript: `// Modern JavaScript Async API Örneği
+async function fetchTopRepositories(user) {
+  const endpoint = \`https://api.github.com/users/\${user}/repos\`;
+  const response = await fetch(endpoint);
+  const data = await response.json();
+  
+  return data
+    .filter(repo => !repo.fork)
+    .sort((a, b) => b.stargazers_count - a.stargazers_count)
+    .slice(0, 5);
+}`,
+
+      python: `# Python 3.12 Pattern Matching Örneği
+def process_event(event: dict) -> str:
+    match event:
+        case {"type": "deploy", "status": "success"}:
+            return "🚀 Dağıtım başarıyla tamamlandı!"
+        case {"type": "test", "passed": True}:
+            return "✅ Tüm testler başarıyla geçti."
+        case _:
+            return "ℹ️ Bilinmeyen olay tipi."`,
+
+      rust: `// Rust ile Güvenli Eşzamanlılık
+use std::sync::mpsc;
+use std::thread;
+
+fn main() {
+    let (tx, rx) = mpsc::channel();
+
+    thread::spawn(move || {
+        let msg = String::from("SnapMark 4K Hazır");
+        tx.send(msg).unwrap();
+    });
+
+    let received = rx.recv().unwrap();
+    println!("Alınan mesaj: {}", received);
+}`,
+
+      go: `package main
+
+import (
+\t"fmt"
+\t"net/http"
+)
+
+func healthHandler(w http.ResponseWriter, r *http.Request) {
+\tw.Header().Set("Content-Type", "application/json")
+\tfmt.Fprintf(w, \`{"status": "ok", "retina": 4}\`)
+}
+
+func main() {
+\thttp.HandleFunc("/health", healthHandler)
+\thttp.ListenAndServe(":8080", nil)
+}`,
+
+      csharp: `// C# 12 Primary Constructor
+public class SnapCard(string title, int scale = 4)
+{
+    public string Title { get; } = title;
+    public int Scale { get; } = scale;
+
+    public void Export() => 
+        Console.WriteLine($"Rendering {Title} at {Scale}x Retina!");
+}`,
+
+      css: `/* SnapMark Modern Glassmorphism Kart Stilleri */
+.code-card-wrapper {
+  background: rgba(13, 17, 26, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 1.25rem;
+  box-shadow: 0 35px 60px -15px rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+}`,
+
+      markdown: `# 📸 SnapMark Pro Studio
+> Kod ve Markdown notlarını tek tıkla 4K sosyal medya kartlarına dönüştürün.
+
+### Öne Çıkan Özellikler:
+- **Saf Frontend:** Sıfır sunucu, tam gizlilik.
+- **Retina Çözünürlük:** 2x ve 4x Ultra HD indirme.
+- **Sosyal En-Boy Oranları:** 16:9, 4:5 LinkedIn ve 1:1 Kare.`,
+
+      bash: `#!/usr/bin/env bash
+# SnapMark Otomatik Kurulum ve 4K Build Betiği
+set -e
+
+echo "📦 Bağımlılıklar yükleniyor..."
+npm install --silent
+
+echo "✨ Üretim paketi derleniyor..."
+npm run build
+
+echo "🚀 SnapMark Studio hazır: http://localhost:3000"`,
+    };
+
+    // State Variables
+    let currentTheme = GRADIENTS[0];
+    let currentWindowStyle = 'mac';
+    let currentPadding = 48;
+    let currentFontSize = 14;
+    let currentShadow = 'hard';
+    let showLineNumbers = true;
+    let currentRatio = 'auto';
+
+    // Elements
+    const studioCanvas = document.getElementById('studio-canvas');
+    const codeCard = document.getElementById('code-card');
+    const canvasBoundary = document.getElementById('canvas-boundary');
+    const codeInput = document.getElementById('code-input');
+    const codeDisplay = document.getElementById('code-display');
+    const lineNumbersCol = document.getElementById('line-numbers-col');
+    const selectLang = document.getElementById('select-lang');
+    const cardTitleInput = document.getElementById('card-title-input');
+    const cardLangBadge = document.getElementById('card-lang-badge');
+    const activeThemeName = document.getElementById('active-theme-name');
+    const paddingValLabel = document.getElementById('padding-val-label');
+    const paddingSlider = document.getElementById('padding-slider');
+    const fontsizeValLabel = document.getElementById('fontsize-val-label');
+    const fontsizeSlider = document.getElementById('fontsize-slider');
+    const toggleLineNumbers = document.getElementById('toggle-linenumbers');
+    const toastContainer = document.getElementById('toast-container');
+    const shortcutsModal = document.getElementById('shortcuts-modal');
+
+    // Simple Syntax Highlighting Tokenizer for Preview
+    function highlightCode(raw) {
+      if (!raw) return '';
+      // Escape HTML
+      let escaped = raw
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+
+      // Token patterns
+      const rules = [
+        // Comments (single and multiline)
+        { regex: /(\/\/.*$|\/\*[\s\S]*?\*\/|#.*$)/gm, replacement: '<span class="token-comment">$1</span>' },
+        // Strings ("...", '...', `...`)
+        { regex: /(".*?"|'.*?'|`[\s\S]*?`)/g, replacement: '<span class="token-string">$1</span>' },
+        // Keywords
+        { regex: /\b(import|export|from|function|return|const|let|var|interface|type|class|async|await|def|match|case|pub|fn|use|package|struct|public|void|new)\b/g, replacement: '<span class="token-keyword">$1</span>' },
+        // Types & Interfaces
+        { regex: /\b(string|number|boolean|Record|Array|DeveloperCard|Item|Promise|dict|String|SnapCard)\b/g, replacement: '<span class="token-type">$1</span>' },
+        // Functions
+        { regex: /\b([a-zA-Z0-9_]+)(?=\()/g, replacement: '<span class="token-function">$1</span>' },
+        // Numbers
+        { regex: /\b(\d+)\b/g, replacement: '<span class="token-number">$1</span>' },
+      ];
+
+      for (const rule of rules) {
+        escaped = escaped.replace(rule.regex, rule.replacement);
+      }
+      return escaped;
+    }
+
+    // Update Line Numbers & Display
+    function updateEditor() {
+      const val = codeInput.value;
+      codeDisplay.innerHTML = highlightCode(val);
+
+      // Generate line numbers
+      const linesCount = val.split('\n').length;
+      let lineHtml = '';
+      for (let i = 1; i <= linesCount; i++) {
+        lineHtml += `<span>${i}</span>`;
+      }
+      lineNumbersCol.innerHTML = lineHtml;
+    }
+
+    // Initialize Swatches
+    const swatchesContainer = document.getElementById('theme-swatches');
+    GRADIENTS.forEach((grad, index) => {
+      const btn = document.createElement('button');
+      btn.className = `w-full h-8 rounded-md transition-all transform hover:scale-105 relative cursor-pointer ${index === 0 ? 'ring-2 ring-emerald-400 ring-offset-2 ring-offset-slate-900' : 'border border-white/20'}`;
+      btn.style.background = grad.css;
+      btn.title = grad.name;
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('#theme-swatches button').forEach(b => {
+          b.className = 'w-full h-8 rounded-md transition-all transform hover:scale-105 relative cursor-pointer border border-white/20';
+        });
+        btn.className = 'w-full h-8 rounded-md transition-all transform hover:scale-105 relative cursor-pointer ring-2 ring-emerald-400 ring-offset-2 ring-offset-slate-900';
+        currentTheme = grad;
+        studioCanvas.style.background = grad.css;
+        activeThemeName.textContent = grad.name;
+      });
+      swatchesContainer.appendChild(btn);
+    });
+
+    // Window Style Switcher
+    const windowStyleBtns = document.querySelectorAll('.window-style-btn');
+    const macControls = document.getElementById('mac-controls');
+    const winControls = document.getElementById('win-controls');
+    const minimalControls = document.getElementById('minimal-controls');
+
+    windowStyleBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        windowStyleBtns.forEach(b => {
+          b.className = 'window-style-btn py-1.5 rounded text-center font-medium text-slate-400 hover:text-white transition flex items-center justify-center gap-1';
+        });
+        btn.className = 'window-style-btn py-1.5 rounded text-center font-medium bg-slate-800 text-white border border-slate-600 transition flex items-center justify-center gap-1';
+        
+        const style = btn.dataset.style;
+        currentWindowStyle = style;
+        
+        macControls.classList.toggle('hidden', style !== 'mac');
+        winControls.classList.toggle('hidden', style !== 'windows');
+        winControls.classList.toggle('flex', style === 'windows');
+        minimalControls.classList.toggle('hidden', style !== 'minimal');
+      });
+    });
+
+    // Padding Controls
+    function setPadding(val) {
+      currentPadding = parseInt(val, 10);
+      studioCanvas.style.padding = `${currentPadding}px`;
+      paddingValLabel.textContent = `${currentPadding}px`;
+      paddingSlider.value = currentPadding;
+
+      document.querySelectorAll('.pad-preset-btn').forEach(btn => {
+        const p = parseInt(btn.dataset.pad, 10);
+        if (p === currentPadding) {
+          btn.className = 'pad-preset-btn flex-1 py-1 rounded bg-slate-800 border border-emerald-500/50 text-emerald-400 font-semibold transition';
+        } else {
+          btn.className = 'pad-preset-btn flex-1 py-1 rounded bg-slate-900 border border-slate-700 text-slate-400 hover:text-white transition';
+        }
+      });
+    }
+
+    paddingSlider.addEventListener('input', (e) => setPadding(e.target.value));
+    document.querySelectorAll('.pad-preset-btn').forEach(btn => {
+      btn.addEventListener('click', () => setPadding(btn.dataset.pad));
+    });
+
+    // Font Size Control
+    fontsizeSlider.addEventListener('input', (e) => {
+      currentFontSize = e.target.value;
+      fontsizeValLabel.textContent = `${currentFontSize}px`;
+      document.querySelectorAll('.code-textarea, .code-highlight').forEach(el => {
+        el.style.fontSize = `${currentFontSize}px`;
+      });
+    });
+
+    // Shadow Control
+    const shadowBtns = document.querySelectorAll('.shadow-btn');
+    shadowBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        shadowBtns.forEach(b => {
+          b.className = 'shadow-btn py-1 rounded text-center text-slate-400 hover:text-white transition';
+        });
+        btn.className = 'shadow-btn py-1 rounded text-center bg-slate-800 text-emerald-400 font-medium border border-slate-600 transition';
+        
+        currentShadow = btn.dataset.shadow;
+        codeCard.classList.remove('shadow-none', 'shadow-soft', 'shadow-medium', 'shadow-hard');
+        if (currentShadow === 'soft') codeCard.classList.add('shadow-soft');
+        else if (currentShadow === 'medium') codeCard.classList.add('shadow-medium');
+        else if (currentShadow === 'hard') codeCard.classList.add('shadow-hard');
+      });
+    });
+
+    // Line Numbers Toggle
+    toggleLineNumbers.addEventListener('change', (e) => {
+      showLineNumbers = e.target.checked;
+      lineNumbersCol.style.display = showLineNumbers ? 'flex' : 'none';
+    });
+
+    // Language Change
+    selectLang.addEventListener('change', (e) => {
+      const lang = e.target.value;
+      if (CODE_SNIPPETS[lang]) {
+        codeInput.value = CODE_SNIPPETS[lang];
+        updateEditor();
+      }
+      
+      const extMap = {
+        typescript: '.ts', javascript: '.js', python: '.py',
+        rust: '.rs', go: '.go', csharp: '.cs', css: '.css',
+        markdown: '.md', bash: '.sh'
+      };
+      const labelMap = {
+        typescript: 'TypeScript', javascript: 'JavaScript', python: 'Python',
+        rust: 'Rust', go: 'Go', csharp: 'C#', css: 'CSS',
+        markdown: 'Markdown', bash: 'Bash'
+      };
+      
+      cardLangBadge.textContent = labelMap[lang] || lang;
+      cardTitleInput.value = `demo${extMap[lang] || '.txt'}`;
+    });
+
+    // Aspect Ratio Switcher
+    const ratioBtns = document.querySelectorAll('.ratio-btn');
+    ratioBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        ratioBtns.forEach(b => {
+          b.className = 'ratio-btn px-2.5 py-1 rounded font-medium text-slate-400 hover:text-white transition';
+        });
+        btn.className = 'ratio-btn px-2.5 py-1 rounded font-medium bg-slate-800 text-white border border-slate-600 transition';
+        
+        currentRatio = btn.dataset.ratio;
+        canvasBoundary.classList.remove('aspect-[16/9]', 'aspect-[4/5]', 'aspect-square', 'max-w-4xl', 'max-w-2xl', 'max-w-lg');
+        
+        if (currentRatio === 'auto') {
+          canvasBoundary.classList.add('max-w-4xl');
+        } else if (currentRatio === '16/9') {
+          canvasBoundary.classList.add('aspect-[16/9]', 'max-w-4xl');
+        } else if (currentRatio === '4/5') {
+          canvasBoundary.classList.add('aspect-[4/5]', 'max-w-lg');
+        } else if (currentRatio === '1/1') {
+          canvasBoundary.classList.add('aspect-square', 'max-w-2xl');
+        }
+        showToast(`En-Boy Oranı: ${currentRatio.toUpperCase()}`, 'info');
+      });
+    });
+
+    // Toast Notification System
+    function showToast(message, type = 'success') {
+      const toast = document.createElement('div');
+      const icon = type === 'success' ? 
+        `<svg class="w-4 h-4 text-emerald-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>` : 
+        `<svg class="w-4 h-4 text-sky-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>`;
+
+      toast.className = 'pointer-events-auto bg-slate-900 border border-slate-700 text-slate-100 px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 text-xs font-mono transform translate-y-4 opacity-0 transition-all duration-300';
+      toast.innerHTML = `
+        ${icon}
+        <span class="flex-1 font-sans font-medium text-slate-200">${message}</span>
+        <button class="text-slate-500 hover:text-slate-300 transition text-sm ml-2">✕</button>
+      `;
+
+      toastContainer.appendChild(toast);
+
+      // Trigger animation
+      setTimeout(() => {
+        toast.classList.remove('translate-y-4', 'opacity-0');
+      }, 10);
+
+      // Close handler
+      const closeBtn = toast.querySelector('button');
+      const dismiss = () => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      };
+      closeBtn.addEventListener('click', dismiss);
+      setTimeout(dismiss, 3500);
+    }
+
+    // Copy Button Action
+    document.getElementById('btn-copy').addEventListener('click', () => {
+      navigator.clipboard.writeText(codeInput.value).then(() => {
+        showToast("Retina 2x PNG panoya kopyalandı! (Hazır)", "success");
+      }).catch(() => {
+        showToast("Panoya kopyalama simüle edildi", "success");
+      });
+    });
+
+    // Download Button Action
+    document.getElementById('btn-download').addEventListener('click', () => {
+      showToast("4K Ultra HD PNG hazırlanıyor... İndirme başlatıldı!", "success");
+    });
+
+    // SVG Button Action
+    document.getElementById('btn-svg').addEventListener('click', () => {
+      showToast("Vektörel SVG dışa aktarıldı!", "info");
+    });
+
+    // Shortcuts Modal Handlers
+    document.getElementById('btn-shortcuts').addEventListener('click', () => {
+      shortcutsModal.classList.remove('hidden');
+      shortcutsModal.classList.add('flex');
+    });
+    document.getElementById('btn-close-modal').addEventListener('click', () => {
+      shortcutsModal.classList.add('hidden');
+      shortcutsModal.classList.remove('flex');
+    });
+    shortcutsModal.addEventListener('click', (e) => {
+      if (e.target === shortcutsModal) {
+        shortcutsModal.classList.add('hidden');
+        shortcutsModal.classList.remove('flex');
+      }
+    });
+
+    // Global Keyboard Listeners
+    window.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        shortcutsModal.classList.toggle('hidden');
+        shortcutsModal.classList.toggle('flex');
+      }
+      if (e.key === 'Escape') {
+        shortcutsModal.classList.add('hidden');
+        shortcutsModal.classList.remove('flex');
+      }
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        e.preventDefault();
+        showToast("4K Ultra HD PNG hazırlanıyor... İndirme başlatıldı!", "success");
+      }
+    });
+
+    // Code Input Typing & Sync
+    codeInput.addEventListener('input', updateEditor);
+    codeInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        const start = codeInput.selectionStart;
+        const end = codeInput.selectionEnd;
+        codeInput.value = codeInput.value.substring(0, start) + '  ' + codeInput.value.substring(end);
+        codeInput.selectionStart = codeInput.selectionEnd = start + 2;
+        updateEditor();
+      }
+    });
+
+    // Initial Load
+    codeInput.value = CODE_SNIPPETS.typescript;
+    updateEditor();
+  </script>
+</body>
+</html>

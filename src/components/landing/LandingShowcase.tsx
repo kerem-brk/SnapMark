@@ -66,12 +66,12 @@ export const LandingShowcase: React.FC = () => {
     <section id="showcase" className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       {/* Section Header */}
       <div className="text-center max-w-3xl mx-auto mb-14">
-        <span className="text-xs font-semibold uppercase tracking-wider text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-full border border-indigo-500/20">
+        <span className="text-xs font-semibold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20 font-mono">
           Çok Amaçlı Tuval
         </span>
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mt-4 mb-4">
           Her İçerik Türü İçin <br />
-          <span className="bg-gradient-to-r from-indigo-400 via-purple-300 to-pink-400 bg-clip-text text-transparent">
+          <span className="text-emerald-400 font-mono">
             Özelleştirilmiş Formatlar
           </span>
         </h2>
@@ -146,7 +146,7 @@ export const LandingShowcase: React.FC = () => {
           <div className="pt-2">
             <Link
               href="/studio"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs sm:text-sm font-semibold shadow-lg shadow-indigo-600/30 transition-all cursor-pointer group"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-semibold shadow-lg shadow-emerald-950/40 transition-all cursor-pointer group"
             >
               <span>Bu Modu Stüdyoda Aç</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -156,7 +156,7 @@ export const LandingShowcase: React.FC = () => {
 
         {/* Right Column: Live Card Rendering Mock */}
         <div className="lg:col-span-7 flex items-center justify-center">
-          <div className="w-full max-w-xl rounded-2xl p-6 sm:p-8 bg-gradient-to-br from-indigo-950/60 via-slate-900/90 to-purple-950/50 border border-slate-800 shadow-2xl relative">
+          <div className="w-full max-w-xl rounded-2xl p-6 sm:p-8 bg-[#131B2F] border border-slate-700/60 shadow-2xl relative">
             {/* Conditional Mock Content by Active Tab */}
             {activeTab === "code" && (
               <div className="rounded-xl bg-[#1e1e2e] border border-white/10 shadow-2xl overflow-hidden font-mono text-xs sm:text-sm">

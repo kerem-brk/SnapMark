@@ -65,15 +65,15 @@ const MODES: {
     id: "quote",
     label: "Alıntı",
     icon: Quote,
-    color: "text-indigo-400",
-    badgeBg: "bg-indigo-500/10 border-indigo-500/30",
+    color: "text-emerald-400",
+    badgeBg: "bg-emerald-500/10 border-emerald-500/30",
   },
   {
     id: "tweet",
     label: "Tweet",
     icon: MessageSquare,
-    color: "text-sky-400",
-    badgeBg: "bg-sky-500/10 border-sky-500/30",
+    color: "text-teal-400",
+    badgeBg: "bg-teal-500/10 border-teal-500/30",
   },
   {
     id: "terminal",
@@ -188,7 +188,7 @@ export const CarouselNav: React.FC<CarouselNavProps> = ({
       {/* Üst Bar: Başlık, Bilgi & ZIP İndir Butonu */}
       <div className="flex flex-wrap items-center justify-between gap-3 px-1">
         <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center text-white shadow-md shadow-indigo-500/20">
+          <div className="w-7 h-7 rounded-lg bg-emerald-950/80 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shadow-md shadow-emerald-500/20">
             <Layers className="w-4 h-4" />
           </div>
           <div>
@@ -196,7 +196,7 @@ export const CarouselNav: React.FC<CarouselNavProps> = ({
               <span className="text-xs sm:text-sm font-bold text-white tracking-tight">
                 {t.carouselStudio}
               </span>
-              <span className="text-[11px] font-mono px-2 py-0.5 rounded-full bg-indigo-950/80 border border-indigo-500/30 text-indigo-300 font-semibold">
+              <span className="text-[11px] font-mono px-2 py-0.5 rounded-full bg-emerald-950/80 border border-emerald-500/30 text-emerald-300 font-semibold">
                 {t.slideCount(slides.length)}
               </span>
             </div>
@@ -213,7 +213,7 @@ export const CarouselNav: React.FC<CarouselNavProps> = ({
           <button
             type="button"
             onClick={onAddSlide}
-            className="px-2.5 py-1.5 rounded-xl border border-dashed border-indigo-500/40 hover:border-indigo-400 bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 hover:text-white text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer shadow-sm active:scale-95"
+            className="px-2.5 py-1.5 rounded-xl border border-dashed border-emerald-500/40 hover:border-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 hover:text-white text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer shadow-sm active:scale-95"
             title={t.addSlide}
           >
             <Plus className="w-3.5 h-3.5" />
@@ -226,14 +226,14 @@ export const CarouselNav: React.FC<CarouselNavProps> = ({
             disabled={isZipExporting || slides.length === 0}
             className={`px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all border shadow-md cursor-pointer ${
               isZipExporting
-                ? "bg-indigo-950/80 border-indigo-500/50 text-indigo-200"
-                : "bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white border-indigo-400/40 active:scale-95 shadow-indigo-500/20"
+                ? "bg-emerald-950/80 border-emerald-500/50 text-emerald-200"
+                : "bg-emerald-600 hover:bg-emerald-500 text-white border-emerald-500/50 active:scale-95 shadow-emerald-500/20"
             }`}
             title="Tüm slaytları yüksek çözünürlüklü tek bir ZIP arşivi olarak indir"
           >
             {isZipExporting ? (
               <>
-                <Loader2 className="w-3.5 h-3.5 animate-spin text-indigo-300" />
+                <Loader2 className="w-3.5 h-3.5 animate-spin text-emerald-300" />
                 <span>{zipProgress || t.zipPreparing}</span>
               </>
             ) : (
@@ -270,11 +270,11 @@ export const CarouselNav: React.FC<CarouselNavProps> = ({
               onClick={() => onSelectSlide(slide.id)}
               className={`group relative flex items-center gap-2 px-2.5 py-2 rounded-xl border text-xs font-medium cursor-pointer transition-all shrink-0 select-none shadow-sm ${
                 isDragging
-                  ? "opacity-40 scale-95 border-dashed border-indigo-400 bg-indigo-950/20"
+                  ? "opacity-40 scale-95 border-dashed border-emerald-400 bg-emerald-950/20"
                   : isDragOver
-                  ? "ring-2 ring-indigo-400 border-indigo-400 bg-indigo-950/60 scale-[1.02]"
+                  ? "ring-2 ring-emerald-400 border-emerald-400 bg-emerald-950/60 scale-[1.02]"
                   : isActive
-                  ? "bg-[#161f36] border-indigo-500 text-white shadow-lg shadow-indigo-500/10 ring-1 ring-indigo-500/50"
+                  ? "bg-[#0b1b15] border-emerald-500 text-white shadow-lg shadow-emerald-500/10 ring-1 ring-emerald-500/50"
                   : "bg-slate-900/80 border-slate-800/90 text-slate-300 hover:border-slate-700 hover:bg-slate-800/90 hover:text-white"
               }`}
             >
@@ -326,7 +326,7 @@ export const CarouselNav: React.FC<CarouselNavProps> = ({
               <span
                 className={`w-5 h-5 rounded-full text-[10px] font-mono flex items-center justify-center font-bold shrink-0 ${
                   isActive
-                    ? "bg-indigo-600 text-white shadow-sm"
+                    ? "bg-emerald-600 text-white shadow-sm"
                     : "bg-slate-800 text-slate-400 group-hover:bg-slate-700 group-hover:text-slate-200"
                 }`}
               >
@@ -349,7 +349,7 @@ export const CarouselNav: React.FC<CarouselNavProps> = ({
                       if (e.key === "Enter") handleSaveRename(slide.id);
                       if (e.key === "Escape") handleCancelRename();
                     }}
-                    className="w-28 sm:w-36 px-2 py-0.5 text-xs bg-slate-950 border border-indigo-500 rounded-lg text-white outline-none font-medium"
+                    className="w-28 sm:w-36 px-2 py-0.5 text-xs bg-slate-950 border border-emerald-500 rounded-lg text-white outline-none font-medium"
                     placeholder="Slayt Adı"
                   />
                   <button
@@ -436,13 +436,13 @@ export const CarouselNav: React.FC<CarouselNavProps> = ({
                           }}
                           className={`w-full flex items-center gap-1.5 px-2 py-1.5 rounded-lg text-xs font-medium text-left transition-colors cursor-pointer ${
                             isSelected
-                              ? "bg-indigo-600/30 text-white font-bold"
+                              ? "bg-emerald-600/30 text-white font-bold"
                               : "text-slate-300 hover:bg-slate-800 hover:text-white"
                           }`}
                         >
                           <ModeIcon className={`w-3.5 h-3.5 ${m.color}`} />
                           <span className="flex-1">{m.label}</span>
-                          {isSelected && <Check className="w-3 h-3 text-indigo-400" />}
+                          {isSelected && <Check className="w-3 h-3 text-emerald-400" />}
                         </button>
                       );
                     })}
@@ -459,7 +459,7 @@ export const CarouselNav: React.FC<CarouselNavProps> = ({
                     onDuplicateSlide(slide.id);
                   }}
                   title="Bu slaytı çoğalt"
-                  className="p-1 rounded-md text-slate-400 hover:text-indigo-300 hover:bg-indigo-500/20 transition-colors cursor-pointer"
+                  className="p-1 rounded-md text-slate-400 hover:text-emerald-300 hover:bg-emerald-500/20 transition-colors cursor-pointer"
                 >
                   <Copy className="w-3 h-3" />
                 </button>
@@ -486,7 +486,7 @@ export const CarouselNav: React.FC<CarouselNavProps> = ({
         <button
           type="button"
           onClick={onAddSlide}
-          className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-dashed border-slate-700/80 hover:border-indigo-500/60 bg-slate-900/40 hover:bg-indigo-500/10 text-slate-400 hover:text-indigo-300 text-xs font-medium cursor-pointer transition-all shrink-0 active:scale-95"
+          className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-dashed border-slate-700/80 hover:border-emerald-500/60 bg-slate-900/40 hover:bg-emerald-500/10 text-slate-400 hover:text-emerald-300 text-xs font-medium cursor-pointer transition-all shrink-0 active:scale-95"
           title={t.addSlide}
         >
           <Plus className="w-3.5 h-3.5" />

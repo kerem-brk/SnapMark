@@ -51,7 +51,7 @@ export const SocialFeedPreviewModal: React.FC<SocialFeedPreviewModalProps> = ({
         {/* Modal Başlığı */}
         <div className="px-5 py-4 border-b border-slate-800 flex items-center justify-between bg-slate-900/60 shrink-0">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-500 to-cyan-500 flex items-center justify-center text-white shadow-md shadow-indigo-500/20">
+            <div className="w-8 h-8 rounded-xl bg-emerald-950/80 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shadow-md shadow-emerald-500/20">
               <Sparkles className="w-4 h-4" />
             </div>
             <div>
@@ -119,7 +119,7 @@ export const SocialFeedPreviewModal: React.FC<SocialFeedPreviewModalProps> = ({
             <div className="w-full max-w-lg bg-black border border-slate-800 rounded-2xl p-4 sm:p-5 text-left font-sans shadow-xl">
               {/* Tweet Header */}
               <div className="flex items-start gap-3 mb-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-xs shrink-0 shadow-md">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-emerald-600 to-teal-700 flex items-center justify-center text-white font-bold text-xs shrink-0 shadow-md">
                   KD
                 </div>
                 <div className="flex-1 min-w-0">
@@ -174,7 +174,7 @@ export const SocialFeedPreviewModal: React.FC<SocialFeedPreviewModalProps> = ({
               {/* Post Header */}
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white font-bold text-sm shadow-md">
+                  <div className="w-11 h-11 rounded-full bg-gradient-to-tr from-emerald-600 to-teal-700 flex items-center justify-center text-white font-bold text-sm shadow-md">
                     KD
                   </div>
                   <div>

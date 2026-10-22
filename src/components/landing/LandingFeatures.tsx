@@ -77,12 +77,12 @@ export const LandingFeatures: React.FC = () => {
     <section id="features" className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       {/* Header */}
       <div className="text-center max-w-3xl mx-auto mb-16">
-        <span className="text-xs font-semibold uppercase tracking-wider text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-full border border-indigo-500/20">
+        <span className="text-xs font-semibold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20 font-mono">
           Güçlü Özellikler
         </span>
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mt-4 mb-4">
           Geliştiricilerin İhtiyaç Duyduğu <br />
-          <span className="bg-gradient-to-r from-indigo-400 via-cyan-400 to-emerald-400 bg-clip-text text-transparent">
+          <span className="text-emerald-400 font-mono">
             Tüm İnce Ayarlar Tek Çatıda
           </span>
         </h2>
@@ -96,7 +96,7 @@ export const LandingFeatures: React.FC = () => {
         {FEATURES.map((f, idx) => (
           <div
             key={idx}
-            className="group relative rounded-2xl bg-slate-900/60 hover:bg-slate-900 border border-slate-800/80 hover:border-indigo-500/40 p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/10 flex flex-col justify-between"
+            className="group relative rounded-2xl bg-slate-900/60 hover:bg-slate-900 border border-slate-800/80 hover:border-emerald-500/40 p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-950/20 flex flex-col justify-between"
           >
             <div>
               {/* Icon & Tag */}

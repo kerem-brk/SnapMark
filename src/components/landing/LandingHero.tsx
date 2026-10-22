@@ -7,13 +7,13 @@ import { ArrowRight, Sparkles, Terminal, Layers, ShieldCheck, Download, Code2, C
 export const LandingHero: React.FC = () => {
   return (
     <section className="relative pt-24 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto flex flex-col items-center text-center overflow-hidden">
-      {/* Background Ambient Glows */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-gradient-to-tr from-indigo-600/20 via-purple-600/20 to-cyan-500/15 blur-[120px] rounded-full pointer-events-none -z-10" />
+      {/* Background Ambient Glow */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-emerald-500/5 blur-[120px] rounded-full pointer-events-none -z-10" />
 
       {/* Pill Badge */}
-      <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/25 text-indigo-300 text-xs font-medium mb-8 animate-fade-in">
+      <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-300 text-xs font-medium mb-8 animate-fade-in">
         <span className="flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-        <span>SnapMark Pro Studio v2.4 Yayında</span>
+        <span>SnapMark Pro Studio v2.4</span>
         <span className="text-slate-500">•</span>
         <span className="text-slate-400">100% Tarayıcıda & Ücretsiz</span>
       </div>
@@ -21,7 +21,7 @@ export const LandingHero: React.FC = () => {
       {/* Main Headline */}
       <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white max-w-4xl leading-[1.1] mb-6">
         Geliştiriciler için <br />
-        <span className="bg-gradient-to-r from-indigo-400 via-purple-300 to-cyan-400 bg-clip-text text-transparent">
+        <span className="text-emerald-400 font-mono">
           Kristal Netliğinde
         </span>{" "}
         Kod Kartları
@@ -37,7 +37,7 @@ export const LandingHero: React.FC = () => {
       <div className="flex flex-col sm:flex-row items-center gap-3.5 mb-16 w-full sm:w-auto">
         <Link
           href="/studio"
-          className="w-full sm:w-auto flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm shadow-xl shadow-indigo-600/30 hover:shadow-indigo-500/40 hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer group"
+          className="w-full sm:w-auto flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm shadow-xl shadow-emerald-950/40 hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer group"
         >
           <span>Stüdyoyu Başlat</span>
           <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -54,13 +54,13 @@ export const LandingHero: React.FC = () => {
       <div className="w-full max-w-4xl relative group select-none">
         {/* Neon Border Wrapper */}
         <div
-          className="rounded-3xl p-[2px] transition-transform duration-500 group-hover:scale-[1.01]"
+          className="rounded-3xl p-[1px] transition-transform duration-500 group-hover:scale-[1.01]"
           style={{
-            background: "linear-gradient(135deg, #6366f1, #a855f7, #06b6d4)",
-            boxShadow: "0 25px 60px -15px rgba(0, 0, 0, 0.95), 0 0 50px 0px rgba(99, 102, 241, 0.25)",
+            background: "linear-gradient(135deg, rgba(34,197,94,0.4), rgba(51,65,85,0.6))",
+            boxShadow: "0 25px 60px -15px rgba(0, 0, 0, 0.95)",
           }}
         >
-          <div className="rounded-[22px] bg-[#0c121e] border border-white/10 overflow-hidden shadow-2xl">
+          <div className="rounded-[23px] bg-[#0c121e] border border-white/10 overflow-hidden shadow-2xl">
             {/* Title Bar */}
             <div className="px-4 py-3 bg-black/40 border-b border-white/10 flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -68,7 +68,7 @@ export const LandingHero: React.FC = () => {
                 <span className="w-3 h-3 rounded-full bg-[#ffbd2e] inline-block shadow-sm" />
                 <span className="w-3 h-3 rounded-full bg-[#27c93f] inline-block shadow-sm" />
                 <div className="ml-3 flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/10 text-xs font-mono text-slate-200 border border-white/10">
-                  <span className="w-1.5 h-1.5 rounded-full bg-indigo-400" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                   <span>cleanArchitecture.ts</span>
                 </div>
               </div>

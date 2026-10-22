@@ -59,7 +59,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
     <div className="bg-[#0f1523] border border-slate-800 rounded-2xl p-4 flex flex-col space-y-3 shadow-lg">
       <div className="flex items-center justify-between border-b border-slate-800/80 pb-2.5">
         <div className="flex items-center space-x-2 text-xs font-semibold text-slate-300">
-          <FileCode className="w-4 h-4 text-indigo-400" />
+          <FileCode className="w-4 h-4 text-emerald-400" />
           <span>{config.mode === "code" ? t.editorTitleCode : t.editorTitleQuote}</span>
         </div>
         <div className="flex items-center gap-3 text-[11px] text-slate-500 font-mono">
@@ -78,14 +78,14 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
                 key={tab.id}
                 className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-mono transition-all cursor-pointer ${
                   isActive
-                    ? "bg-indigo-600/25 text-indigo-200 border border-indigo-500/40 shadow-sm"
+                    ? "bg-emerald-600/25 text-emerald-200 border border-emerald-500/40 shadow-sm"
                     : "bg-slate-900/80 text-slate-400 border border-slate-800 hover:text-slate-200"
                 }`}
                 onClick={() => onSelectTab?.(tab.id)}
               >
                 <span
                   className={`w-1.5 h-1.5 rounded-full ${
-                    isActive ? "bg-indigo-400 shadow-sm shadow-indigo-400/50" : "bg-slate-500"
+                    isActive ? "bg-emerald-400 shadow-sm shadow-emerald-400/50" : "bg-slate-500"
                   }`}
                 />
                 <input
@@ -93,7 +93,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
                   value={tab.name}
                   onChange={(e) => onRenameTab?.(tab.id, e.target.value)}
                   onClick={(e) => e.stopPropagation()}
-                  className="bg-transparent text-inherit font-mono text-xs outline-none w-24 sm:w-28 focus:border-b focus:border-indigo-400"
+                  className="bg-transparent text-inherit font-mono text-xs outline-none w-24 sm:w-28 focus:border-b focus:border-emerald-400"
                   title="Dosya adını düzenlemek için tıkla"
                 />
                 {config.tabs.length > 1 && onCloseTab && (
@@ -119,7 +119,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
               className="px-2 py-1 rounded-lg text-xs font-medium bg-slate-800/70 hover:bg-slate-700 text-slate-300 border border-slate-700/50 flex items-center gap-1 transition-colors shrink-0"
               title={t.newTab}
             >
-              <Plus className="w-3 h-3 text-indigo-400" />
+              <Plus className="w-3 h-3 text-emerald-400" />
               <span className="hidden sm:inline">{t.newTab}</span>
             </button>
           )}
@@ -138,7 +138,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
               : t.placeholderQuote
           }
           rows={10}
-          className="w-full bg-[#0a0d15] text-slate-200 font-mono text-xs p-3.5 rounded-xl border border-slate-800/80 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none leading-relaxed resize-y selection:bg-indigo-600 selection:text-white"
+          className="w-full bg-[#0a0d15] text-slate-200 font-mono text-xs p-3.5 rounded-xl border border-slate-800/80 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none leading-relaxed resize-y selection:bg-emerald-600 selection:text-white"
           spellCheck={false}
         />
       </div>
@@ -278,7 +278,7 @@ Tasarım, onun nasıl çalıştığıdır."
 — Steve Jobs`);
               }
             }}
-            className="text-indigo-400 hover:text-indigo-300 flex items-center gap-1 transition-all"
+            className="text-emerald-400 hover:text-emerald-300 flex items-center gap-1 transition-all"
           >
             <Sparkles className="w-3 h-3" />
             <span>Örnek Doldur ({config.language.toUpperCase()})</span>

@@ -145,7 +145,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
         title: isEn ? "Copy to Clipboard" : "Panoya Kopyala",
         description: isEn ? "Copy image directly to clipboard" : "Görseli doğrudan panoya kopyala",
         shortcut: "Ctrl+Shift+C",
-        icon: <Copy className="w-4 h-4 text-blue-400" />,
+        icon: <Copy className="w-4 h-4 text-emerald-400" />,
         action: () => {
           onCopyImage();
           onClose();
@@ -212,7 +212,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
                 ? "Dili Türkçe Yap (Switch to Turkish)"
                 : "Switch Language to English (İngilizce Yap)",
               description: isEn ? "Switch interface language" : "SnapMark arayüz dilini değiştir",
-              icon: <Languages className="w-4 h-4 text-indigo-400" />,
+              icon: <Languages className="w-4 h-4 text-emerald-400" />,
               action: () => {
                 onToggleLanguage();
                 onClose();
@@ -226,7 +226,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
         title: isEn ? "Full Screen Presentation Mode" : "Tam Ekran Sunum Modu",
         description: isEn ? "Hide UI menus and present slides cleanly" : "Tüm menüleri gizle, temiz sunum görünümüne geç",
         shortcut: "F11",
-        icon: <Maximize2 className="w-4 h-4 text-sky-400" />,
+        icon: <Maximize2 className="w-4 h-4 text-emerald-400" />,
         action: () => {
           onTogglePresentation();
           onClose();
@@ -238,7 +238,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
         title: isEn ? "Keyboard Shortcuts Guide" : "Klavye Kısayolları Rehberi",
         description: isEn ? "View all shortcut key bindings" : "Tüm tuş kombinasyonlarını görüntüle",
         shortcut: "?",
-        icon: <HelpCircle className="w-4 h-4 text-indigo-400" />,
+        icon: <HelpCircle className="w-4 h-4 text-emerald-400" />,
         action: () => {
           onOpenShortcuts();
           onClose();
@@ -274,7 +274,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
         title: isEn ? "Code Editor Mode" : "Kod Editörü Modu",
         description: isEn ? "Syntax highlighted code snippet" : "Sözdizimi vurgulu kod bloğu",
         shortcut: "Ctrl+1",
-        icon: <FileCode className="w-4 h-4 text-indigo-400" />,
+        icon: <FileCode className="w-4 h-4 text-emerald-400" />,
         active: currentMode === "code",
         action: () => {
           onModeChange("code");
@@ -300,7 +300,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
         title: isEn ? "Tweet / X Post Mode" : "Tweet / X Gönderi Modu",
         description: isEn ? "Social media post card design" : "Sosyal medya gönderisi tasarımı",
         shortcut: "Ctrl+2",
-        icon: <Share2 className="w-4 h-4 text-sky-400" />,
+        icon: <Share2 className="w-4 h-4 text-emerald-400" />,
         active: currentMode === "tweet",
         action: () => {
           onModeChange("tweet");
@@ -570,14 +570,14 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
                   onMouseEnter={() => setSelectedIndex(index)}
                   className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-left transition-all cursor-pointer ${
                     isSelected
-                      ? "bg-indigo-600/20 text-white border border-indigo-500/30"
+                      ? "bg-emerald-600/20 text-white border border-emerald-500/30"
                       : "text-zinc-300 hover:bg-white/5 border border-transparent"
                   }`}
                 >
                   <div className="flex items-center gap-3 min-w-0">
                     <div
                       className={`p-1.5 rounded-lg shrink-0 ${
-                        isSelected ? "bg-indigo-500/20 text-indigo-300" : "bg-white/5 text-zinc-400"
+                        isSelected ? "bg-emerald-500/20 text-emerald-300" : "bg-white/5 text-zinc-400"
                       }`}
                     >
                       {item.icon}
@@ -624,7 +624,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
               <kbd className="px-1.5 py-0.5 bg-white/5 rounded border border-white/10 text-zinc-400">↵</kbd> {isEn ? "Select" : "Seç"}
             </span>
           </div>
-          <span className="font-mono text-[10px] text-indigo-400">SnapMark Pro Studio</span>
+          <span className="font-mono text-[10px] text-emerald-400">SnapMark Pro Studio</span>
         </div>
       </div>
     </div>

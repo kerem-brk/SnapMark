@@ -106,7 +106,7 @@ const AccordionSection: React.FC<AccordionSectionProps> = ({
           <div
             className={`w-7 h-7 rounded-lg border flex items-center justify-center shrink-0 transition-colors ${
               isOpen
-                ? "bg-indigo-600/20 border-indigo-500/40 text-indigo-400"
+                ? "bg-emerald-600/20 border-emerald-500/40 text-emerald-400"
                 : "bg-slate-800/80 border-slate-700/60 text-slate-400 group-hover:text-white"
             }`}
           >
@@ -116,7 +116,7 @@ const AccordionSection: React.FC<AccordionSectionProps> = ({
             {title}
           </span>
           {badge && (
-            <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-white/5 border border-white/10 text-indigo-300 font-medium shrink-0 ml-auto mr-1 truncate max-w-[130px]">
+            <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-white/5 border border-white/10 text-emerald-300 font-medium shrink-0 ml-auto mr-1 truncate max-w-[130px]">
               {badge}
             </span>
           )}
@@ -125,7 +125,7 @@ const AccordionSection: React.FC<AccordionSectionProps> = ({
         <div className="flex items-center shrink-0 ml-2">
           <div
             className={`w-6 h-6 rounded-md flex items-center justify-center text-slate-400 group-hover:text-white transition-transform duration-200 ${
-              isOpen ? "rotate-180 text-indigo-400 bg-indigo-500/10" : ""
+              isOpen ? "rotate-180 text-emerald-400 bg-emerald-500/10" : ""
             }`}
           >
             <ChevronDown className="w-4 h-4" />
@@ -152,15 +152,15 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
   const [activeStopIndex, setActiveStopIndex] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Açılır / Kapanır Bölümlerin Durumu (Accordion)
+  // Açılır / Kapanır Bölümlerin Durumu (Accordion) - Sadece Arka Plan ve Kod Metin Ayarları Açık
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     carousel: false,   // Faz 5: Carousel & Çoklu Slayt Stüdyosu
-    mode: true,        // Faz 3: İçerik Modu (Kod / Tweet / Alıntı / Diff / CLI)
+    mode: false,       // Faz 3: İçerik Modu (Kod / Tweet / Alıntı / Diff / CLI)
     diff: false,       // Faz 5: Diff / Karşılaştırma Editörü
     typewriter: false, // Faz 5: Canlı Daktilo Animasyonu
     tilt: false,       // Faz 4: 3D Perspektif & Eğim Stüdyosu
-    background: false, // Arka plan
-    code: true,        // Kod & Metin ayarları
+    background: true,  // Arka plan (AÇIK)
+    code: true,        // Kod & Metin ayarları (AÇIK)
     format: false,     // Tuval formatı & Sosyal Medya
     card: false,       // Kart çerçevesi & Pencere Başlığı Rengi
     logo: false,       // Faz 7B: Özel Marka Logosu & Filigran
@@ -322,11 +322,11 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
     if (config.gradientStops && config.gradientStops.length >= 2) {
       return config.gradientStops;
     }
-    const colors = config.gradientColors || ["#ec4899", "#8b5cf6", "#3b82f6"];
+    const colors = config.gradientColors || ["#059669", "#10b981", "#34d399"];
     return [
-      { color: colors[0] || "#ec4899", position: 0 },
-      { color: colors[1] || "#8b5cf6", position: 50 },
-      { color: colors[2] || "#3b82f6", position: 100 },
+      { color: colors[0] || "#059669", position: 0 },
+      { color: colors[1] || "#10b981", position: 50 },
+      { color: colors[2] || "#34d399", position: 100 },
     ];
   }, [config.gradientStops, config.gradientColors]);
 
@@ -390,7 +390,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
           <button
             type="button"
             onClick={expandAll}
-            className="text-slate-400 hover:text-indigo-400 transition-colors px-1.5 py-0.5 rounded hover:bg-slate-800 cursor-pointer"
+            className="text-slate-400 hover:text-emerald-400 transition-colors px-1.5 py-0.5 rounded hover:bg-slate-800 cursor-pointer"
           >
             {isEn ? "Expand All" : "Tümünü Aç"}
           </button>
@@ -398,7 +398,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
           <button
             type="button"
             onClick={collapseAll}
-            className="text-slate-400 hover:text-indigo-400 transition-colors px-1.5 py-0.5 rounded hover:bg-slate-800 cursor-pointer"
+            className="text-slate-400 hover:text-emerald-400 transition-colors px-1.5 py-0.5 rounded hover:bg-slate-800 cursor-pointer"
           >
             {isEn ? "Collapse All" : "Kapat"}
           </button>
@@ -413,7 +413,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
           placeholder={isEn ? "Search settings... (font, color, 3D, logo)" : "Ayarlarda ara... (font, renk, 3D, logo)"}
           value={searchQuery}
           onChange={(e) => handleSearch(e.target.value)}
-          className="w-full bg-[#131b2a] border border-slate-700/80 focus:border-indigo-500 rounded-xl pl-8 pr-8 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none transition-colors shadow-inner"
+          className="w-full bg-[#131b2a] border border-slate-700/80 focus:border-emerald-500 rounded-xl pl-8 pr-8 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none transition-colors shadow-inner"
         />
         {searchQuery && (
           <button
@@ -429,7 +429,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
       {/* 0. CAROUSEL & SLAYT STÜDYOSU (Faz 5) */}
       <AccordionSection
         title={t.carouselStudio}
-        icon={<Layers className="w-3.5 h-3.5 text-indigo-400" />}
+        icon={<Layers className="w-3.5 h-3.5 text-emerald-400" />}
         badge={`${config.slides?.length || 1} ${config.uiLanguage === "en" ? "Slides" : "Slayt"}`}
         isOpen={openSections.carousel}
         onToggle={() => toggleSection("carousel")}
@@ -450,7 +450,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                 type="button"
                 onClick={() => onChange({ showSlideCounter: !config.showSlideCounter })}
                 className={`w-9 h-5 rounded-full transition-colors relative cursor-pointer ${
-                  config.showSlideCounter ? "bg-indigo-600" : "bg-slate-700"
+                  config.showSlideCounter ? "bg-emerald-600" : "bg-slate-700"
                 }`}
               >
                 <span
@@ -469,7 +469,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                 type="button"
                 onClick={() => onChange({ showSwipeIndicator: !config.showSwipeIndicator })}
                 className={`w-9 h-5 rounded-full transition-colors relative cursor-pointer ${
-                  config.showSwipeIndicator ? "bg-indigo-600" : "bg-slate-700"
+                  config.showSwipeIndicator ? "bg-emerald-600" : "bg-slate-700"
                 }`}
               >
                 <span
@@ -486,7 +486,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
       {/* 1. İÇERİK TÜRÜ & KART MODU (Faz 3 & Faz 5 Çok Modlu Stüdyo) */}
       <AccordionSection
         title={t.contentMode}
-        icon={<Layers className="w-3.5 h-3.5 text-indigo-400" />}
+        icon={<Layers className="w-3.5 h-3.5 text-emerald-400" />}
         badge={
           config.mode === "code"
             ? "💻 Kod Modu"
@@ -506,7 +506,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
           <div className="space-y-1.5">
             <label className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider flex items-center justify-between">
               <span>Kart Türü</span>
-              <span className="text-[10px] text-indigo-400 font-medium">
+              <span className="text-[10px] text-emerald-400 font-medium">
                 {config.mode === "code"
                   ? "Yazılım Kod Kartı"
                   : config.mode === "diff"
@@ -524,7 +524,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                 onClick={() => onChange({ mode: "code" })}
                 className={`py-2 px-2 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
                   config.mode === "code"
-                    ? "bg-indigo-600 text-white shadow-sm"
+                    ? "bg-emerald-600 text-white shadow-sm"
                     : "text-slate-400 hover:text-white hover:bg-slate-800/60"
                 }`}
               >
@@ -536,7 +536,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                 onClick={() => onChange({ mode: "diff" })}
                 className={`py-2 px-2 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
                   config.mode === "diff"
-                    ? "bg-indigo-600 text-white shadow-sm"
+                    ? "bg-emerald-600 text-white shadow-sm"
                     : "text-slate-400 hover:text-white hover:bg-slate-800/60"
                 }`}
               >
@@ -548,7 +548,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                 onClick={() => onChange({ mode: "terminal" })}
                 className={`py-2 px-2 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
                   config.mode === "terminal"
-                    ? "bg-indigo-600 text-white shadow-sm"
+                    ? "bg-emerald-600 text-white shadow-sm"
                     : "text-slate-400 hover:text-white hover:bg-slate-800/60"
                 }`}
               >
@@ -562,7 +562,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                 onClick={() => onChange({ mode: "tweet" })}
                 className={`py-2 px-3 rounded-lg text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer ${
                   config.mode === "tweet"
-                    ? "bg-indigo-600 text-white shadow-sm"
+                    ? "bg-emerald-600 text-white shadow-sm"
                     : "text-slate-400 hover:text-white hover:bg-slate-800/60"
                 }`}
               >
@@ -574,7 +574,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                 onClick={() => onChange({ mode: "quote" })}
                 className={`py-2 px-3 rounded-lg text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer ${
                   config.mode === "quote"
-                    ? "bg-indigo-600 text-white shadow-sm"
+                    ? "bg-emerald-600 text-white shadow-sm"
                     : "text-slate-400 hover:text-white hover:bg-slate-800/60"
                 }`}
               >
@@ -594,7 +594,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                   value={config.terminalUser || "developer@snapmark:~"}
                   onChange={(e) => onChange({ terminalUser: e.target.value })}
                   placeholder="developer@snapmark:~"
-                  className="w-full bg-[#131b2a] border border-slate-700/80 rounded-xl px-2.5 py-1.5 text-xs text-emerald-400 font-mono focus:outline-none focus:border-indigo-500"
+                  className="w-full bg-[#131b2a] border border-slate-700/80 rounded-xl px-2.5 py-1.5 text-xs text-emerald-400 font-mono focus:outline-none focus:border-emerald-500"
                 />
               </div>
 
@@ -605,7 +605,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                   value={config.terminalCommand || "npm install @snapmark/core"}
                   onChange={(e) => onChange({ terminalCommand: e.target.value })}
                   placeholder="npm install @snapmark/core"
-                  className="w-full bg-[#131b2a] border border-slate-700/80 rounded-xl px-2.5 py-1.5 text-xs text-white font-mono font-semibold focus:outline-none focus:border-indigo-500"
+                  className="w-full bg-[#131b2a] border border-slate-700/80 rounded-xl px-2.5 py-1.5 text-xs text-white font-mono font-semibold focus:outline-none focus:border-emerald-500"
                 />
               </div>
 
@@ -619,7 +619,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                   value={config.terminalOutput || ""}
                   onChange={(e) => onChange({ terminalOutput: e.target.value })}
                   placeholder="✔ Package @snapmark/core installed successfully&#10;✔ 42 packages audited in 0.8s&#10;✔ Found 0 vulnerabilities&#10;🚀 Ready for production!"
-                  className="w-full bg-[#131b2a] border border-slate-700/80 rounded-xl p-2.5 text-xs text-slate-300 font-mono focus:outline-none focus:border-indigo-500 custom-scrollbar resize-y"
+                  className="w-full bg-[#131b2a] border border-slate-700/80 rounded-xl p-2.5 text-xs text-slate-300 font-mono focus:outline-none focus:border-emerald-500 custom-scrollbar resize-y"
                 />
               </div>
 
@@ -666,7 +666,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                   <button
                     type="button"
                     onClick={() => tweetAvatarInputRef.current?.click()}
-                    className="text-[10px] text-indigo-400 hover:text-indigo-300 font-medium flex items-center gap-1 hover:underline cursor-pointer"
+                    className="text-[10px] text-emerald-400 hover:text-emerald-300 font-medium flex items-center gap-1 hover:underline cursor-pointer"
                   >
                     <Upload className="w-3 h-3" />
                     <span>Özel Fotoğraf Yükle</span>
@@ -681,9 +681,9 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                       src={config.tweetAvatar || PRESET_AVATARS[0].url}
                       alt="Aktif Avatar"
                       crossOrigin="anonymous"
-                      className="w-10 h-10 rounded-full object-cover ring-2 ring-indigo-500 ring-offset-2 ring-offset-[#0f1523]"
+                      className="w-10 h-10 rounded-full object-cover ring-2 ring-emerald-500 ring-offset-2 ring-offset-[#0f1523]"
                     />
-                    <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-indigo-600 flex items-center justify-center text-[9px] text-white">
+                    <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-600 flex items-center justify-center text-[9px] text-white">
                       ✓
                     </div>
                   </div>
@@ -700,7 +700,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                         onClick={() => onChange({ tweetAvatar: avatar.url })}
                         className={`relative rounded-full shrink-0 transition-transform ${
                           isSelected
-                            ? "scale-105 ring-2 ring-indigo-400 ring-offset-1 ring-offset-[#0f1523]"
+                            ? "scale-105 ring-2 ring-emerald-400 ring-offset-1 ring-offset-[#0f1523]"
                             : "opacity-70 hover:opacity-100 hover:scale-105"
                         }`}
                         title={avatar.name}
@@ -726,7 +726,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                     value={config.tweetName ?? ""}
                     onChange={(e) => onChange({ tweetName: e.target.value })}
                     placeholder="Kerem Yılmaz"
-                    className="w-full bg-[#131b2a] border border-slate-700/70 rounded-xl px-2.5 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                    className="w-full bg-[#131b2a] border border-slate-700/70 rounded-xl px-2.5 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
                   />
                 </div>
                 <div className="space-y-1">
@@ -736,7 +736,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                     value={config.tweetHandle ?? ""}
                     onChange={(e) => onChange({ tweetHandle: e.target.value.replace(/^@/, '') })}
                     placeholder="keremdev"
-                    className="w-full bg-[#131b2a] border border-slate-700/70 rounded-xl px-2.5 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                    className="w-full bg-[#131b2a] border border-slate-700/70 rounded-xl px-2.5 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
                   />
                 </div>
               </div>
@@ -756,7 +756,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                       onClick={() => onChange({ tweetVerified: badge.id as VerifiedType })}
                       className={`py-1.5 rounded-lg font-medium transition-all ${
                         (config.tweetVerified || "blue") === badge.id
-                          ? "bg-indigo-600 text-white font-semibold shadow-sm"
+                          ? "bg-emerald-600 text-white font-semibold shadow-sm"
                           : "text-slate-400 hover:text-white"
                       }`}
                     >
@@ -779,7 +779,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                   value={config.tweetContent ?? ""}
                   onChange={(e) => onChange({ tweetContent: e.target.value })}
                   placeholder="Tweet metnini buraya yazın..."
-                  className="w-full bg-[#131b2a] border border-slate-700/70 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500 resize-y leading-relaxed"
+                  className="w-full bg-[#131b2a] border border-slate-700/70 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500 resize-y leading-relaxed"
                 />
               </div>
 
@@ -792,7 +792,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                     value={config.tweetDate ?? ""}
                     onChange={(e) => onChange({ tweetDate: e.target.value })}
                     placeholder="21:42 · 10 Eyl 2026"
-                    className="w-full bg-[#131b2a] border border-slate-700/70 rounded-xl px-2.5 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                    className="w-full bg-[#131b2a] border border-slate-700/70 rounded-xl px-2.5 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
                   />
                 </div>
                 <div className="space-y-1">
@@ -802,7 +802,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                     value={config.tweetClient ?? ""}
                     onChange={(e) => onChange({ tweetClient: e.target.value })}
                     placeholder="Twitter for Mac"
-                    className="w-full bg-[#131b2a] border border-slate-700/70 rounded-xl px-2.5 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                    className="w-full bg-[#131b2a] border border-slate-700/70 rounded-xl px-2.5 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
                   />
                 </div>
               </div>
@@ -817,7 +817,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                       onChange({ tweetShowMetrics: config.tweetShowMetrics !== false ? false : true })
                     }
                     className={`w-9 h-5 rounded-full transition-all relative ${
-                      config.tweetShowMetrics !== false ? "bg-indigo-600" : "bg-slate-800"
+                      config.tweetShowMetrics !== false ? "bg-emerald-600" : "bg-slate-800"
                     }`}
                   >
                     <div
@@ -836,7 +836,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                         type="text"
                         value={config.tweetLikes ?? "1.4K"}
                         onChange={(e) => onChange({ tweetLikes: e.target.value })}
-                        className="w-full bg-[#131b2a] border border-slate-700/70 rounded-lg px-2 py-1 text-[11px] text-slate-200 text-center font-mono focus:outline-none focus:border-indigo-500"
+                        className="w-full bg-[#131b2a] border border-slate-700/70 rounded-lg px-2 py-1 text-[11px] text-slate-200 text-center font-mono focus:outline-none focus:border-emerald-500"
                       />
                     </div>
                     <div className="space-y-1">
@@ -845,7 +845,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                         type="text"
                         value={config.tweetRetweets ?? "382"}
                         onChange={(e) => onChange({ tweetRetweets: e.target.value })}
-                        className="w-full bg-[#131b2a] border border-slate-700/70 rounded-lg px-2 py-1 text-[11px] text-slate-200 text-center font-mono focus:outline-none focus:border-indigo-500"
+                        className="w-full bg-[#131b2a] border border-slate-700/70 rounded-lg px-2 py-1 text-[11px] text-slate-200 text-center font-mono focus:outline-none focus:border-emerald-500"
                       />
                     </div>
                     <div className="space-y-1">
@@ -854,7 +854,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                         type="text"
                         value={config.tweetViews ?? "54.8K"}
                         onChange={(e) => onChange({ tweetViews: e.target.value })}
-                        className="w-full bg-[#131b2a] border border-slate-700/70 rounded-lg px-2 py-1 text-[11px] text-slate-200 text-center font-mono focus:outline-none focus:border-indigo-500"
+                        className="w-full bg-[#131b2a] border border-slate-700/70 rounded-lg px-2 py-1 text-[11px] text-slate-200 text-center font-mono focus:outline-none focus:border-emerald-500"
                       />
                     </div>
                     <div className="space-y-1">
@@ -863,7 +863,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                         type="text"
                         value={config.tweetBookmarks ?? "215"}
                         onChange={(e) => onChange({ tweetBookmarks: e.target.value })}
-                        className="w-full bg-[#131b2a] border border-slate-700/70 rounded-lg px-2 py-1 text-[11px] text-slate-200 text-center font-mono focus:outline-none focus:border-indigo-500"
+                        className="w-full bg-[#131b2a] border border-slate-700/70 rounded-lg px-2 py-1 text-[11px] text-slate-200 text-center font-mono focus:outline-none focus:border-emerald-500"
                       />
                     </div>
                   </div>
@@ -890,7 +890,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                       onClick={() => onChange({ quoteStyle: st.id as QuoteStyle })}
                       className={`py-1.5 rounded-lg font-medium transition-all ${
                         (config.quoteStyle || "minimal") === st.id
-                          ? "bg-indigo-600 text-white font-semibold shadow-sm"
+                          ? "bg-emerald-600 text-white font-semibold shadow-sm"
                           : "text-slate-400 hover:text-white"
                       }`}
                     >
@@ -912,7 +912,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                   type="button"
                   onClick={() => onChange({ showQuoteMarks: !config.showQuoteMarks })}
                   className={`w-9 h-5 rounded-full transition-all relative ${
-                    config.showQuoteMarks ? "bg-indigo-600" : "bg-slate-800"
+                    config.showQuoteMarks ? "bg-emerald-600" : "bg-slate-800"
                   }`}
                 >
                   <div
@@ -934,7 +934,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                   value={config.quoteContent ?? ""}
                   onChange={(e) => onChange({ quoteContent: e.target.value })}
                   placeholder="İlham verici sözü veya alıntıyı buraya yazın..."
-                  className="w-full bg-[#131b2a] border border-slate-700/70 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500 resize-y leading-relaxed font-serif italic"
+                  className="w-full bg-[#131b2a] border border-slate-700/70 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500 resize-y leading-relaxed font-serif italic"
                 />
               </div>
 
@@ -947,7 +947,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                     value={config.quoteAuthor ?? ""}
                     onChange={(e) => onChange({ quoteAuthor: e.target.value })}
                     placeholder="Steve Jobs"
-                    className="w-full bg-[#131b2a] border border-slate-700/70 rounded-xl px-2.5 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                    className="w-full bg-[#131b2a] border border-slate-700/70 rounded-xl px-2.5 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
                   />
                 </div>
                 <div className="space-y-1">
@@ -957,7 +957,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                     value={config.quoteTitle ?? ""}
                     onChange={(e) => onChange({ quoteTitle: e.target.value })}
                     placeholder="Apple Kurucusu"
-                    className="w-full bg-[#131b2a] border border-slate-700/70 rounded-xl px-2.5 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                    className="w-full bg-[#131b2a] border border-slate-700/70 rounded-xl px-2.5 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
                   />
                 </div>
               </div>
@@ -1022,8 +1022,8 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
 
           {/* KOD MODU BİLGİSİ */}
           {config.mode === "code" && (
-            <div className="p-2.5 bg-indigo-500/10 border border-indigo-500/20 rounded-xl text-[11px] text-indigo-300 flex items-center gap-2">
-              <Code2 className="w-4 h-4 shrink-0 text-indigo-400" />
+            <div className="p-2.5 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-[11px] text-emerald-300 flex items-center gap-2">
+              <Code2 className="w-4 h-4 shrink-0 text-emerald-400" />
               <span>Kod düzenleme, sekmeler ve sözdizimi için aşağıdaki "Kod & Metin Ayarları" bölümünü kullanabilirsiniz.</span>
             </div>
           )}
@@ -1033,7 +1033,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
       {/* CANLI DAKTİLO (TYPEWRITER) & VİDEO ANİMASYONU (Faz 5) */}
       <AccordionSection
         title={t.typewriter}
-        icon={<Play className="w-3.5 h-3.5 text-indigo-400" />}
+        icon={<Play className="w-3.5 h-3.5 text-emerald-400" />}
         badge={
           config.typewriterPlaying
             ? config.uiLanguage === "en" ? "▶ Playing" : "▶ Oynatılıyor"
@@ -1057,7 +1057,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
               className={`flex-1 py-2 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 transition-all border shadow-sm cursor-pointer ${
                 config.typewriterPlaying
                   ? "bg-amber-600 hover:bg-amber-500 text-white border-amber-500"
-                  : "bg-indigo-600 hover:bg-indigo-500 text-white border-indigo-500"
+                  : "bg-emerald-600 hover:bg-emerald-500 text-white border-emerald-500"
               }`}
             >
               {config.typewriterPlaying ? (
@@ -1082,7 +1082,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
               className="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 hover:border-slate-600 text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer"
               title={config.uiLanguage === "en" ? "Restart" : "Baştan Başlat"}
             >
-              <RotateCcw className="w-3.5 h-3.5 text-indigo-400" />
+              <RotateCcw className="w-3.5 h-3.5 text-emerald-400" />
               <span>{config.uiLanguage === "en" ? "Reset" : "Başa Sar"}</span>
             </button>
           </div>
@@ -1102,7 +1102,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                     onClick={() => onChange({ typewriterSpeedMode: sp.id })}
                     className={`py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
                       isSel
-                        ? "bg-indigo-600 text-white font-semibold shadow-sm"
+                        ? "bg-emerald-600 text-white font-semibold shadow-sm"
                         : "text-slate-400 hover:text-white"
                     }`}
                   >
@@ -1146,7 +1146,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
               type="button"
               onClick={() => onChange({ tilt3d: !config.tilt3d })}
               className={`w-9 h-5 rounded-full transition-all relative ${
-                config.tilt3d ? "bg-indigo-600" : "bg-slate-800"
+                config.tilt3d ? "bg-emerald-600" : "bg-slate-800"
               }`}
             >
               <div
@@ -1181,7 +1181,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                         }
                         className={`py-1.5 px-2 rounded-lg font-medium transition-all text-center ${
                           isSelected
-                            ? "bg-indigo-600 text-white font-semibold shadow-sm"
+                            ? "bg-emerald-600 text-white font-semibold shadow-sm"
                             : "text-slate-400 hover:text-white"
                         }`}
                       >
@@ -1196,7 +1196,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
               <div className="space-y-1">
                 <div className="flex items-center justify-between text-[10px] text-slate-400">
                   <span>Dikey Eğim (Rotate X)</span>
-                  <span className="font-mono text-indigo-400">{config.tiltRotateX ?? 12}°</span>
+                  <span className="font-mono text-emerald-400">{config.tiltRotateX ?? 12}°</span>
                 </div>
                 <input
                   type="range"
@@ -1207,7 +1207,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                   onChange={(e) =>
                     onChange({ tiltRotateX: Number(e.target.value), tiltPreset: undefined })
                   }
-                  className="w-full accent-indigo-500 cursor-pointer h-1.5 bg-slate-800 rounded-lg"
+                  className="w-full accent-emerald-500 cursor-pointer h-1.5 bg-slate-800 rounded-lg"
                 />
               </div>
 
@@ -1215,7 +1215,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
               <div className="space-y-1">
                 <div className="flex items-center justify-between text-[10px] text-slate-400">
                   <span>Yatay Açı (Rotate Y)</span>
-                  <span className="font-mono text-indigo-400">{config.tiltRotateY ?? -16}°</span>
+                  <span className="font-mono text-emerald-400">{config.tiltRotateY ?? -16}°</span>
                 </div>
                 <input
                   type="range"
@@ -1226,7 +1226,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                   onChange={(e) =>
                     onChange({ tiltRotateY: Number(e.target.value), tiltPreset: undefined })
                   }
-                  className="w-full accent-indigo-500 cursor-pointer h-1.5 bg-slate-800 rounded-lg"
+                  className="w-full accent-emerald-500 cursor-pointer h-1.5 bg-slate-800 rounded-lg"
                 />
               </div>
 
@@ -1234,7 +1234,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
               <div className="space-y-1">
                 <div className="flex items-center justify-between text-[10px] text-slate-400">
                   <span>Hafif Döndürme (Rotate Z)</span>
-                  <span className="font-mono text-indigo-400">{config.tiltRotateZ ?? 4}°</span>
+                  <span className="font-mono text-emerald-400">{config.tiltRotateZ ?? 4}°</span>
                 </div>
                 <input
                   type="range"
@@ -1245,7 +1245,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                   onChange={(e) =>
                     onChange({ tiltRotateZ: Number(e.target.value), tiltPreset: undefined })
                   }
-                  className="w-full accent-indigo-500 cursor-pointer h-1.5 bg-slate-800 rounded-lg"
+                  className="w-full accent-emerald-500 cursor-pointer h-1.5 bg-slate-800 rounded-lg"
                 />
               </div>
 
@@ -1261,7 +1261,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                       onChange({ tiltGlow: config.tiltGlow !== false ? false : true })
                     }
                     className={`w-9 h-5 rounded-full transition-all relative ${
-                      config.tiltGlow !== false ? "bg-indigo-600" : "bg-slate-800"
+                      config.tiltGlow !== false ? "bg-emerald-600" : "bg-slate-800"
                     }`}
                   >
                     <div
@@ -1279,7 +1279,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                       <div className="relative flex items-center">
                         <input
                           type="color"
-                          value={config.tiltGlowColor || "#6366f1"}
+                          value={config.tiltGlowColor || "#10b981"}
                           onChange={(e) => onChange({ tiltGlowColor: e.target.value })}
                           className="w-8 h-8 rounded-xl cursor-pointer border border-slate-700 bg-transparent p-0.5 shrink-0"
                           title="Renk Paletini Aç"
@@ -1287,10 +1287,10 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                       </div>
                       <input
                         type="text"
-                        value={config.tiltGlowColor || "#6366f1"}
+                        value={config.tiltGlowColor || "#10b981"}
                         onChange={(e) => onChange({ tiltGlowColor: e.target.value })}
-                        placeholder="#6366f1"
-                        className="flex-1 bg-[#131b2a] border border-slate-700/80 rounded-xl px-2.5 py-1.5 text-xs text-white font-mono uppercase focus:outline-none focus:border-indigo-500"
+                        placeholder="#10b981"
+                        className="flex-1 bg-[#131b2a] border border-slate-700/80 rounded-xl px-2.5 py-1.5 text-xs text-white font-mono uppercase focus:outline-none focus:border-emerald-500"
                       />
                     </div>
 
@@ -1299,7 +1299,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                       <span className="text-[10px] text-slate-400 font-medium">Popüler Neon Tonları:</span>
                       <div className="flex items-center gap-1.5 flex-wrap pt-0.5">
                         {NEON_GLOW_PRESETS.map((preset) => {
-                          const isSel = (config.tiltGlowColor || "#6366f1").toLowerCase() === preset.color.toLowerCase();
+                          const isSel = (config.tiltGlowColor || "#10b981").toLowerCase() === preset.color.toLowerCase();
                           return (
                             <button
                               key={preset.id}
@@ -1320,7 +1320,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                     <div className="space-y-1 pt-1 border-t border-slate-800/80">
                       <div className="flex items-center justify-between text-[10px] text-slate-400">
                         <span>Işıma Yayılma Gücü</span>
-                        <span className="font-mono text-indigo-400">{config.tiltGlowRadius ?? 45}px</span>
+                        <span className="font-mono text-emerald-400">{config.tiltGlowRadius ?? 45}px</span>
                       </div>
                       <input
                         type="range"
@@ -1329,7 +1329,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                         step={5}
                         value={config.tiltGlowRadius ?? 45}
                         onChange={(e) => onChange({ tiltGlowRadius: Number(e.target.value) })}
-                        className="w-full accent-indigo-500 cursor-pointer h-1.5 bg-slate-800 rounded-lg"
+                        className="w-full accent-emerald-500 cursor-pointer h-1.5 bg-slate-800 rounded-lg"
                       />
                     </div>
                   </div>
@@ -1365,7 +1365,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
               onClick={() => onChange({ bgType: "gradient" })}
               className={`py-1.5 rounded-lg text-[11px] font-medium transition-all ${
                 config.bgType === "gradient"
-                  ? "bg-indigo-600 text-white font-semibold shadow-sm"
+                  ? "bg-emerald-600 text-white font-semibold shadow-sm"
                   : "text-slate-400 hover:text-white"
               }`}
             >
@@ -1375,7 +1375,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
               onClick={() => onChange({ bgType: "pattern" })}
               className={`py-1.5 rounded-lg text-[11px] font-medium transition-all ${
                 config.bgType === "pattern"
-                  ? "bg-indigo-600 text-white font-semibold shadow-sm"
+                  ? "bg-emerald-600 text-white font-semibold shadow-sm"
                   : "text-slate-400 hover:text-white"
               }`}
             >
@@ -1385,7 +1385,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
               onClick={() => onChange({ bgType: "custom" })}
               className={`py-1.5 rounded-lg text-[11px] font-medium transition-all ${
                 config.bgType === "custom"
-                  ? "bg-indigo-600 text-white font-semibold shadow-sm"
+                  ? "bg-emerald-600 text-white font-semibold shadow-sm"
                   : "text-slate-400 hover:text-white"
               }`}
             >
@@ -1395,7 +1395,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
               onClick={() => onChange({ bgType: "transparent" })}
               className={`py-1.5 rounded-lg text-[11px] font-medium transition-all ${
                 config.bgType === "transparent"
-                  ? "bg-indigo-600 text-white font-semibold shadow-sm"
+                  ? "bg-emerald-600 text-white font-semibold shadow-sm"
                   : "text-slate-400 hover:text-white"
               }`}
             >
@@ -1412,7 +1412,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                   onClick={() => onChange({ useCustomGradient: false })}
                   className={`flex-1 py-1 rounded-md transition-all ${
                     !config.useCustomGradient
-                      ? "bg-indigo-600 text-white font-semibold shadow-sm"
+                      ? "bg-emerald-600 text-white font-semibold shadow-sm"
                       : "text-slate-400 hover:text-white"
                   }`}
                 >
@@ -1422,7 +1422,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                   onClick={() => onChange({ useCustomGradient: true })}
                   className={`flex-1 py-1 rounded-md transition-all ${
                     config.useCustomGradient
-                      ? "bg-indigo-600 text-white font-semibold shadow-sm"
+                      ? "bg-emerald-600 text-white font-semibold shadow-sm"
                       : "text-slate-400 hover:text-white"
                   }`}
                 >
@@ -1473,7 +1473,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                   <div className="space-y-1">
                     <div className="flex items-center justify-between text-[10px] text-slate-400">
                       <span className="font-semibold text-slate-300">Canlı Degrade Şeridi</span>
-                      <span className="font-mono text-indigo-400 uppercase text-[9px] px-1.5 py-0.5 bg-indigo-500/10 rounded border border-indigo-500/20">
+                      <span className="font-mono text-emerald-400 uppercase text-[9px] px-1.5 py-0.5 bg-emerald-500/10 rounded border border-emerald-500/20">
                         {config.gradientType || "linear"} • {config.gradientAngle ?? 135}°
                       </span>
                     </div>
@@ -1504,7 +1504,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                           }
                           className={`py-1 rounded-md font-medium transition-all ${
                             (config.gradientType || "linear") === type.id
-                              ? "bg-indigo-600 text-white font-semibold"
+                              ? "bg-emerald-600 text-white font-semibold"
                               : "text-slate-400 hover:text-white"
                           }`}
                         >
@@ -1521,7 +1521,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                     <div className="space-y-1.5 pt-1 border-t border-slate-800">
                       <div className="flex justify-between items-center text-[10px] text-slate-400">
                         <span className="flex items-center gap-1 font-medium">
-                          <Compass className="w-3 h-3 text-indigo-400" />
+                          <Compass className="w-3 h-3 text-emerald-400" />
                           <span>Açı & Akış Yönü</span>
                         </span>
                         <span className="font-mono font-semibold text-white bg-slate-800 px-1.5 py-0.5 rounded">
@@ -1541,7 +1541,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                             useCustomGradient: true,
                           })
                         }
-                        className="w-full accent-indigo-500 h-1.5 bg-slate-800 rounded-lg cursor-pointer"
+                        className="w-full accent-emerald-500 h-1.5 bg-slate-800 rounded-lg cursor-pointer"
                       />
 
                       {/* Hızlı 8 Yön Butonu */}
@@ -1566,7 +1566,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                             }
                             className={`w-6 h-6 rounded-md text-[11px] font-bold transition-all flex items-center justify-center ${
                               (config.gradientAngle ?? 135) === dir.angle
-                                ? "bg-indigo-600 text-white shadow-sm"
+                                ? "bg-emerald-600 text-white shadow-sm"
                                 : "bg-slate-800/80 text-slate-400 hover:text-white hover:bg-slate-700"
                             }`}
                             title={`${dir.angle}°`}
@@ -1594,7 +1594,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                             }));
                             onChange({ gradientStops: distributed, useCustomGradient: true });
                           }}
-                          className="text-[9px] text-slate-400 hover:text-indigo-300 bg-slate-800 px-1.5 py-0.5 rounded transition-colors"
+                          className="text-[9px] text-slate-400 hover:text-emerald-300 bg-slate-800 px-1.5 py-0.5 rounded transition-colors"
                           title="Tüm durakları 0% ile 100% arasına eşit aralıklarla yay"
                         >
                           Eşit Dağıt
@@ -1607,7 +1607,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                             }));
                             onChange({ gradientStops: reversed, useCustomGradient: true });
                           }}
-                          className="text-[9px] text-slate-400 hover:text-indigo-300 bg-slate-800 px-1.5 py-0.5 rounded transition-colors"
+                          className="text-[9px] text-slate-400 hover:text-emerald-300 bg-slate-800 px-1.5 py-0.5 rounded transition-colors"
                           title="Renk sıralamasını tersine çevir"
                         >
                           Ters Çevir
@@ -1623,7 +1623,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                             key={idx}
                             className={`p-2 rounded-xl border transition-all cursor-pointer ${
                               isSelected
-                                ? "bg-[#161f33] border-indigo-500 shadow-sm ring-1 ring-indigo-500/50"
+                                ? "bg-[#161f33] border-emerald-500 shadow-sm ring-1 ring-emerald-500/50"
                                 : "bg-[#0f1523] border-slate-800 hover:border-slate-700"
                             }`}
                             onClick={() => setActiveStopIndex(idx)}
@@ -1634,7 +1634,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                                 <div
                                   className={`w-6 h-6 rounded-lg border shrink-0 shadow-sm transition-all ${
                                     isSelected
-                                      ? "border-white scale-105 ring-2 ring-indigo-400/60"
+                                      ? "border-white scale-105 ring-2 ring-emerald-400/60"
                                       : "border-white/20"
                                   }`}
                                   style={{ backgroundColor: stop.color }}
@@ -1652,7 +1652,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                               {/* Durum & Sil Butonu */}
                               <div className="flex items-center gap-1.5">
                                 {isSelected ? (
-                                  <span className="text-[9px] font-medium text-indigo-300 bg-indigo-500/20 border border-indigo-500/40 px-1.5 py-0.5 rounded">
+                                  <span className="text-[9px] font-medium text-emerald-300 bg-emerald-500/20 border border-emerald-500/40 px-1.5 py-0.5 rounded">
                                     Seçili
                                   </span>
                                 ) : (
@@ -1695,7 +1695,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                                   };
                                   onChange({ gradientStops: newStops, useCustomGradient: true });
                                 }}
-                                className="flex-1 accent-indigo-500 h-1 bg-slate-800 rounded-lg cursor-pointer"
+                                className="flex-1 accent-emerald-500 h-1 bg-slate-800 rounded-lg cursor-pointer"
                               />
                               <span className="text-[9px] font-mono text-slate-400 w-8 text-right">
                                 %{stop.position}
@@ -1719,24 +1719,24 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                           onChange({ gradientStops: newStops, useCustomGradient: true });
                           setActiveStopIndex(newStops.length - 1);
                         }}
-                        className="w-full py-1.5 rounded-lg border border-dashed border-slate-700 hover:border-indigo-500 bg-[#0f1523] hover:bg-[#151c2e] text-slate-300 text-[10px] font-medium flex items-center justify-center gap-1.5 transition-all"
+                        className="w-full py-1.5 rounded-lg border border-dashed border-slate-700 hover:border-emerald-500 bg-[#0f1523] hover:bg-[#151c2e] text-slate-300 text-[10px] font-medium flex items-center justify-center gap-1.5 transition-all"
                       >
-                        <Plus className="w-3 h-3 text-indigo-400" />
+                        <Plus className="w-3 h-3 text-emerald-400" />
                         <span>+ Yeni Renk Durağı Ekle ({currentStops.length}/6)</span>
                       </button>
                     )}
                   </div>
 
                   {/* HASSAS RENK SEÇİCİ (REACT-COLORFUL) */}
-                  <div className="p-3 bg-[#0d1320] rounded-xl border border-indigo-500/30 space-y-2.5 shadow-sm">
+                  <div className="p-3 bg-[#0d1320] rounded-xl border border-emerald-500/30 space-y-2.5 shadow-sm">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-1.5">
-                        <Sliders className="w-3.5 h-3.5 text-indigo-400" />
+                        <Sliders className="w-3.5 h-3.5 text-emerald-400" />
                         <span className="text-[11px] font-semibold text-white">
                           Hassas Renk Seçici
                         </span>
                       </div>
-                      <span className="text-[10px] bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-2 py-0.5 rounded-full font-medium">
+                      <span className="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full font-medium">
                         Durak #{safeActiveIndex + 1}
                       </span>
                     </div>
@@ -1831,7 +1831,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                           "#10b981",
                           "#06b6d4",
                           "#3b82f6",
-                          "#6366f1",
+                          "#10b981",
                           "#8b5cf6",
                           "#a855f7",
                           "#ffffff",
@@ -1860,7 +1860,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                             style={{ backgroundColor: hex }}
                             className={`w-5 h-5 rounded-full border border-white/20 transition-transform hover:scale-125 ${
                               activeStop.color.toLowerCase() === hex.toLowerCase()
-                                ? "ring-2 ring-indigo-400 scale-110 shadow-sm"
+                                ? "ring-2 ring-emerald-400 scale-110 shadow-sm"
                                 : ""
                             }`}
                             title={hex}
@@ -1879,7 +1879,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
             <div className="space-y-3 p-3 bg-[#131b2a] rounded-xl border border-slate-700/80">
               <div className="flex items-center justify-between text-[11px] text-slate-300 font-semibold">
                 <span>Desen Seçimi</span>
-                <span className="text-indigo-400 text-[10px]">
+                <span className="text-emerald-400 text-[10px]">
                   {PATTERNS.find((p) => p.id === config.pattern)?.name}
                 </span>
               </div>
@@ -1891,7 +1891,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                     onClick={() => onChange({ pattern: pat.id as PatternId })}
                     className={`p-2.5 rounded-xl border text-left text-xs font-medium transition-all ${
                       config.pattern === pat.id
-                        ? "bg-indigo-600/20 text-indigo-300 border-indigo-500 font-semibold shadow-sm"
+                        ? "bg-emerald-600/20 text-emerald-300 border-emerald-500 font-semibold shadow-sm"
                         : "bg-[#0f1523] text-slate-300 border-slate-800 hover:border-slate-700"
                     }`}
                   >
@@ -1920,7 +1920,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                   onChange={(e) =>
                     onChange({ patternOpacity: Number(e.target.value) / 100 })
                   }
-                  className="w-full accent-indigo-500 h-1.5 bg-slate-800 rounded-lg cursor-pointer"
+                  className="w-full accent-emerald-500 h-1.5 bg-slate-800 rounded-lg cursor-pointer"
                 />
               </div>
 
@@ -1928,7 +1928,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
               <div className="flex items-center justify-between pt-1 border-t border-slate-800">
                 <div className="flex flex-col">
                   <span className="text-[11px] text-slate-300 font-semibold flex items-center gap-1">
-                    <Eye className="w-3.5 h-3.5 text-indigo-400" />
+                    <Eye className="w-3.5 h-3.5 text-emerald-400" />
                     <span>Merkezi Spot Işığı (Kod Odaklama)</span>
                   </span>
                   <span className="text-[9px] text-slate-500">
@@ -1942,7 +1942,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                     })
                   }
                   className={`w-9 h-5 rounded-full transition-all relative ${
-                    config.patternSpotlight !== false ? "bg-indigo-600" : "bg-slate-800"
+                    config.patternSpotlight !== false ? "bg-emerald-600" : "bg-slate-800"
                   }`}
                 >
                   <div
@@ -1967,9 +1967,9 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
               />
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="w-full py-3 rounded-xl border-2 border-dashed border-slate-700 hover:border-indigo-500 bg-[#131b2a]/60 hover:bg-[#131b2a] text-slate-300 text-xs font-medium flex flex-col items-center justify-center gap-1.5 transition-all"
+                className="w-full py-3 rounded-xl border-2 border-dashed border-slate-700 hover:border-emerald-500 bg-[#131b2a]/60 hover:bg-[#131b2a] text-slate-300 text-xs font-medium flex flex-col items-center justify-center gap-1.5 transition-all"
               >
-                <Upload className="w-5 h-5 text-indigo-400" />
+                <Upload className="w-5 h-5 text-emerald-400" />
                 <span>Bilgisayarından Duvar Kağıdı Seç</span>
                 <span className="text-[10px] text-slate-500">PNG, JPG, WebP</span>
               </button>
@@ -2010,7 +2010,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                 type="button"
                 onClick={() => onChange({ useGrainTexture: !config.useGrainTexture })}
                 className={`w-9 h-5 rounded-full transition-all relative ${
-                  config.useGrainTexture ? "bg-indigo-600" : "bg-slate-800"
+                  config.useGrainTexture ? "bg-emerald-600" : "bg-slate-800"
                 }`}
               >
                 <div
@@ -2025,7 +2025,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
               <div className="space-y-1 pt-1 animate-in fade-in-50 duration-150">
                 <div className="flex items-center justify-between text-[10px] text-slate-400">
                   <span>Doku Yoğunluğu</span>
-                  <span className="font-mono text-indigo-400">
+                  <span className="font-mono text-emerald-400">
                     %{Math.round((config.grainOpacity ?? 0.18) * 100)}
                   </span>
                 </div>
@@ -2036,7 +2036,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                   step={0.01}
                   value={config.grainOpacity ?? 0.18}
                   onChange={(e) => onChange({ grainOpacity: Number(e.target.value) })}
-                  className="w-full accent-indigo-500 h-1.5 bg-slate-800 rounded-lg cursor-pointer"
+                  className="w-full accent-emerald-500 h-1.5 bg-slate-800 rounded-lg cursor-pointer"
                 />
               </div>
             )}
@@ -2136,7 +2136,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
               value={config.title}
               onChange={(e) => onChange({ title: e.target.value })}
               placeholder="Örn: index.ts, snippet.py"
-              className="w-full bg-[#131b2a] border border-slate-700/70 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
+              className="w-full bg-[#131b2a] border border-slate-700/70 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all"
             />
           </div>
 
@@ -2149,7 +2149,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
               <select
                 value={config.language}
                 onChange={(e) => onChange({ language: e.target.value as LanguageId })}
-                className="w-full bg-[#131b2a] border border-slate-700/70 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-indigo-500 transition-all cursor-pointer"
+                className="w-full bg-[#131b2a] border border-slate-700/70 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500 transition-all cursor-pointer"
               >
                 {LANGUAGES.map((lang) => (
                   <option key={lang.id} value={lang.id}>
@@ -2167,7 +2167,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                 <Code2 className="w-3.5 h-3.5 text-emerald-400" />
                 <span>Kod Teması (Syntax)</span>
               </label>
-              <span className="text-[10px] text-indigo-400 font-medium">
+              <span className="text-[10px] text-emerald-400 font-medium">
                 {CODE_THEMES.find((ct) => ct.id === (config.codeTheme || "onedark"))?.name}
               </span>
             </div>
@@ -2181,7 +2181,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                     onClick={() => onChange({ codeTheme: theme.id as CodeThemeId })}
                     className={`p-2 rounded-xl border text-left text-xs font-medium transition-all flex items-center justify-between ${
                       isSelected
-                        ? "bg-indigo-600/20 text-indigo-300 border-indigo-500 font-semibold shadow-sm"
+                        ? "bg-emerald-600/20 text-emerald-300 border-emerald-500 font-semibold shadow-sm"
                         : "bg-[#131b2a] text-slate-300 border-slate-800 hover:border-slate-700"
                     }`}
                   >
@@ -2200,10 +2200,10 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
           <div className="space-y-2 pt-2 border-t border-slate-800">
             <div className="flex items-center justify-between">
               <label className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-                <Type className="w-3.5 h-3.5 text-indigo-400" />
+                <Type className="w-3.5 h-3.5 text-emerald-400" />
                 <span>Font Ailesi</span>
               </label>
-              <span className="text-[10px] text-indigo-400 font-mono font-medium">
+              <span className="text-[10px] text-emerald-400 font-mono font-medium">
                 {FONT_FAMILIES.find((f) => f.id === (config.fontFamily || "jetbrains"))?.name}
               </span>
             </div>
@@ -2218,7 +2218,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                     onClick={() => onChange({ fontFamily: font.id as FontFamilyId })}
                     className={`p-2 rounded-xl border text-left text-xs transition-all cursor-pointer ${
                       isSelected
-                        ? "bg-indigo-600/25 text-indigo-300 border-indigo-500 font-semibold shadow-sm"
+                        ? "bg-emerald-600/25 text-emerald-300 border-emerald-500 font-semibold shadow-sm"
                         : "bg-[#131b2a] text-slate-300 border-slate-800 hover:border-slate-700 hover:text-white"
                     }`}
                     style={{ fontFamily: font.fontFamily }}
@@ -2243,7 +2243,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                 type="button"
                 onClick={() => onChange({ fontLigatures: !config.fontLigatures })}
                 className={`w-9 h-5 rounded-full transition-all relative ${
-                  config.fontLigatures ? "bg-indigo-600" : "bg-slate-800"
+                  config.fontLigatures ? "bg-emerald-600" : "bg-slate-800"
                 }`}
               >
                 <div
@@ -2269,7 +2269,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                   type="button"
                   onClick={() => onChange({ showTabIcons: config.showTabIcons === false ? true : false })}
                   className={`w-9 h-5 rounded-full transition-all relative ${
-                    config.showTabIcons !== false ? "bg-indigo-600" : "bg-slate-800"
+                    config.showTabIcons !== false ? "bg-emerald-600" : "bg-slate-800"
                   }`}
                 >
                   <div
@@ -2293,7 +2293,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                   type="button"
                   onClick={() => onChange({ showLanguageBadge: config.showLanguageBadge === false ? true : false })}
                   className={`w-9 h-5 rounded-full transition-all relative ${
-                    config.showLanguageBadge !== false ? "bg-indigo-600" : "bg-slate-800"
+                    config.showLanguageBadge !== false ? "bg-emerald-600" : "bg-slate-800"
                   }`}
                 >
                   <div
@@ -2323,7 +2323,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                       fontSize: Math.max(10, Math.min(36, Number(e.target.value) || 14)),
                     })
                   }
-                  className="w-14 bg-[#131b2a] border border-slate-700/80 rounded-lg px-2 py-0.5 text-xs text-center font-mono text-indigo-300 font-bold focus:outline-none focus:border-indigo-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                  className="w-14 bg-[#131b2a] border border-slate-700/80 rounded-lg px-2 py-0.5 text-xs text-center font-mono text-emerald-300 font-bold focus:outline-none focus:border-emerald-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                 />
                 <span className="text-[11px] text-slate-500 font-mono">px</span>
               </div>
@@ -2336,7 +2336,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
               step={1}
               value={config.fontSize}
               onChange={(e) => onChange({ fontSize: Number(e.target.value) })}
-              className="w-full accent-indigo-500 cursor-pointer h-1.5 bg-slate-800 rounded-lg"
+              className="w-full accent-emerald-500 cursor-pointer h-1.5 bg-slate-800 rounded-lg"
             />
 
             <div className="flex items-center justify-between gap-1 pt-0.5">
@@ -2346,7 +2346,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                   onClick={() => onChange({ fontSize: sz })}
                   className={`flex-1 py-1 rounded text-[11px] font-mono transition-all border ${
                     config.fontSize === sz
-                      ? "bg-indigo-600 text-white border-indigo-500 font-bold shadow-sm"
+                      ? "bg-emerald-600 text-white border-emerald-500 font-bold shadow-sm"
                       : "bg-slate-900/70 text-slate-400 border-slate-800 hover:text-white"
                   }`}
                 >
@@ -2365,7 +2365,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
               <button
                 onClick={() => onChange({ showLineNumbers: !config.showLineNumbers })}
                 className={`w-10 h-5 rounded-full transition-all relative ${
-                  config.showLineNumbers ? "bg-indigo-600" : "bg-slate-800"
+                  config.showLineNumbers ? "bg-emerald-600" : "bg-slate-800"
                 }`}
               >
                 <div
@@ -2382,14 +2382,14 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
             <div className="space-y-1.5 pt-1 border-t border-slate-800">
               <div className="flex items-center justify-between text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
                 <span>Satır Vurgula</span>
-                <span className="text-[10px] text-indigo-400 font-normal">Örn: 4 veya 3-6</span>
+                <span className="text-[10px] text-emerald-400 font-normal">Örn: 4 veya 3-6</span>
               </div>
               <input
                 type="text"
                 value={config.highlightedLines}
                 onChange={(e) => onChange({ highlightedLines: e.target.value })}
                 placeholder="Örn: 4 veya 3-6"
-                className="w-full bg-[#131b2a] border border-slate-700/70 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500 font-mono transition-all"
+                className="w-full bg-[#131b2a] border border-slate-700/70 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500 font-mono transition-all"
               />
               <p className="text-[10px] text-slate-500">
                 💡 İpucu: Tuvaldeki satır numarasına doğrudan tıklayarak da açıp kapatabilirsin.
@@ -2422,7 +2422,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
           <div className="space-y-1.5">
             <div className="flex items-center justify-between text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
               <span>📐 Sosyal Medya Boyutları</span>
-              <span className="text-[10px] text-indigo-400 font-normal">Otomatik oran</span>
+              <span className="text-[10px] text-emerald-400 font-normal">Otomatik oran</span>
             </div>
             <div className="grid grid-cols-2 gap-1.5">
               {SOCIAL_PRESETS.map((preset) => (
@@ -2432,7 +2432,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                   onClick={() => onChange({ socialPreset: preset.id })}
                   className={`p-2 rounded-xl text-left border transition-all ${
                     (config.socialPreset || "free") === preset.id
-                      ? "bg-indigo-600/20 border-indigo-500/60 text-white shadow-sm"
+                      ? "bg-emerald-600/20 border-emerald-500/60 text-white shadow-sm"
                       : "bg-[#131b2a] border-slate-800 text-slate-400 hover:text-slate-200 hover:bg-[#182338]"
                   }`}
                 >
@@ -2467,7 +2467,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                   item.id === "custom" ? "col-span-2" : ""
                 } ${
                   config.aspectRatio === item.id && (config.socialPreset === "free" || !config.socialPreset)
-                    ? "bg-indigo-600 text-white border-indigo-500 font-semibold shadow-sm"
+                    ? "bg-emerald-600 text-white border-emerald-500 font-semibold shadow-sm"
                     : "bg-slate-900/60 text-slate-400 border-slate-800 hover:text-slate-200"
                 }`}
               >
@@ -2480,7 +2480,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
           {/* Özel Format Ölçü Girişi */}
           {config.aspectRatio === "custom" && (
             <div className="p-3 bg-[#131b2a] rounded-xl border border-slate-700/80 space-y-2.5">
-              <span className="text-[11px] text-indigo-300 font-semibold block">
+              <span className="text-[11px] text-emerald-300 font-semibold block">
                 Özel Piksel Boyutları (W × H)
               </span>
               <div className="grid grid-cols-2 gap-2">
@@ -2492,7 +2492,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                     max={3840}
                     value={config.customWidth || 1200}
                     onChange={(e) => onChange({ customWidth: Number(e.target.value) || 1200 })}
-                    className="w-full bg-[#0a0e1a] border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 font-mono focus:outline-none focus:border-indigo-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                    className="w-full bg-[#0a0e1a] border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 font-mono focus:outline-none focus:border-emerald-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                   />
                 </div>
                 <div>
@@ -2503,7 +2503,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                     max={3840}
                     value={config.customHeight || 630}
                     onChange={(e) => onChange({ customHeight: Number(e.target.value) || 630 })}
-                    className="w-full bg-[#0a0e1a] border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 font-mono focus:outline-none focus:border-indigo-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                    className="w-full bg-[#0a0e1a] border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 font-mono focus:outline-none focus:border-emerald-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                   />
                 </div>
               </div>
@@ -2537,7 +2537,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
       {/* 4. KART ÇERÇEVESİ & BOŞLUKLAR (Açılır / Kapanır Menü) */}
       <AccordionSection
         title={t.cardFrame}
-        icon={<Sliders className="w-3.5 h-3.5 text-indigo-400" />}
+        icon={<Sliders className="w-3.5 h-3.5 text-emerald-400" />}
         badge={`${config.padding}px • ${
           config.windowStyle === "mac"
             ? "macOS"
@@ -2566,7 +2566,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                   onClick={() => onChange({ cardWidth: item.id as CardWidth })}
                   className={`py-1.5 rounded-lg text-xs font-medium text-center transition-all border ${
                     config.cardWidth === item.id
-                      ? "bg-indigo-600 text-white border-indigo-500 font-semibold shadow-sm"
+                      ? "bg-emerald-600 text-white border-emerald-500 font-semibold shadow-sm"
                       : "bg-slate-900/60 text-slate-400 border-slate-800 hover:text-slate-200"
                   }`}
                 >
@@ -2594,7 +2594,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                   onClick={() => onChange({ windowStyle: item.id as WindowStyle })}
                   className={`py-1.5 rounded-lg font-medium text-center transition-all border ${
                     config.windowStyle === item.id
-                      ? "bg-indigo-600/20 text-indigo-300 border-indigo-500/50 font-semibold"
+                      ? "bg-emerald-600/20 text-emerald-300 border-emerald-500/50 font-semibold"
                       : "bg-slate-900/60 text-slate-400 border-slate-800 hover:text-slate-200"
                   }`}
                 >
@@ -2612,7 +2612,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                   value={config.terminalPrompt ?? "kerem@snapmark:~/workspace$"}
                   onChange={(e) => onChange({ terminalPrompt: e.target.value })}
                   placeholder="kerem@snapmark:~/workspace$"
-                  className="w-full bg-[#131b2a] border border-slate-700/70 rounded-xl px-2.5 py-1.5 text-xs text-emerald-400 font-mono focus:outline-none focus:border-indigo-500"
+                  className="w-full bg-[#131b2a] border border-slate-700/70 rounded-xl px-2.5 py-1.5 text-xs text-emerald-400 font-mono focus:outline-none focus:border-emerald-500"
                 />
               </div>
             )}
@@ -2626,7 +2626,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                   value={config.safariUrl ?? "https://snapmark.dev/demo"}
                   onChange={(e) => onChange({ safariUrl: e.target.value })}
                   placeholder="https://snapmark.dev/demo"
-                  className="w-full bg-[#131b2a] border border-slate-700/70 rounded-xl px-2.5 py-1.5 text-xs text-slate-200 font-mono focus:outline-none focus:border-indigo-500"
+                  className="w-full bg-[#131b2a] border border-slate-700/70 rounded-xl px-2.5 py-1.5 text-xs text-slate-200 font-mono focus:outline-none focus:border-emerald-500"
                 />
               </div>
             )}
@@ -2652,7 +2652,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                       })
                     }
                     className={`w-9 h-5 rounded-full transition-all relative ${
-                      config.windowHeaderCustom ? "bg-indigo-600" : "bg-slate-800"
+                      config.windowHeaderCustom ? "bg-emerald-600" : "bg-slate-800"
                     }`}
                   >
                     <div
@@ -2673,7 +2673,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                           onClick={() => onChange({ windowHeaderBg: item.color })}
                           className={`px-2 py-1 rounded-lg text-[10px] font-medium border transition-all truncate ${
                             config.windowHeaderBg === item.color
-                              ? "bg-indigo-600/30 text-indigo-300 border-indigo-500"
+                              ? "bg-emerald-600/30 text-emerald-300 border-emerald-500"
                               : "bg-slate-900/60 text-slate-400 border-slate-800 hover:text-white"
                           }`}
                         >
@@ -2694,7 +2694,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                         value={config.windowHeaderBg || ""}
                         onChange={(e) => onChange({ windowHeaderBg: e.target.value })}
                         placeholder="#HEX veya rgba(...)"
-                        className="flex-1 bg-[#131b2a] border border-slate-700/80 rounded-lg px-2.5 py-1 text-xs text-slate-200 font-mono focus:outline-none focus:border-indigo-500"
+                        className="flex-1 bg-[#131b2a] border border-slate-700/80 rounded-lg px-2.5 py-1 text-xs text-slate-200 font-mono focus:outline-none focus:border-emerald-500"
                       />
                     </div>
                   </div>
@@ -2716,7 +2716,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                   onClick={() => onChange({ padding: p })}
                   className={`flex-1 py-1.5 rounded-lg text-xs font-mono transition-all border ${
                     config.padding === p
-                      ? "bg-indigo-600 text-white border-indigo-500 font-bold"
+                      ? "bg-emerald-600 text-white border-emerald-500 font-bold"
                       : "bg-slate-900/60 text-slate-400 border-slate-800 hover:text-slate-200"
                   }`}
                 >
@@ -2738,7 +2738,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                   onClick={() => onChange({ shadow: sh })}
                   className={`px-2 py-0.5 rounded text-[11px] uppercase transition-all ${
                     config.shadow === sh
-                      ? "bg-indigo-600 text-white font-bold"
+                      ? "bg-emerald-600 text-white font-bold"
                       : "text-slate-400 hover:text-white"
                   }`}
                 >
@@ -2764,7 +2764,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                 type="button"
                 onClick={() => onChange({ useGradientBorder: !config.useGradientBorder })}
                 className={`w-9 h-5 rounded-full transition-all relative ${
-                  config.useGradientBorder ? "bg-indigo-600" : "bg-slate-800"
+                  config.useGradientBorder ? "bg-emerald-600" : "bg-slate-800"
                 }`}
               >
                 <div
@@ -2781,7 +2781,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                 <div className="space-y-1">
                   <div className="flex items-center justify-between text-[10px] text-slate-400">
                     <span>Renk Şablonu</span>
-                    <span className="text-indigo-400 font-medium">
+                    <span className="text-emerald-400 font-medium">
                       {config.gradientBorderPreset === "custom"
                         ? "Özel Renkler"
                         : GRADIENT_BORDER_PRESETS.find((p) => p.id === config.gradientBorderPreset)?.name}
@@ -2795,7 +2795,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                         onClick={() => onChange({ gradientBorderPreset: p.id })}
                         className={`py-1.5 px-1.5 rounded-lg font-medium transition-all text-center truncate ${
                           (config.gradientBorderPreset || "rainbow") === p.id
-                            ? "bg-indigo-600 text-white font-semibold shadow-sm"
+                            ? "bg-emerald-600 text-white font-semibold shadow-sm"
                             : "text-slate-400 hover:text-white"
                         }`}
                       >
@@ -2807,8 +2807,8 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                       onClick={() => onChange({ gradientBorderPreset: "custom" })}
                       className={`py-1.5 px-1.5 rounded-lg font-medium transition-all text-center truncate ${
                         config.gradientBorderPreset === "custom"
-                          ? "bg-indigo-600 text-white font-semibold shadow-sm"
-                          : "text-indigo-400 hover:text-indigo-300 bg-indigo-500/10 border border-indigo-500/20"
+                          ? "bg-emerald-600 text-white font-semibold shadow-sm"
+                          : "text-emerald-400 hover:text-emerald-300 bg-emerald-500/10 border border-emerald-500/20"
                       }`}
                     >
                       🎨 Özel Renkler
@@ -2824,7 +2824,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                       className="w-full h-3 rounded-full border border-white/20 shadow-inner"
                       style={{
                         background: `linear-gradient(${config.gradientBorderAngle ?? 135}deg, ${(
-                          config.gradientBorderColors || ["#6366f1", "#ec4899", "#06b6d4"]
+                          config.gradientBorderColors || ["#10b981", "#ec4899", "#06b6d4"]
                         ).join(", ")})`,
                       }}
                     />
@@ -2840,13 +2840,13 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                           <label className="text-[10px] text-slate-400 flex items-center justify-between">
                             <span>Başlangıç</span>
                             <span className="font-mono text-[9px] text-slate-500">
-                              {(config.gradientBorderColors?.[0] || "#6366f1").toUpperCase()}
+                              {(config.gradientBorderColors?.[0] || "#10b981").toUpperCase()}
                             </span>
                           </label>
                           <div className="flex items-center gap-1.5 bg-[#131b2a] p-1.5 rounded-lg border border-slate-800">
                             <input
                               type="color"
-                              value={config.gradientBorderColors?.[0] || "#6366f1"}
+                              value={config.gradientBorderColors?.[0] || "#10b981"}
                               onChange={(e) => {
                                 const newColors = [
                                   e.target.value,
@@ -2860,7 +2860,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                             <input
                               type="text"
                               maxLength={7}
-                              value={config.gradientBorderColors?.[0] || "#6366f1"}
+                              value={config.gradientBorderColors?.[0] || "#10b981"}
                               onChange={(e) => {
                                 const newColors = [
                                   e.target.value,
@@ -2888,7 +2888,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                               value={config.gradientBorderColors?.[1] || "#ec4899"}
                               onChange={(e) => {
                                 const newColors = [
-                                  config.gradientBorderColors?.[0] || "#6366f1",
+                                  config.gradientBorderColors?.[0] || "#10b981",
                                   e.target.value,
                                   config.gradientBorderColors?.[2] || "#06b6d4",
                                 ];
@@ -2902,7 +2902,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                               value={config.gradientBorderColors?.[1] || "#ec4899"}
                               onChange={(e) => {
                                 const newColors = [
-                                  config.gradientBorderColors?.[0] || "#6366f1",
+                                  config.gradientBorderColors?.[0] || "#10b981",
                                   e.target.value,
                                   config.gradientBorderColors?.[2] || "#06b6d4",
                                 ];
@@ -2924,7 +2924,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                             "#f43f5e",
                             "#ec4899",
                             "#8b5cf6",
-                            "#6366f1",
+                            "#10b981",
                             "#3b82f6",
                             "#06b6d4",
                             "#10b981",
@@ -2956,7 +2956,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                     <div className="space-y-1.5 pt-2 border-t border-slate-800">
                       <div className="flex items-center justify-between text-[10px] text-slate-400">
                         <span>Akış Açısı</span>
-                        <span className="font-mono text-indigo-400 font-semibold">
+                        <span className="font-mono text-emerald-400 font-semibold">
                           {config.gradientBorderAngle ?? 135}°
                         </span>
                       </div>
@@ -2967,7 +2967,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                         step={5}
                         value={config.gradientBorderAngle ?? 135}
                         onChange={(e) => onChange({ gradientBorderAngle: Number(e.target.value) })}
-                        className="w-full accent-indigo-500 h-1.5 bg-slate-800 rounded-lg cursor-pointer"
+                        className="w-full accent-emerald-500 h-1.5 bg-slate-800 rounded-lg cursor-pointer"
                       />
                       <div className="flex items-center justify-between gap-1 pt-0.5">
                         {[
@@ -2983,7 +2983,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                             onClick={() => onChange({ gradientBorderAngle: d.val })}
                             className={`flex-1 py-0.5 rounded text-[9px] font-mono transition-all ${
                               (config.gradientBorderAngle ?? 135) === d.val
-                                ? "bg-indigo-600 text-white font-bold"
+                                ? "bg-emerald-600 text-white font-bold"
                                 : "bg-slate-800 text-slate-400 hover:text-white"
                             }`}
                           >
@@ -3006,7 +3006,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                         onClick={() => onChange({ gradientBorderWidth: w })}
                         className={`w-6 h-6 rounded-md font-mono text-center transition-all ${
                           (config.gradientBorderWidth || 2) === w
-                            ? "bg-indigo-600 text-white font-bold"
+                            ? "bg-emerald-600 text-white font-bold"
                             : "bg-slate-800 text-slate-400 hover:text-white"
                         }`}
                       >
@@ -3037,7 +3037,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
             <button
               onClick={() => onChange({ showWatermark: !config.showWatermark })}
               className={`w-10 h-5 rounded-full transition-all relative ${
-                config.showWatermark ? "bg-indigo-600" : "bg-slate-800"
+                config.showWatermark ? "bg-emerald-600" : "bg-slate-800"
               }`}
             >
               <div
@@ -3053,7 +3053,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
               value={config.watermarkText}
               onChange={(e) => onChange({ watermarkText: e.target.value })}
               placeholder="Kullanıcı adı veya marka (Örn: @keremdev)"
-              className="w-full bg-[#131b2a] border border-slate-700/70 rounded-xl px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-indigo-500"
+              className="w-full bg-[#131b2a] border border-slate-700/70 rounded-xl px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500"
             />
           )}
 
@@ -3068,14 +3068,14 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                 value={config.authorName}
                 onChange={(e) => onChange({ authorName: e.target.value })}
                 placeholder="İsim (Örn: Kerem Yılmaz)"
-                className="w-full bg-[#131b2a] border border-slate-700/70 rounded-xl px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-indigo-500"
+                className="w-full bg-[#131b2a] border border-slate-700/70 rounded-xl px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500"
               />
               <input
                 type="text"
                 value={config.authorHandle}
                 onChange={(e) => onChange({ authorHandle: e.target.value })}
                 placeholder="Kullanıcı adı (Örn: @keremdev)"
-                className="w-full bg-[#131b2a] border border-slate-700/70 rounded-xl px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-indigo-500"
+                className="w-full bg-[#131b2a] border border-slate-700/70 rounded-xl px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500"
               />
             </div>
           )}
@@ -3116,7 +3116,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                     <button
                       type="button"
                       onClick={() => logoFileInputRef.current?.click()}
-                      className="text-[10px] text-indigo-400 hover:underline cursor-pointer"
+                      className="text-[10px] text-emerald-400 hover:underline cursor-pointer"
                     >
                       Değiştir
                     </button>
@@ -3149,7 +3149,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                       onClick={() => onChange({ logoPosition: pos.id as any })}
                       className={`py-1 rounded-lg transition-all text-center ${
                         (config.logoPosition || "bottom-right") === pos.id
-                          ? "bg-indigo-600 text-white font-bold"
+                          ? "bg-emerald-600 text-white font-bold"
                           : "text-slate-400 hover:text-white"
                       }`}
                     >
@@ -3171,7 +3171,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                   max={100}
                   value={config.logoOpacity ?? 80}
                   onChange={(e) => onChange({ logoOpacity: Number(e.target.value) })}
-                  className="w-full accent-indigo-500 cursor-pointer h-1.5 bg-slate-800 rounded-lg"
+                  className="w-full accent-emerald-500 cursor-pointer h-1.5 bg-slate-800 rounded-lg"
                 />
               </div>
 
@@ -3187,7 +3187,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                   max={80}
                   value={config.logoSize ?? 42}
                   onChange={(e) => onChange({ logoSize: Number(e.target.value) })}
-                  className="w-full accent-indigo-500 cursor-pointer h-1.5 bg-slate-800 rounded-lg"
+                  className="w-full accent-emerald-500 cursor-pointer h-1.5 bg-slate-800 rounded-lg"
                 />
               </div>
             </div>
@@ -3195,9 +3195,9 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
             <button
               type="button"
               onClick={() => logoFileInputRef.current?.click()}
-              className="w-full py-3 px-4 border border-dashed border-slate-700 hover:border-indigo-500 rounded-xl bg-[#131b2a]/60 hover:bg-[#131b2a] flex items-center justify-center gap-2 text-xs text-slate-300 hover:text-white transition-all cursor-pointer"
+              className="w-full py-3 px-4 border border-dashed border-slate-700 hover:border-emerald-500 rounded-xl bg-[#131b2a]/60 hover:bg-[#131b2a] flex items-center justify-center gap-2 text-xs text-slate-300 hover:text-white transition-all cursor-pointer"
             >
-              <Upload className="w-4 h-4 text-indigo-400" />
+              <Upload className="w-4 h-4 text-emerald-400" />
               <span>Özel Logo Yükle (PNG / SVG)</span>
             </button>
           )}
@@ -3232,7 +3232,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
               type="button"
               onClick={() => onChange({ showQrCode: !config.showQrCode })}
               className={`w-9 h-5 rounded-full transition-all relative cursor-pointer ${
-                config.showQrCode ? "bg-indigo-600" : "bg-slate-800"
+                config.showQrCode ? "bg-emerald-600" : "bg-slate-800"
               }`}
             >
               <div
@@ -3254,7 +3254,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                   value={config.qrText ?? "https://github.com"}
                   onChange={(e) => onChange({ qrText: e.target.value })}
                   placeholder="https://github.com/kullanici/repo"
-                  className="w-full bg-[#131b2a] border border-slate-700/70 rounded-xl px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-indigo-500 font-mono"
+                  className="w-full bg-[#131b2a] border border-slate-700/70 rounded-xl px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500 font-mono"
                 />
               </div>
 
@@ -3274,7 +3274,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                       onClick={() => onChange({ qrPosition: pos.id as any })}
                       className={`py-1 rounded-lg transition-all text-center cursor-pointer ${
                         (config.qrPosition || "bottom-right") === pos.id
-                          ? "bg-indigo-600 text-white font-semibold shadow-sm"
+                          ? "bg-emerald-600 text-white font-semibold shadow-sm"
                           : "text-slate-400 hover:text-white"
                       }`}
                     >
@@ -3308,7 +3308,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
           {/* Mevcut Tasarımı Şablon Olarak Kaydet */}
           <div className="space-y-2 p-3 bg-[#131b2a] rounded-xl border border-slate-700/80">
             <span className="text-[11px] font-semibold text-slate-300 flex items-center gap-1.5">
-              <Save className="w-3.5 h-3.5 text-indigo-400" />
+              <Save className="w-3.5 h-3.5 text-emerald-400" />
               <span>Mevcut Tasarımı Kaydet</span>
             </span>
             <div className="flex items-center gap-2">
@@ -3320,13 +3320,13 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                 onKeyDown={(e) => {
                   if (e.key === "Enter") handleSaveCurrentPreset();
                 }}
-                className="flex-1 bg-[#0f1523] border border-slate-700/70 rounded-xl px-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                className="flex-1 bg-[#0f1523] border border-slate-700/70 rounded-xl px-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
               />
               <button
                 type="button"
                 onClick={handleSaveCurrentPreset}
                 disabled={!presetNameInput.trim()}
-                className="px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 disabled:hover:bg-indigo-600 text-white text-xs font-semibold flex items-center gap-1 transition-all shadow-sm shrink-0"
+                className="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 disabled:hover:bg-emerald-600 text-white text-xs font-semibold flex items-center gap-1 transition-all shadow-sm shrink-0"
               >
                 <Plus className="w-3.5 h-3.5" />
                 <span>Kaydet</span>
@@ -3360,7 +3360,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                       <button
                         type="button"
                         onClick={() => handleLoadPreset(preset.config)}
-                        className="px-2.5 py-1 rounded-lg bg-indigo-600/30 hover:bg-indigo-600 text-indigo-300 hover:text-white border border-indigo-500/40 text-[10px] font-semibold transition-all"
+                        className="px-2.5 py-1 rounded-lg bg-emerald-600/30 hover:bg-emerald-600 text-emerald-300 hover:text-white border border-emerald-500/40 text-[10px] font-semibold transition-all"
                       >
                         Yükle
                       </button>
@@ -3392,14 +3392,14 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                   key={p.id}
                   type="button"
                   onClick={() => handleLoadPreset(p.config)}
-                  className="w-full p-2.5 rounded-xl bg-[#131b2a] hover:bg-[#182236] border border-slate-800 hover:border-indigo-500/50 text-left transition-all flex items-center justify-between group"
+                  className="w-full p-2.5 rounded-xl bg-[#131b2a] hover:bg-[#182236] border border-slate-800 hover:border-emerald-500/50 text-left transition-all flex items-center justify-between group"
                 >
                   <div className="flex flex-col min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-semibold text-slate-200 group-hover:text-indigo-300 transition-colors">
+                      <span className="text-xs font-semibold text-slate-200 group-hover:text-emerald-300 transition-colors">
                         {p.name}
                       </span>
-                      <span className="text-[9px] px-1.5 py-0.2 rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 font-medium">
+                      <span className="text-[9px] px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-medium">
                         {p.badge}
                       </span>
                     </div>
@@ -3407,7 +3407,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                       {p.description}
                     </span>
                   </div>
-                  <ArrowRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-indigo-400 group-hover:translate-x-0.5 transition-all shrink-0 ml-2" />
+                  <ArrowRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-emerald-400 group-hover:translate-x-0.5 transition-all shrink-0 ml-2" />
                 </button>
               ))}
             </div>

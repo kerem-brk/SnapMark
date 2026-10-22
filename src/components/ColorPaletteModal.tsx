@@ -60,13 +60,13 @@ export const ColorPaletteModal: React.FC<ColorPaletteModalProps> = ({
         {/* Modal Başlığı */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-slate-800 bg-[#12192b]">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-indigo-500/20 border border-indigo-500/40 flex items-center justify-center text-indigo-400">
+            <div className="w-8 h-8 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
               <Palette className="w-4 h-4" />
             </div>
             <div>
               <h3 className="text-sm font-semibold text-white flex items-center gap-2">
                 <span>Açık Kaynak Renk Tablosu & Degrade Stüdyosu</span>
-                <span className="text-[10px] bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-1.5 py-0.5 rounded-full font-normal">
+                <span className="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-1.5 py-0.5 rounded-full font-normal">
                   Durak #{activeStopIndex + 1}
                 </span>
               </h3>
@@ -89,7 +89,7 @@ export const ColorPaletteModal: React.FC<ColorPaletteModalProps> = ({
             onClick={() => setActiveTab("table")}
             className={`pb-2.5 px-3 font-medium flex items-center gap-1.5 border-b-2 transition-all ${
               activeTab === "table"
-                ? "border-indigo-500 text-indigo-400 font-semibold"
+                ? "border-emerald-500 text-emerald-400 font-semibold"
                 : "border-transparent text-slate-400 hover:text-slate-200"
             }`}
           >
@@ -100,7 +100,7 @@ export const ColorPaletteModal: React.FC<ColorPaletteModalProps> = ({
             onClick={() => setActiveTab("presets")}
             className={`pb-2.5 px-3 font-medium flex items-center gap-1.5 border-b-2 transition-all ${
               activeTab === "presets"
-                ? "border-indigo-500 text-indigo-400 font-semibold"
+                ? "border-emerald-500 text-emerald-400 font-semibold"
                 : "border-transparent text-slate-400 hover:text-slate-200"
             }`}
           >
@@ -111,7 +111,7 @@ export const ColorPaletteModal: React.FC<ColorPaletteModalProps> = ({
             onClick={() => setActiveTab("picker")}
             className={`pb-2.5 px-3 font-medium flex items-center gap-1.5 border-b-2 transition-all ${
               activeTab === "picker"
-                ? "border-indigo-500 text-indigo-400 font-semibold"
+                ? "border-emerald-500 text-emerald-400 font-semibold"
                 : "border-transparent text-slate-400 hover:text-slate-200"
             }`}
           >
@@ -140,7 +140,7 @@ export const ColorPaletteModal: React.FC<ColorPaletteModalProps> = ({
                       onClick={() => setCategoryFilter(cat.id)}
                       className={`px-2.5 py-1 rounded-lg transition-all ${
                         categoryFilter === cat.id
-                          ? "bg-indigo-600 text-white font-semibold"
+                          ? "bg-emerald-600 text-white font-semibold"
                           : "bg-slate-800/80 text-slate-400 hover:text-white"
                       }`}
                     >
@@ -156,7 +156,7 @@ export const ColorPaletteModal: React.FC<ColorPaletteModalProps> = ({
                     placeholder="Renk veya Hex ara..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-8 pr-2.5 py-1 bg-slate-800/60 border border-slate-700/60 rounded-lg text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                    className="w-full pl-8 pr-2.5 py-1 bg-slate-800/60 border border-slate-700/60 rounded-lg text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
                   />
                 </div>
               </div>
@@ -238,7 +238,7 @@ export const ColorPaletteModal: React.FC<ColorPaletteModalProps> = ({
                           onClose();
                         }
                       }}
-                      className="group p-2.5 bg-[#121827] hover:bg-[#161f33] border border-slate-800 hover:border-indigo-500/50 rounded-xl flex items-center gap-3 transition-all text-left"
+                      className="group p-2.5 bg-[#121827] hover:bg-[#161f33] border border-slate-800 hover:border-emerald-500/50 rounded-xl flex items-center gap-3 transition-all text-left"
                     >
                       <div
                         className="w-12 h-12 rounded-lg shrink-0 shadow-md border border-white/10 group-hover:scale-105 transition-transform"
@@ -353,7 +353,7 @@ export const ColorPaletteModal: React.FC<ColorPaletteModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold transition-all shadow-md"
+            className="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-semibold transition-all shadow-md"
           >
             Tamam
           </button>

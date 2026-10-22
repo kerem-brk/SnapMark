@@ -1171,7 +1171,7 @@ export default function Home() {
           onClick={() => setActiveTab("preview")}
           className={`flex-1 py-1.5 rounded-lg text-xs font-medium flex items-center justify-center gap-1.5 transition-all ${
             activeTab === "preview"
-              ? "bg-indigo-600 text-white shadow-sm font-semibold"
+              ? "bg-emerald-600 text-white shadow-sm font-semibold"
               : "text-slate-400 hover:text-white"
           }`}
         >
@@ -1182,7 +1182,7 @@ export default function Home() {
           onClick={() => setActiveTab("controls")}
           className={`flex-1 py-1.5 rounded-lg text-xs font-medium flex items-center justify-center gap-1.5 transition-all ${
             activeTab === "controls"
-              ? "bg-indigo-600 text-white shadow-sm font-semibold"
+              ? "bg-emerald-600 text-white shadow-sm font-semibold"
               : "text-slate-400 hover:text-white"
           }`}
         >
@@ -1193,7 +1193,7 @@ export default function Home() {
           onClick={() => setActiveTab("editor")}
           className={`flex-1 py-1.5 rounded-lg text-xs font-medium flex items-center justify-center gap-1.5 transition-all ${
             activeTab === "editor"
-              ? "bg-indigo-600 text-white shadow-sm font-semibold"
+              ? "bg-emerald-600 text-white shadow-sm font-semibold"
               : "text-slate-400 hover:text-white"
           }`}
         >
@@ -1229,10 +1229,10 @@ export default function Home() {
           {!isSidebarOpen && (
             <button
               onClick={() => setIsSidebarOpen(true)}
-              className="hidden md:flex absolute top-4 left-4 z-20 px-3 py-1.5 rounded-xl bg-[#121827]/95 hover:bg-indigo-600 border border-slate-700 hover:border-indigo-500 text-slate-300 hover:text-white shadow-xl backdrop-blur-md transition-all items-center gap-2 text-xs font-semibold group"
+              className="hidden md:flex absolute top-4 left-4 z-20 px-3 py-1.5 rounded-xl bg-[#121827]/95 hover:bg-emerald-600 border border-slate-700 hover:border-emerald-500 text-slate-300 hover:text-white shadow-xl backdrop-blur-md transition-all items-center gap-2 text-xs font-semibold group"
               title="Ayarlar Menüsünü Aç"
             >
-              <PanelLeftOpen className="w-4 h-4 text-indigo-400 group-hover:text-white" />
+              <PanelLeftOpen className="w-4 h-4 text-emerald-400 group-hover:text-white" />
               <span>Menüyü Aç</span>
             </button>
           )}
@@ -1288,7 +1288,7 @@ export default function Home() {
               <button
                 type="button"
                 onClick={() => setZoomLevel(100)}
-                className="font-mono text-[11px] font-semibold text-slate-300 hover:text-indigo-400 px-1"
+                className="font-mono text-[11px] font-semibold text-slate-300 hover:text-emerald-400 px-1"
                 title="Varsayılan Boyut (%100)"
               >
                 %{zoomLevel}
@@ -1305,7 +1305,7 @@ export default function Home() {
               <button
                 type="button"
                 onClick={() => setZoomLevel(100)}
-                className="text-[10px] text-slate-400 hover:text-indigo-400 font-medium px-1.5 py-0.5 rounded hover:bg-white/5"
+                className="text-[10px] text-slate-400 hover:text-emerald-400 font-medium px-1.5 py-0.5 rounded hover:bg-white/5"
                 title="Ölçeği Sıfırla"
               >
                 Sığdır
@@ -1340,7 +1340,7 @@ export default function Home() {
           <button
             type="button"
             onClick={() => setActiveTab(activeTab === "controls" ? "preview" : "controls")}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs shadow-2xl shadow-indigo-500/50 border border-indigo-400/30 backdrop-blur-md active:scale-95 transition-all cursor-pointer"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs shadow-2xl shadow-emerald-500/50 border border-emerald-400/30 backdrop-blur-md active:scale-95 transition-all cursor-pointer"
           >
             <Sliders className="w-4 h-4" />
             <span>{activeTab === "controls" ? "Kartı Gör" : "Ayarlar Menüsü"}</span>

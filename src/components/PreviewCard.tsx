@@ -8,6 +8,7 @@ import { getLanguageBadge } from "@/lib/languageIcons";
 import { generateQrSvg } from "@/lib/qrGenerator";
 import Prism from "prismjs";
 import { Plus, MessageCircle, Repeat2, Heart, BarChart2, Bookmark, Share2, Quote as QuoteIcon, Lock, GitCompare, Check } from "lucide-react";
+import { LogoMark } from "@/components/Logo";
 
 // Doğrulanmış Hesap Rozetleri
 const BlueCheckBadge = () => (
@@ -442,7 +443,7 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({
         {/* Slayt Sayacı Rozeti (Faz 5 Carousel Stüdyosu) */}
         {config.showSlideCounter && (
           <div className="absolute top-4 right-4 z-30 px-3 py-1 rounded-full bg-black/75 backdrop-blur-md border border-white/20 text-[11px] font-mono font-semibold text-white shadow-xl flex items-center gap-1.5 select-none">
-            <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
             <span>
               {(() => {
                 const slides = config.slides || [];
@@ -459,7 +460,7 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({
         {config.showSwipeIndicator && (config.slides?.length || 0) > 1 && (
           <div className="absolute bottom-4 left-4 z-30 px-3 py-1 rounded-full bg-black/75 backdrop-blur-md border border-white/20 text-[11px] font-medium text-slate-200 shadow-xl flex items-center gap-1.5 select-none">
             <span>Kaydır</span>
-            <span className="font-bold text-indigo-400 animate-bounce">➔</span>
+            <span className="font-bold text-emerald-400 animate-bounce">➔</span>
           </div>
         )}
 
@@ -697,7 +698,7 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({
                           ) : (
                             <span
                               className={`w-1.5 h-1.5 rounded-full shrink-0 ${
-                                isActive ? "bg-indigo-400 shadow-sm shadow-indigo-400/50" : "bg-slate-500"
+                                isActive ? "bg-emerald-400 shadow-sm shadow-emerald-400/50" : "bg-slate-500"
                               }`}
                             />
                           )}
@@ -796,7 +797,7 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({
                         onClick={() => onToggleLineHighlight?.(lineNum)}
                         title="Vurguyu aç/kapa"
                         className={`transition-colors cursor-pointer hover:text-white flex items-center justify-end ${
-                          isHighlighted ? "text-indigo-400 font-bold opacity-100" : "opacity-60"
+                          isHighlighted ? "text-emerald-400 font-bold opacity-100" : "opacity-60"
                         }`}
                         style={{
                           height: `${lineHeightPx}px`,
@@ -822,8 +823,8 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({
                       style={{
                         top: `${(lineNum - 1) * lineHeightPx}px`,
                         height: `${lineHeightPx}px`,
-                        backgroundColor: "rgba(99, 102, 241, 0.18)",
-                        borderLeft: "3px solid #818cf8",
+                        backgroundColor: "rgba(16, 185, 129, 0.18)",
+                        borderLeft: "3px solid #34d399",
                       }}
                     />
                   );
@@ -854,7 +855,7 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({
                   />
                   {config.typewriterPlaying && typewriterProgress < (config.code?.length || 0) && (
                     <span
-                      className="inline-block w-2 bg-indigo-400 animate-pulse ml-0.5 align-middle"
+                      className="inline-block w-2 bg-emerald-400 animate-pulse ml-0.5 align-middle"
                       style={{ height: `${config.fontSize * 1.1}px` }}
                     />
                   )}
@@ -879,7 +880,7 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({
                         crossOrigin="anonymous"
                       />
                     ) : (
-                      <div className="w-full h-full bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-base">
+                      <div className="w-full h-full bg-gradient-to-tr from-emerald-600 to-teal-700 flex items-center justify-center text-white font-bold text-base">
                         {(config.tweetName || "U")[0].toUpperCase()}
                       </div>
                     )}
@@ -931,7 +932,7 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({
               {/* Sosyal Etkileşim Sayaçları (Opsiyonel) */}
               {config.tweetShowMetrics && (
                 <div className="pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400 select-none">
-                  <div className="flex items-center gap-1.5 hover:text-sky-400 transition-colors">
+                  <div className="flex items-center gap-1.5 hover:text-emerald-400 transition-colors">
                     <MessageCircle className="w-4 h-4" />
                     <span className="text-[11px] font-mono">124</span>
                   </div>
@@ -943,13 +944,13 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({
                     <Heart className="w-4 h-4 text-rose-500 fill-rose-500/20" />
                     <span className="text-[11px] font-mono">{config.tweetLikes || "1.4K"}</span>
                   </div>
-                  <div className="flex items-center gap-1.5 hover:text-indigo-400 transition-colors">
+                  <div className="flex items-center gap-1.5 hover:text-emerald-400 transition-colors">
                     <BarChart2 className="w-4 h-4" />
                     <span className="text-[11px] font-mono">{config.tweetViews || "54.8K"}</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <Bookmark className="w-4 h-4 hover:text-indigo-400 transition-colors cursor-pointer" />
-                    <Share2 className="w-4 h-4 hover:text-indigo-400 transition-colors cursor-pointer" />
+                    <Bookmark className="w-4 h-4 hover:text-emerald-400 transition-colors cursor-pointer" />
+                    <Share2 className="w-4 h-4 hover:text-emerald-400 transition-colors cursor-pointer" />
                   </div>
                 </div>
               )}
@@ -966,13 +967,13 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({
                     style={{ fontSize: `${config.fontSize + 3}px` }}
                   >
                     {config.showQuoteMarks && (
-                      <span className="text-2xl sm:text-3xl font-serif text-indigo-400 font-bold leading-none select-none inline-block mr-1 align-baseline -translate-y-0.5">
+                      <span className="text-2xl sm:text-3xl font-serif text-emerald-400 font-bold leading-none select-none inline-block mr-1 align-baseline -translate-y-0.5">
                         “
                       </span>
                     )}
                     <span>{config.quoteContent || config.code}</span>
                     {config.showQuoteMarks && (
-                      <span className="text-2xl sm:text-3xl font-serif text-indigo-400 font-bold leading-none select-none inline-block ml-1 align-baseline -translate-y-0.5">
+                      <span className="text-2xl sm:text-3xl font-serif text-emerald-400 font-bold leading-none select-none inline-block ml-1 align-baseline -translate-y-0.5">
                         ”
                       </span>
                     )}
@@ -990,7 +991,7 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({
 
               {config.quoteStyle === "card" && (
                 <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-6 shadow-inner space-y-4">
-                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-semibold">
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-xs font-semibold">
                     <QuoteIcon className="w-3.5 h-3.5" />
                     <span>Alıntı</span>
                   </div>
@@ -999,13 +1000,13 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({
                     style={{ fontSize: `${config.fontSize + 2}px` }}
                   >
                     {config.showQuoteMarks && (
-                      <span className="text-2xl sm:text-3xl font-serif text-indigo-400 font-bold leading-none select-none inline-block mr-1 align-baseline -translate-y-0.5">
+                      <span className="text-2xl sm:text-3xl font-serif text-emerald-400 font-bold leading-none select-none inline-block mr-1 align-baseline -translate-y-0.5">
                         “
                       </span>
                     )}
                     <span>{config.quoteContent || config.code}</span>
                     {config.showQuoteMarks && (
-                      <span className="text-2xl sm:text-3xl font-serif text-indigo-400 font-bold leading-none select-none inline-block ml-1 align-baseline -translate-y-0.5">
+                      <span className="text-2xl sm:text-3xl font-serif text-emerald-400 font-bold leading-none select-none inline-block ml-1 align-baseline -translate-y-0.5">
                         ”
                       </span>
                     )}
@@ -1022,25 +1023,25 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({
               )}
 
               {config.quoteStyle === "accent" && (
-                <div className="border-l-4 border-indigo-500 pl-6 space-y-4">
+                <div className="border-l-4 border-emerald-500 pl-6 space-y-4">
                   <p
                     className="text-slate-100 font-semibold leading-relaxed tracking-tight whitespace-pre-wrap break-words"
                     style={{ fontSize: `${config.fontSize + 3}px` }}
                   >
                     {config.showQuoteMarks && (
-                      <span className="text-2xl sm:text-3xl font-serif text-indigo-400 font-bold leading-none select-none inline-block mr-1 align-baseline -translate-y-0.5">
+                      <span className="text-2xl sm:text-3xl font-serif text-emerald-400 font-bold leading-none select-none inline-block mr-1 align-baseline -translate-y-0.5">
                         “
                       </span>
                     )}
                     <span>{config.quoteContent || config.code}</span>
                     {config.showQuoteMarks && (
-                      <span className="text-2xl sm:text-3xl font-serif text-indigo-400 font-bold leading-none select-none inline-block ml-1 align-baseline -translate-y-0.5">
+                      <span className="text-2xl sm:text-3xl font-serif text-emerald-400 font-bold leading-none select-none inline-block ml-1 align-baseline -translate-y-0.5">
                         ”
                       </span>
                     )}
                   </p>
                   <div className="pt-2">
-                    <h4 className="text-sm font-bold text-indigo-300">
+                    <h4 className="text-sm font-bold text-emerald-300">
                       {config.quoteAuthor || config.authorName || "Steve Jobs"}
                     </h4>
                     <p className="text-xs text-slate-400 font-medium">
@@ -1156,7 +1157,7 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({
                     } else if (line.includes("✖") || line.includes("error") || line.includes("ERR")) {
                       lineClass = "text-rose-400 font-medium";
                     } else if (line.includes("ℹ") || line.includes("info")) {
-                      lineClass = "text-sky-400";
+                      lineClass = "text-emerald-400";
                     }
                     return (
                       <div key={idx} className={`${lineClass} font-mono whitespace-pre-wrap`}>
@@ -1173,13 +1174,16 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({
           {config.showWatermark && (
             <div className="px-5 py-2.5 border-t border-white/10 flex items-center justify-between text-xs select-none bg-black/25">
               <div className="flex items-center space-x-2 font-mono text-slate-300">
-                <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse"></span>
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
                 <span className="text-[11px] font-medium text-slate-200">
                   {config.watermarkText || "@keremdev"}
                 </span>
               </div>
-              <div className="text-[10px] text-slate-500 font-mono flex items-center gap-1">
-                <span>SnapMark</span>
+              <div className="text-[10px] text-slate-400 font-mono flex items-center gap-1.5">
+                <LogoMark size={14} />
+                <span className="font-semibold text-slate-300">
+                  Snap<span className="text-emerald-400">Mark</span>
+                </span>
               </div>
             </div>
           )}

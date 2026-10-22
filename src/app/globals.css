@@ -5,14 +5,35 @@
 @tailwind utilities;
 
 :root {
-  --background: #090d14;
-  --foreground: #f8fafc;
+  --background: #000000;
+  --foreground: #EDEDED;
 }
 
 body {
   background-color: var(--background);
   color: var(--foreground);
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+/* Vercel Dot Grid Pattern */
+.bg-vercel-grid {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* SnapMark Signature Gradient & Glow */
+.snapmark-gradient {
+  background: linear-gradient(135deg, #0070F3 0%, #7928CA 100%);
+}
+
+.snapmark-gradient-text {
+  background: linear-gradient(135deg, #0070F3 0%, #7928CA 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.snapmark-glow {
+  box-shadow: 0 0 25px -4px rgba(0, 112, 243, 0.45), 0 0 12px -2px rgba(121, 40, 202, 0.35);
 }
 
 /* Font Family Classes */

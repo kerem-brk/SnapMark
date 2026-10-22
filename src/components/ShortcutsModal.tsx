@@ -147,7 +147,7 @@ export const ShortcutsModal: React.FC<ShortcutsModalProps> = ({
         {/* Başlık */}
         <div className="flex items-center justify-between border-b border-slate-800 pb-3">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400">
+            <div className="w-8 h-8 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
               <Keyboard className="w-4 h-4" />
             </div>
             <div>
@@ -174,7 +174,7 @@ export const ShortcutsModal: React.FC<ShortcutsModalProps> = ({
         <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-slate-700">
           {categories.map((cat) => (
             <div key={cat} className="space-y-2">
-              <h4 className="text-[10px] font-bold text-indigo-400 uppercase tracking-wider">
+              <h4 className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider">
                 {cat}
               </h4>
               <div className="space-y-1.5">
@@ -208,10 +208,10 @@ export const ShortcutsModal: React.FC<ShortcutsModalProps> = ({
         {/* Alt Bilgi */}
         <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-500">
           <div className="flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
+            <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
             <span>{isEn ? "Press ESC to close" : "Kapatmak için ESC tuşuna basabilirsiniz"}</span>
           </div>
-          <span className="font-mono text-[10px] text-indigo-400">SnapMark v2.6</span>
+          <span className="font-mono text-[10px] text-emerald-400">SnapMark v2.6</span>
         </div>
       </div>
     </div>

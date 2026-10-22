@@ -14,6 +14,22 @@ import {
 
 export const THEMES: ThemeConfig[] = [
   {
+    id: "carbon",
+    name: "Carbon Graphite (Studio)",
+    gradient: "from-slate-950 via-[#1E293B] to-[#0F172A]",
+    cssGradient: "linear-gradient(135deg, #020617 0%, #1e293b 50%, #0f172a 100%)",
+    cardBg: "bg-[#0B0F19]",
+    borderColor: "border-slate-700/60",
+  },
+  {
+    id: "snapmark-vercel",
+    name: "SnapMark Signature Dark",
+    gradient: "from-slate-900 via-slate-800 to-black",
+    cssGradient: "linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #000000 100%)",
+    cardBg: "bg-[#000000]",
+    borderColor: "border-white/20",
+  },
+  {
     id: "candy",
     name: "Cotton Candy",
     gradient: "from-pink-500 via-purple-500 to-indigo-500",
@@ -566,7 +582,7 @@ export const DEFAULT_CONFIG: CardConfig = {
   language: "typescript",
   code: INITIAL_CODE_TAB1,
   bgType: "gradient",
-  theme: "candy",
+  theme: "carbon",
   pattern: "grid",
   patternOpacity: 0.85,
   patternSpotlight: false,
@@ -575,11 +591,11 @@ export const DEFAULT_CONFIG: CardConfig = {
   useCustomGradient: false,
   gradientType: "linear",
   gradientStops: [
-    { color: "#ec4899", position: 0 },
-    { color: "#8b5cf6", position: 50 },
-    { color: "#3b82f6", position: 100 },
+    { color: "#020617", position: 0 },
+    { color: "#1e293b", position: 50 },
+    { color: "#0f172a", position: 100 },
   ],
-  gradientColors: ["#ec4899", "#8b5cf6", "#3b82f6"],
+  gradientColors: ["#020617", "#1e293b", "#0f172a"],
   gradientAngle: 135,
   padding: 48,
   showLineNumbers: true,

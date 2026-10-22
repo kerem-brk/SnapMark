@@ -27,6 +27,7 @@ import {
   MoreHorizontal,
   ChevronDown,
 } from "lucide-react";
+import { LogoMark } from "@/components/Logo";
 import { CardConfig } from "@/types";
 import { detectLanguageFromFilename } from "@/lib/constants";
 import { getT } from "@/lib/i18n";
@@ -176,23 +177,23 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <>
-      <header className="h-16 border-b border-slate-800 bg-[#0d131f]/95 backdrop-blur-md px-3 sm:px-6 flex items-center justify-between z-30 sticky top-0 gap-2 sm:gap-4">
+      <header className="h-16 border-b border-slate-700/80 bg-[#0F172A]/95 backdrop-blur-md px-3 sm:px-6 flex items-center justify-between z-30 sticky top-0 gap-2 sm:gap-4">
         {/* Sol Grup: Menü Aç/Kapat, Logo ve SnapMark Başlığı */}
         <div className="flex items-center space-x-2 sm:space-x-3 shrink-0">
           {onToggleSidebar && (
             <button
               onClick={onToggleSidebar}
-              className={`p-2 rounded-xl border transition-all flex items-center gap-1.5 text-xs font-semibold cursor-pointer ${
+              className={`p-2 rounded-lg border transition-all flex items-center gap-1.5 text-xs font-medium cursor-pointer ${
                 isSidebarOpen
-                  ? "bg-indigo-600/20 text-indigo-300 border-indigo-500/40 hover:bg-indigo-600/30"
-                  : "bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700 hover:text-white"
+                  ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/20"
+                  : "bg-slate-900 text-slate-400 border-slate-800 hover:border-slate-700 hover:text-white"
               }`}
               title={isSidebarOpen ? (isEn ? "Hide Menu" : "Menüyü Kapat") : (isEn ? "Open Menu" : "Menüyü Aç")}
             >
               {isSidebarOpen ? (
                 <PanelLeftClose className="w-4 h-4" />
               ) : (
-                <PanelLeftOpen className="w-4 h-4 text-indigo-400" />
+                <PanelLeftOpen className="w-4 h-4 text-emerald-400" />
               )}
               <span className="hidden 2xl:inline">
                 {isSidebarOpen ? (isEn ? "Menu" : "Menü") : (isEn ? "Open Menu" : "Menüyü Aç")}
@@ -203,14 +204,18 @@ export const Header: React.FC<HeaderProps> = ({
           <Link
             href="/"
             title={isEn ? "Go to Home / Showcase" : "Ana Sayfa & Vitrin"}
-            className="flex items-center gap-2 group cursor-pointer hover:opacity-90 transition-opacity"
+            className="flex items-center gap-2.5 group cursor-pointer hover:opacity-95 transition-opacity"
           >
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-pink-500 via-purple-600 to-indigo-500 flex items-center justify-center font-black text-white shadow-lg shadow-pink-500/20 shrink-0 group-hover:scale-105 transition-transform">
-              <Sparkles className="w-4 h-4 text-white" />
-            </div>
+            <LogoMark size={32} withGlow className="group-hover:scale-105 transition-transform" />
 
-            <div className="flex items-center">
-              <h1 className="font-bold text-base tracking-tight text-white shrink-0">SnapMark</h1>
+            <div className="flex items-center gap-2">
+              <div className="flex items-baseline tracking-tight font-mono text-base font-bold shrink-0">
+                <span className="text-white group-hover:text-slate-100 transition-colors">Snap</span>
+                <span className="text-emerald-400 group-hover:text-emerald-300 transition-colors">Mark</span>
+              </div>
+              <span className="text-[10px] tracking-wider uppercase font-mono font-semibold px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                PRO 4K
+              </span>
             </div>
           </Link>
         </div>
@@ -254,7 +259,7 @@ export const Header: React.FC<HeaderProps> = ({
             className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-xs text-slate-300 transition-all cursor-pointer shadow-sm group"
             title={isEn ? "Open Commands (Ctrl+K)" : "Komut Paletini Aç (Ctrl+K)"}
           >
-            <Search className="w-3.5 h-3.5 text-indigo-400 group-hover:scale-110 transition-transform" />
+            <Search className="w-3.5 h-3.5 text-emerald-400 group-hover:scale-110 transition-transform" />
             <span className="text-[11px] font-medium">{isEn ? "Commands" : "Komutlar"}</span>
             <kbd className="text-[9px] font-mono px-1 py-0.5 rounded bg-white/5 border border-white/10 text-slate-400">
               Ctrl+K
@@ -268,7 +273,7 @@ export const Header: React.FC<HeaderProps> = ({
             className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-xs text-slate-300 hover:text-white transition-all cursor-pointer"
             title={isEn ? "Presentation Mode (F11)" : "Tam Ekran Sunum Modu (F11)"}
           >
-            <Maximize2 className="w-3.5 h-3.5 text-sky-400" />
+            <Maximize2 className="w-3.5 h-3.5 text-emerald-400" />
             <span className="text-[11px] font-medium">{isEn ? "Present" : "Sunum"}</span>
           </button>
         </div>
@@ -282,7 +287,7 @@ export const Header: React.FC<HeaderProps> = ({
               onClick={() => onChangeConfig({ uiLanguage: "tr" })}
               className={`px-2 py-1 rounded-lg transition-all cursor-pointer ${
                 config.uiLanguage !== "en"
-                  ? "bg-indigo-600 text-white shadow-sm font-bold"
+                  ? "bg-emerald-600 text-white shadow-sm font-bold"
                   : "text-slate-400 hover:text-white"
               }`}
               title="Türkçe Dil Seçimi"
@@ -294,7 +299,7 @@ export const Header: React.FC<HeaderProps> = ({
               onClick={() => onChangeConfig({ uiLanguage: "en" })}
               className={`px-2 py-1 rounded-lg transition-all cursor-pointer ${
                 config.uiLanguage === "en"
-                  ? "bg-indigo-600 text-white shadow-sm font-bold"
+                  ? "bg-emerald-600 text-white shadow-sm font-bold"
                   : "text-slate-400 hover:text-white"
               }`}
               title="Switch to English"
@@ -312,7 +317,7 @@ export const Header: React.FC<HeaderProps> = ({
                 onClick={() => onChangeConfig({ exportScale: scale })}
                 className={`px-2 py-1 rounded-lg transition-all cursor-pointer ${
                   (config.exportScale || 2) === scale
-                    ? "bg-indigo-600 text-white shadow-sm font-bold"
+                    ? "bg-emerald-600 text-white shadow-sm font-bold"
                     : "hover:text-slate-200"
                 }`}
                 title={
@@ -335,7 +340,7 @@ export const Header: React.FC<HeaderProps> = ({
               onClick={() => setIsToolsMenuOpen((prev) => !prev)}
               className={`p-2 rounded-xl border transition-all flex items-center gap-1 text-xs font-semibold cursor-pointer ${
                 isToolsMenuOpen
-                  ? "bg-indigo-600/20 text-indigo-300 border-indigo-500/50"
+                  ? "bg-emerald-600/20 text-emerald-300 border-emerald-500/50"
                   : "bg-slate-900/90 text-slate-300 border-slate-800 hover:border-slate-700 hover:text-white"
               }`}
               title={isEn ? "More Tools" : "Daha Fazla Araç"}
@@ -435,7 +440,7 @@ export const Header: React.FC<HeaderProps> = ({
                   onClick={() => setIsToolsMenuOpen(false)}
                   className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-slate-200 hover:bg-slate-800 transition-colors text-left"
                 >
-                  <Sparkles className="w-4 h-4 text-indigo-400 shrink-0" />
+                  <Sparkles className="w-4 h-4 text-emerald-400 shrink-0" />
                   <span className="flex-1 font-medium">{isEn ? "Showcase Page" : "Vitrin Sayfası"}</span>
                 </Link>
 
@@ -450,7 +455,7 @@ export const Header: React.FC<HeaderProps> = ({
                     }}
                     className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-slate-200 hover:bg-slate-800 transition-colors text-left cursor-pointer"
                   >
-                    <Keyboard className="w-4 h-4 text-indigo-400 shrink-0" />
+                    <Keyboard className="w-4 h-4 text-emerald-400 shrink-0" />
                     <span className="flex-1 font-medium">{t.shortcuts}</span>
                     <kbd className="text-[10px] font-mono text-slate-400">?</kbd>
                   </button>
@@ -499,10 +504,10 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             type="button"
             onClick={handleShare}
-            className={`px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all border cursor-pointer ${
+            className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-all border cursor-pointer ${
               sharedFeedback
                 ? "bg-emerald-600 text-white border-emerald-500 shadow-sm"
-                : "bg-slate-800/90 hover:bg-slate-700 text-slate-300 hover:text-white border-slate-700 shadow-sm"
+                : "bg-[#111111] hover:bg-[#1A1A1A] text-[#888888] hover:text-[#EDEDED] border-[#222222] shadow-sm"
             }`}
             title={isEn ? "Share link" : "Paylaşım linki kopyala"}
           >
@@ -513,7 +518,7 @@ export const Header: React.FC<HeaderProps> = ({
               </>
             ) : (
               <>
-                <Share2 className="w-3.5 h-3.5 text-cyan-400" />
+                <Share2 className="w-3.5 h-3.5 text-[#0070F3]" />
                 <span className="hidden sm:inline">{t.share}</span>
               </>
             )}
@@ -524,10 +529,10 @@ export const Header: React.FC<HeaderProps> = ({
             type="button"
             onClick={onCopyImage}
             disabled={isExporting}
-            className={`px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all border cursor-pointer ${
+            className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-all border cursor-pointer ${
               copied
                 ? "bg-emerald-600 text-white border-emerald-500"
-                : "bg-slate-800/90 hover:bg-slate-700 text-slate-200 border-slate-700 hover:border-slate-600 shadow-sm"
+                : "bg-[#111111] hover:bg-[#1A1A1A] text-[#EDEDED] border-[#222222] hover:border-[#333333] shadow-sm"
             }`}
             title={t.copyToClipboard}
           >
@@ -538,22 +543,22 @@ export const Header: React.FC<HeaderProps> = ({
               </>
             ) : (
               <>
-                <Copy className="w-3.5 h-3.5 text-indigo-400" />
+                <Copy className="w-3.5 h-3.5 text-slate-300" />
                 <span className="hidden sm:inline">{t.copyImage}</span>
               </>
             )}
           </button>
 
-          {/* PNG İndir (Ana Eylem Butonu) */}
+          {/* PNG İndir (Ana Eylem Butonu — Emerald Green Studio CTA) */}
           <button
             type="button"
             onClick={onDownloadImage}
             disabled={isExporting}
-            className="px-3 sm:px-4 py-1.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-pink-500 via-purple-600 to-indigo-600 hover:from-pink-400 hover:to-indigo-500 text-white shadow-lg shadow-pink-500/20 flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer shrink-0"
+            className="px-3 sm:px-4 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-950/40 border border-emerald-500/40 flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer shrink-0"
           >
-            <Download className="w-3.5 h-3.5" />
+            <Download className="w-3.5 h-3.5 text-white" />
             <span>{t.downloadPng}</span>
-            <span className="hidden sm:inline text-[10px] bg-black/30 px-1.5 py-0.5 rounded font-mono">
+            <span className="hidden sm:inline text-[10px] bg-black/20 text-emerald-100 px-1.5 py-0.5 rounded font-mono font-bold">
               {config.exportScale || 2}x
             </span>
           </button>
@@ -566,7 +571,7 @@ export const Header: React.FC<HeaderProps> = ({
           <div className="bg-[#0f172a] border border-slate-700 rounded-2xl w-full max-w-md p-5 space-y-4 shadow-2xl relative">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div className="flex items-center gap-2">
-                <Github className="w-5 h-5 text-indigo-400" />
+                <Github className="w-5 h-5 text-emerald-400" />
                 <h3 className="font-bold text-sm text-white">{isEn ? "Import from GitHub / Gist" : "GitHub / Gist'ten Kod Çek"}</h3>
               </div>
               <button
@@ -589,7 +594,7 @@ export const Header: React.FC<HeaderProps> = ({
                 value={importUrl}
                 onChange={(e) => setImportUrl(e.target.value)}
                 placeholder="https://github.com/user/repo/blob/main/index.ts"
-                className="w-full bg-[#131b2a] border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 font-mono"
+                className="w-full bg-[#131b2a] border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500 font-mono"
               />
               {importError && (
                 <p className="text-rose-400 text-xs">{importError}</p>
@@ -611,7 +616,7 @@ export const Header: React.FC<HeaderProps> = ({
                 type="button"
                 onClick={handleImportFromGithub}
                 disabled={isImporting}
-                className="px-4 py-1.5 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                className="px-4 py-1.5 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
               >
                 {isImporting ? (
                   <>

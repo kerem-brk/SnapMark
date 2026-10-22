@@ -19,7 +19,7 @@ const getToastIcon = (type: ToastType) => {
       return <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />;
     case "info":
     default:
-      return <Info className="w-4 h-4 text-sky-400 shrink-0" />;
+      return <Info className="w-4 h-4 text-teal-400 shrink-0" />;
   }
 };
 
@@ -33,7 +33,7 @@ const getToastBorder = (type: ToastType) => {
       return "border-amber-500/40 shadow-amber-500/10";
     case "info":
     default:
-      return "border-sky-500/40 shadow-sky-500/10";
+      return "border-teal-500/40 shadow-teal-500/10";
   }
 };
 
