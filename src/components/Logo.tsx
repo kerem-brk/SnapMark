@@ -25,7 +25,7 @@ export const LogoMark: React.FC<LogoMarkProps> = ({
     >
       {withGlow && (
         <div
-          className="absolute inset-0 rounded-xl bg-emerald-500/20 blur-md pointer-events-none"
+          className="absolute inset-0 rounded-xl bg-[#FF4F00]/20 blur-md pointer-events-none"
           aria-hidden="true"
         />
       )}
@@ -36,29 +36,29 @@ export const LogoMark: React.FC<LogoMarkProps> = ({
         className="w-full h-full relative z-10 transition-transform duration-200"
       >
         <defs>
-          {/* Arka plan gradyanı: Derin obsidyen grafit */}
+          {/* Arka plan gradyanı: Sıcak antrasit grafit */}
           <linearGradient id="sm-bg-grad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#1E293B" />
-            <stop offset="100%" stopColor="#090D16" />
+            <stop offset="0%" stopColor="#27272A" />
+            <stop offset="100%" stopColor="#18181B" />
           </linearGradient>
 
-          {/* Zümrüt parıltı gradyanı */}
-          <linearGradient id="sm-emerald-grad" x1="8" y1="8" x2="24" y2="24" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#34D399" />
-            <stop offset="100%" stopColor="#059669" />
+          {/* Alev turuncusu parıltı gradyanı */}
+          <linearGradient id="sm-orange-grad" x1="8" y1="8" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#FF4F00" />
+            <stop offset="100%" stopColor="#EA580C" />
           </linearGradient>
 
           {/* Odak kesiği gradyanı */}
           <linearGradient id="sm-slash-grad" x1="17" y1="10" x2="15" y2="22" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#6EE7B7" />
-            <stop offset="100%" stopColor="#10B981" />
+            <stop offset="0%" stopColor="#FB923C" />
+            <stop offset="100%" stopColor="#FF4F00" />
           </linearGradient>
 
           {/* Dış çerçeve gradyanı */}
           <linearGradient id="sm-border-grad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#334155" />
-            <stop offset="50%" stopColor="#10B981" stopOpacity="0.4" />
-            <stop offset="100%" stopColor="#1E293B" />
+            <stop offset="0%" stopColor="#3F3F46" />
+            <stop offset="50%" stopColor="#FF4F00" stopOpacity="0.4" />
+            <stop offset="100%" stopColor="#27272A" />
           </linearGradient>
         </defs>
 
@@ -79,8 +79,8 @@ export const LogoMark: React.FC<LogoMarkProps> = ({
           cx="16"
           cy="16"
           r="8"
-          stroke="#10B981"
-          strokeOpacity="0.16"
+          stroke="#FF4F00"
+          strokeOpacity="0.2"
           strokeWidth="1"
           strokeDasharray="2.5 2.5"
         />
@@ -89,7 +89,7 @@ export const LogoMark: React.FC<LogoMarkProps> = ({
         {/* Sol-Üst */}
         <path
           d="M 6.5 11.5 V 8 A 1.5 1.5 0 0 1 8 6.5 H 11.5"
-          stroke="#10B981"
+          stroke="#FF4F00"
           strokeWidth="1.6"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -97,7 +97,7 @@ export const LogoMark: React.FC<LogoMarkProps> = ({
         {/* Sağ-Üst */}
         <path
           d="M 20.5 6.5 H 24 A 1.5 1.5 0 0 1 25.5 8 V 11.5"
-          stroke="#10B981"
+          stroke="#FF4F00"
           strokeWidth="1.6"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -105,7 +105,7 @@ export const LogoMark: React.FC<LogoMarkProps> = ({
         {/* Sol-Alt */}
         <path
           d="M 6.5 20.5 V 24 A 1.5 1.5 0 0 0 8 25.5 H 11.5"
-          stroke="#10B981"
+          stroke="#FF4F00"
           strokeWidth="1.6"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -113,7 +113,7 @@ export const LogoMark: React.FC<LogoMarkProps> = ({
         {/* Sağ-Alt */}
         <path
           d="M 20.5 25.5 H 24 A 1.5 1.5 0 0 0 25.5 24 V 20.5"
-          stroke="#10B981"
+          stroke="#FF4F00"
           strokeWidth="1.6"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -123,7 +123,7 @@ export const LogoMark: React.FC<LogoMarkProps> = ({
         {/* Sol Ayracı: < */}
         <path
           d="M 13.5 11.5 L 9.5 16 L 13.5 20.5"
-          stroke="url(#sm-emerald-grad)"
+          stroke="url(#sm-orange-grad)"
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -132,7 +132,7 @@ export const LogoMark: React.FC<LogoMarkProps> = ({
         {/* Sağ Ayracı: > */}
         <path
           d="M 18.5 11.5 L 22.5 16 L 18.5 20.5"
-          stroke="url(#sm-emerald-grad)"
+          stroke="url(#sm-orange-grad)"
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -147,7 +147,7 @@ export const LogoMark: React.FC<LogoMarkProps> = ({
         />
 
         {/* Merkez Işıma Noktası (Kamera Odak & Sentaks Çekirdeği) */}
-        <circle cx="16" cy="16" r="1.2" fill="#6EE7B7" />
+        <circle cx="16" cy="16" r="1.2" fill="#FFA500" />
       </svg>
     </div>
   );
@@ -184,12 +184,12 @@ export const Logo: React.FC<LogoProps> = ({
       <div className="flex flex-col text-left">
         <div className="flex items-center gap-1.5">
           <div className="flex items-baseline tracking-tight font-mono text-base font-bold">
-            <span className="text-white group-hover:text-slate-100 transition-colors">Snap</span>
-            <span className="text-emerald-400 group-hover:text-emerald-300 transition-colors">Mark</span>
+            <span className="text-[#18181B] group-hover:text-black transition-colors">Snap</span>
+            <span className="text-[#FF4F00] group-hover:text-[#EA580C] transition-colors">Mark</span>
           </div>
 
           {showBadge && (
-            <span className="text-[10px] tracking-wider uppercase font-mono font-semibold px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 group-hover:border-emerald-500/40 transition-colors">
+            <span className="text-[10px] tracking-wider uppercase font-mono font-semibold px-1.5 py-0.5 rounded bg-[#FF4F00]/10 text-[#FF4F00] border border-[#FF4F00]/25 group-hover:border-[#FF4F00]/40 transition-colors">
               {badgeText}
             </span>
           )}

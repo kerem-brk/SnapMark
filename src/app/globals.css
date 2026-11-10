@@ -5,14 +5,21 @@
 @tailwind utilities;
 
 :root {
-  --background: #000000;
-  --foreground: #EDEDED;
+  --background: #F4F1EA;
+  --foreground: #18181B;
 }
 
 body {
   background-color: var(--background);
   color: var(--foreground);
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+/* Dieter Rams & Teenage Engineering Hardware Mat Pattern */
+.bg-engineering-mat {
+  background-color: #E6E1D6;
+  background-image: radial-gradient(rgba(87, 83, 78, 0.22) 1.2px, transparent 1.2px);
+  background-size: 20px 20px;
 }
 
 /* Vercel Dot Grid Pattern */
@@ -113,6 +120,70 @@ input[type="number"] {
    PRISMJS SYNTAX HIGHLIGHTING THEMES (KOD DİLİ TEMALARI)
    ========================================================================== */
 
+/* Kod Kartı Temel Metin Rengi ve Kristal Netlikte Prism Tokenları */
+[class*="code-theme-"],
+pre code,
+.token.plain,
+.token.plain-text {
+  color: #F8FAFC !important;
+}
+
+/* Koyu kod kartı penceresinde yüksek kontrastlı, cam gibi parlayan tokenlar */
+.code-theme-onedark,
+.code-theme-dracula,
+.code-theme-monokai,
+.code-theme-githubDark,
+.code-theme-nord,
+.code-theme-tokyonight,
+.code-theme-synthwave,
+.code-theme-solarized {
+  color: #F8FAFC !important;
+}
+
+.code-theme-onedark .token.property,
+.code-theme-onedark .token.property-access,
+.code-theme-onedark .token.literal-property,
+.code-theme-onedark .token.key {
+  color: #38BDF8 !important;
+}
+.code-theme-onedark .token.variable,
+.code-theme-onedark .token.parameter,
+.code-theme-onedark .token.imports {
+  color: #FBBF24 !important;
+}
+.code-theme-onedark .token.keyword {
+  color: #F472B6 !important;
+  font-weight: 600;
+}
+.code-theme-onedark .token.string,
+.code-theme-onedark .token.char {
+  color: #4ADE80 !important;
+}
+.code-theme-onedark .token.function,
+.code-theme-onedark .token.function-variable,
+.code-theme-onedark .token.method {
+  color: #60A5FA !important;
+}
+.code-theme-onedark .token.class-name,
+.code-theme-onedark .token.builtin {
+  color: #2DD4BF !important;
+}
+.code-theme-onedark .token.number,
+.code-theme-onedark .token.boolean,
+.code-theme-onedark .token.constant {
+  color: #FBBF24 !important;
+}
+.code-theme-onedark .token.operator {
+  color: #38BDF8 !important;
+}
+.code-theme-onedark .token.punctuation {
+  color: #94A3B8 !important;
+}
+.code-theme-onedark .token.comment {
+  color: #64748B !important;
+  font-style: italic;
+}
+
 /* 1. One Dark Pro (Varsayılan Klasik Atom / VS Code) */
 .code-theme-onedark .token.comment,
 .code-theme-onedark .token.prolog,
@@ -123,27 +194,32 @@ input[type="number"] {
 }
 .code-theme-onedark .token.punctuation { color: #94a3b8; }
 .code-theme-onedark .token.property,
+.code-theme-onedark .token.literal-property,
+.code-theme-onedark .token.key,
 .code-theme-onedark .token.tag,
 .code-theme-onedark .token.boolean,
 .code-theme-onedark .token.number,
 .code-theme-onedark .token.constant,
-.code-theme-onedark .token.symbol { color: #f59e0b; }
+.code-theme-onedark .token.symbol { color: #38bdf8; }
 .code-theme-onedark .token.selector,
 .code-theme-onedark .token.attr-name,
 .code-theme-onedark .token.string,
 .code-theme-onedark .token.char,
-.code-theme-onedark .token.builtin { color: #10b981; }
+.code-theme-onedark .token.builtin { color: #4ade80; }
 .code-theme-onedark .token.operator,
 .code-theme-onedark .token.entity,
 .code-theme-onedark .token.url { color: #38bdf8; }
 .code-theme-onedark .token.atrule,
 .code-theme-onedark .token.attr-value,
-.code-theme-onedark .token.keyword { color: #ec4899; font-weight: 600; }
+.code-theme-onedark .token.keyword { color: #f472b6; font-weight: 600; }
 .code-theme-onedark .token.function,
-.code-theme-onedark .token.class-name { color: #818cf8; }
+.code-theme-onedark .token.function-variable,
+.code-theme-onedark .token.class-name { color: #60a5fa; }
 .code-theme-onedark .token.regex,
 .code-theme-onedark .token.important,
-.code-theme-onedark .token.variable { color: #fbbf24; }
+.code-theme-onedark .token.variable,
+.code-theme-onedark .token.parameter,
+.code-theme-onedark .token.imports { color: #fbbf24; }
 
 /* 2. Dracula Official */
 .code-theme-dracula .token.comment { color: #6272a4; font-style: italic; }

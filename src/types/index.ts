@@ -1,4 +1,5 @@
 export type ThemeId =
+  | "carbon"
   | "snapmark-vercel"
   | "candy"
   | "sunset"
@@ -53,7 +54,17 @@ export type LanguageId =
   | "json"
   | "sql"
   | "markdown"
-  | "bash";
+  | "bash"
+  | "go"
+  | "java"
+  | "kotlin"
+  | "swift"
+  | "php"
+  | "ruby"
+  | "yaml"
+  | "docker"
+  | "graphql"
+  | "tsx";
 
 export type AspectRatioId = "auto" | "16:9" | "1:1" | "4:5" | "custom";
 
@@ -148,10 +159,21 @@ export interface CarouselSlide {
   tweetContent?: string;
   diffBeforeCode?: string;
   diffAfterCode?: string;
+  diffViewMode?: "unified" | "split";
   terminalCommand?: string;
   terminalOutput?: string;
   terminalUser?: string;
+  theme?: string;
+  background?: string;
+  padding?: number;
+  fontFamily?: string;
 }
+
+export type SlideItem = CarouselSlide;
+
+export type QrPosition = "bottom-right" | "bottom-left" | "top-right";
+export type LogoPosition = "bottom-right" | "bottom-left" | "top-right" | "top-left";
+export type WatermarkPosition = LogoPosition;
 
 export interface CardConfig {
   title: string;
@@ -205,6 +227,7 @@ export interface CardConfig {
   tweetRetweets: string;
   tweetViews: string;
   tweetBookmarks: string;
+  tweetReplies?: string;
   quoteContent: string;
   quoteAuthor: string;
   quoteTitle: string;
@@ -225,7 +248,7 @@ export interface CardConfig {
   showTabIcons?: boolean;
   showQrCode?: boolean;
   qrText?: string;
-  qrPosition?: "bottom-right" | "bottom-left" | "top-right";
+  qrPosition?: QrPosition;
   typewriterActive?: boolean;
   typewriterSpeed?: number;
   // Faz 5 İçerik Üretici & Animasyon Süper Güçleri
@@ -237,6 +260,7 @@ export interface CardConfig {
   diffAfterLabel?: string;
   diffBeforeCode?: string;
   diffAfterCode?: string;
+  diffViewMode?: "unified" | "split";
   typewriterPlaying?: boolean;
   typewriterSpeedMode?: TypewriterSpeed;
   // Faz 6 Pro Studio Güç Paketi
@@ -252,7 +276,7 @@ export interface CardConfig {
   windowHeaderBg?: string;
   windowHeaderCustom?: boolean;
   logoUrl?: string;
-  logoPosition?: "bottom-right" | "bottom-left" | "top-right" | "top-left";
+  logoPosition?: LogoPosition;
   logoOpacity?: number;
   logoSize?: number;
   terminalCommand?: string;

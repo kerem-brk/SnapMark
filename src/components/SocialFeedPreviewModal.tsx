@@ -46,7 +46,12 @@ export const SocialFeedPreviewModal: React.FC<SocialFeedPreviewModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 overflow-y-auto animate-in fade-in duration-200">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="social-preview-title"
+      className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 overflow-y-auto animate-in fade-in duration-200"
+    >
       <div className="bg-[#0b101b] border border-slate-700/80 rounded-3xl w-full max-w-2xl my-auto shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
         {/* Modal Başlığı */}
         <div className="px-5 py-4 border-b border-slate-800 flex items-center justify-between bg-slate-900/60 shrink-0">
@@ -55,7 +60,7 @@ export const SocialFeedPreviewModal: React.FC<SocialFeedPreviewModalProps> = ({
               <Sparkles className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="font-bold text-sm sm:text-base text-white">
+              <h3 id="social-preview-title" className="font-bold text-sm sm:text-base text-white">
                 {t.feedModalTitle}
               </h3>
               <p className="text-[11px] text-slate-400">

@@ -22,23 +22,22 @@ SnapMark; geliştiriciler, teknik yazarlar, indie hacker'lar ve içerik üretici
 
 ## 2. Tasarım Sistemi & Renk/Tipografi Mimarisi
 
-SnapMark tasarım sistemi, **Dark Mode (OLED)** temelinde inşa edilmiş; gece göz yorgunluğunu sıfırlayan derin arka planlar ve geliştirici eylemini sembolize eden **Run Green** aksan rengiyle optimize edilmiştir.
+SnapMark tasarım sistemi, **Teenage Engineering & Dieter Rams Warm Alabaster** stüdyo estetiği ile **Dark Mode (OLED)** kart yüzeylerinin kusursuz kontrastına dayanır.
 
 ### 2.1 Renk Paleti (Design Tokens)
 
-| Token İsmi | Hex Kodu | CSS Değişkeni | Semantik Kullanım Alanı |
-|:---|:---|:---|:---|
-| **Background (OLED)** | `#0F172A` | `--color-background` | Ana tuval ve sayfa arka planı |
-| **Primary (Surface)** | `#1E293B` | `--color-primary` | Kontrol panelleri, toolbar, açılır menüler |
-| **Secondary (Border)** | `#334155` | `--color-secondary` | Vurgulu kenarlıklar, ayırıcı çizgiler |
-| **Accent / CTA (Run Green)**| `#22C55E` | `--color-accent` | Birincil eylem (Export, Kopyala, Çalıştır) |
-| **On Accent** | `#0F172A` | `--color-on-accent` | Aksan üzeri koyu kontrast metin |
-| **Card Surface** | `#1B2336` | `--color-card` | Kart gövdeleri ve modal zeminleri |
-| **Muted Fill** | `#272F42` | `--color-muted` | Pasif inputlar, ikincil buton zeminleri |
-| **Muted Foreground** | `#94A3B8` | `--color-muted-foreground`| Placeholder, ipuçları, klavye kısayolları |
-| **Foreground** | `#F8FAFC` | `--color-foreground` | Birincil metinler, başlıklar |
-| **Border Neutral** | `#475569` | `--color-border` | Standart input ve panel çerçeveleri |
-| **Destructive** | `#EF4444` | `--color-destructive` | Hata, sıfırlama, silme durumları |
+| Token İsmi | Hex Kodu | Semantik Kullanım Alanı |
+|:---|:---|:---|
+| **Studio Canvas (Alabaster)** | `#F4F1EA` | Ana tuval ve mühendislik ızgara zemin |
+| **Studio Panel (Surface)** | `#FAF8F5` | Sol ayar paneli, üst çubuk, dock menü |
+| **Border Neutral** | `#D6D0C4` | Stüdyo panel ve modül kenarlıkları |
+| **Accent / CTA (Engineering Orange)**| `#FF4F00` | Birincil eylem (Export, Kopyala, İndir, Aktif Sekme) |
+| **Card Surface (Dark OLED)** | `#0D1117` | Kod ve terminal kart gövdeleri |
+| **Card Border** | `#30363D` | Kod kartı pencere çerçevesi |
+| **Text Primary** | `#18181B` | Stüdyo başlıkları ve arayüz metinleri |
+| **Text Muted** | `#57534E` | Açıklamalar, etiketler ve ikincil butonlar |
+| **Diff Added (Green)** | `#10B981` | Eklenen kod satırları ve diff istatistiği |
+| **Diff Removed (Red)** | `#EF4444` | Silinen kod satırları ve hata durumları |
 
 ### 2.2 Tipografi Mimarisi
 

@@ -23,6 +23,9 @@ import {
   FontFamilyId,
   SavedPreset,
   SocialPresetId,
+  LogoPosition,
+  WatermarkPosition,
+  QrPosition,
 } from "@/types";
 import {
   Search,
@@ -93,8 +96,8 @@ const AccordionSection: React.FC<AccordionSectionProps> = ({
     <div
       className={`rounded-2xl border transition-all duration-200 overflow-hidden ${
         isOpen
-          ? "border-slate-700/90 bg-[#101726]/90 shadow-lg shadow-black/30"
-          : "border-slate-800/80 bg-[#0c121e]/70 hover:border-slate-700/70 hover:bg-[#0f1625]/60"
+          ? "border-[#D6D0C4] bg-[#FAF8F5] shadow-sm"
+          : "border-[#D6D0C4] bg-[#FAF8F5]/80 hover:border-[#A8A29E] hover:bg-[#F4F1EA]"
       }`}
     >
       <button
@@ -106,17 +109,17 @@ const AccordionSection: React.FC<AccordionSectionProps> = ({
           <div
             className={`w-7 h-7 rounded-lg border flex items-center justify-center shrink-0 transition-colors ${
               isOpen
-                ? "bg-emerald-600/20 border-emerald-500/40 text-emerald-400"
-                : "bg-slate-800/80 border-slate-700/60 text-slate-400 group-hover:text-white"
+                ? "bg-[#FF4F00]/10 border-[#FF4F00]/30 text-[#FF4F00]"
+                : "bg-[#EAE5DC] border-[#D6D0C4] text-[#57534E] group-hover:text-[#18181B]"
             }`}
           >
             {icon}
           </div>
-          <span className="text-xs font-semibold text-slate-200 group-hover:text-white transition-colors truncate">
+          <span className="text-xs font-semibold text-[#18181B] transition-colors truncate">
             {title}
           </span>
           {badge && (
-            <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-white/5 border border-white/10 text-emerald-300 font-medium shrink-0 ml-auto mr-1 truncate max-w-[130px]">
+            <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-[#FF4F00]/10 border border-[#FF4F00]/25 text-[#FF4F00] font-medium shrink-0 ml-auto mr-1 truncate max-w-[130px]">
               {badge}
             </span>
           )}
@@ -124,8 +127,8 @@ const AccordionSection: React.FC<AccordionSectionProps> = ({
 
         <div className="flex items-center shrink-0 ml-2">
           <div
-            className={`w-6 h-6 rounded-md flex items-center justify-center text-slate-400 group-hover:text-white transition-transform duration-200 ${
-              isOpen ? "rotate-180 text-emerald-400 bg-emerald-500/10" : ""
+            className={`w-6 h-6 rounded-md flex items-center justify-center text-[#57534E] group-hover:text-[#18181B] transition-transform duration-200 ${
+              isOpen ? "rotate-180 text-[#FF4F00] bg-[#FF4F00]/10" : ""
             }`}
           >
             <ChevronDown className="w-4 h-4" />
@@ -134,7 +137,7 @@ const AccordionSection: React.FC<AccordionSectionProps> = ({
       </button>
 
       {isOpen && (
-        <div className="px-4 pb-4 pt-1 space-y-4 border-t border-slate-800/80 animate-in fade-in-50 duration-200">
+        <div className="px-4 pb-4 pt-1 space-y-4 border-t border-[#D6D0C4] animate-in fade-in-50 duration-200">
           {children}
         </div>
       )}
@@ -142,7 +145,7 @@ const AccordionSection: React.FC<AccordionSectionProps> = ({
   );
 };
 
-export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
+const ControlsBase: React.FC<ControlsProps> = ({ config, onChange }) => {
   const t = getT(config.uiLanguage);
   const isEn = config.uiLanguage === "en";
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -270,6 +273,11 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    if (file.size > 2 * 1024 * 1024) {
+      alert(isEn ? "File size must be under 2MB" : "Görsel boyutu en fazla 2MB olabilir");
+      return;
+    }
+
     const reader = new FileReader();
     reader.onload = (event) => {
       if (typeof event.target?.result === "string") {
@@ -352,6 +360,11 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    if (file.size > 2 * 1024 * 1024) {
+      alert(isEn ? "File size must be under 2MB" : "Görsel boyutu en fazla 2MB olabilir");
+      return;
+    }
+
     const reader = new FileReader();
     reader.onload = (event) => {
       if (typeof event.target?.result === "string") {
@@ -368,6 +381,11 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    if (file.size > 2 * 1024 * 1024) {
+      alert(isEn ? "File size must be under 2MB" : "Görsel boyutu en fazla 2MB olabilir");
+      return;
+    }
+
     const reader = new FileReader();
     reader.onload = (event) => {
       if (typeof event.target?.result === "string") {
@@ -380,46 +398,46 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
   };
 
   return (
-    <div className="w-full h-full bg-[#0d131f] border-r border-slate-800/80 p-4 space-y-3.5 overflow-y-auto">
+    <div className="w-full h-full bg-[#FAF8F5] border-r border-[#D6D0C4] p-4 space-y-3.5 overflow-y-auto">
       {/* Üst Çubuk: Başlık & Tümünü Aç/Kapat */}
       <div className="flex items-center justify-between px-1 pb-1">
-        <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+        <span className="text-[11px] font-bold text-[#57534E] uppercase tracking-wider">
           {isEn ? "Settings & Menus" : "Ayarlar & Menüler"}
         </span>
         <div className="flex items-center gap-1.5 text-[10px]">
           <button
             type="button"
             onClick={expandAll}
-            className="text-slate-400 hover:text-emerald-400 transition-colors px-1.5 py-0.5 rounded hover:bg-slate-800 cursor-pointer"
+            className="text-[#57534E] hover:text-[#FF4F00] transition-colors px-1.5 py-0.5 rounded hover:bg-[#EAE5DC] cursor-pointer"
           >
             {isEn ? "Expand All" : "Tümünü Aç"}
           </button>
-          <span className="text-slate-600">•</span>
+          <span className="text-[#D6D0C4]">•</span>
           <button
             type="button"
             onClick={collapseAll}
-            className="text-slate-400 hover:text-emerald-400 transition-colors px-1.5 py-0.5 rounded hover:bg-slate-800 cursor-pointer"
+            className="text-[#57534E] hover:text-[#FF4F00] transition-colors px-1.5 py-0.5 rounded hover:bg-[#EAE5DC] cursor-pointer"
           >
             {isEn ? "Collapse All" : "Kapat"}
           </button>
         </div>
       </div>
 
-      {/* Arama Çubuğu (Settings Search Bar - Faz 7A) */}
+      {/* Arama Çubuğu (Settings Search Bar) */}
       <div className="relative">
-        <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+        <Search className="w-3.5 h-3.5 text-[#57534E] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
         <input
           type="text"
           placeholder={isEn ? "Search settings... (font, color, 3D, logo)" : "Ayarlarda ara... (font, renk, 3D, logo)"}
           value={searchQuery}
           onChange={(e) => handleSearch(e.target.value)}
-          className="w-full bg-[#131b2a] border border-slate-700/80 focus:border-emerald-500 rounded-xl pl-8 pr-8 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none transition-colors shadow-inner"
+          className="w-full bg-[#F4F1EA] border border-[#D6D0C4] focus:border-[#FF4F00] rounded-xl pl-8 pr-8 py-2 text-xs text-[#18181B] placeholder-[#A8A29E] focus:outline-none transition-colors shadow-inner"
         />
         {searchQuery && (
           <button
             type="button"
             onClick={() => handleSearch("")}
-            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white text-xs px-1"
+            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#57534E] hover:text-[#18181B] text-xs px-1"
           >
             ✕
           </button>
@@ -489,14 +507,14 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
         icon={<Layers className="w-3.5 h-3.5 text-emerald-400" />}
         badge={
           config.mode === "code"
-            ? "💻 Kod Modu"
+            ? "Kod Modu"
             : config.mode === "diff"
-            ? "🔄 Diff Modu"
+            ? "Diff Modu"
             : config.mode === "terminal"
-            ? "🖥️ Terminal Modu"
+            ? "Terminal Modu"
             : config.mode === "tweet"
-            ? "𝕏 Tweet Modu"
-            : "📝 Alıntı Modu"
+            ? "Tweet Modu"
+            : "Alıntı Modu"
         }
         isOpen={openSections.mode}
         onToggle={() => toggleSection("mode")}
@@ -747,8 +765,8 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                 <div className="grid grid-cols-3 gap-1 bg-[#131b2a] p-1 rounded-xl border border-slate-800 text-[11px]">
                   {[
                     { id: "none", label: "Yok" },
-                    { id: "blue", label: "🔷 Mavi Tik" },
-                    { id: "gold", label: "🏆 Altın Rozet" },
+                    { id: "blue", label: "Mavi Tik" },
+                    { id: "gold", label: "Altın Rozet" },
                   ].map((badge) => (
                     <button
                       key={badge.id}
@@ -771,7 +789,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                 <div className="flex items-center justify-between">
                   <label className="text-[10px] font-semibold text-slate-400">Tweet İçeriği</label>
                   <span className="text-[9px] text-slate-500">
-                    💡 #etiket ve @bahset otomatik renklendirilir
+                    #etiket ve @bahset otomatik renklendirilir
                   </span>
                 </div>
                 <textarea
@@ -972,6 +990,30 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                 <span>Önce ve Sonra kod bloklarını düzenleyin; kırmızı ve yeşil vurgularla refactoring paylaşımı oluşturun.</span>
               </div>
 
+              {/* Diff Görünümü: Birleşik / Yan Yana */}
+              <div className="grid grid-cols-2 gap-1.5">
+                {(["unified", "split"] as const).map((viewMode) => {
+                  const isActive = (config.diffViewMode || "unified") === viewMode;
+                  return (
+                    <button
+                      key={viewMode}
+                      type="button"
+                      aria-pressed={isActive}
+                      onClick={() => onChange({ diffViewMode: viewMode })}
+                      className={`px-2 py-1.5 rounded-xl text-[11px] font-semibold border transition-all cursor-pointer ${
+                        isActive
+                          ? "bg-amber-500/15 text-amber-300 border-amber-500/40"
+                          : "bg-[#131b2a] text-slate-400 border-slate-700/70 hover:text-slate-200"
+                      }`}
+                    >
+                      {viewMode === "unified"
+                        ? isEn ? "Unified" : "Birleşik (Tek Sütun)"
+                        : isEn ? "Side by Side" : "Yan Yana (Split)"}
+                    </button>
+                  );
+                })}
+              </div>
+
               {/* Önce Başlığı & Kodu */}
               <div className="space-y-1.5">
                 <label className="text-[10px] font-semibold text-rose-400 flex items-center gap-1.5">
@@ -1024,7 +1066,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
           {config.mode === "code" && (
             <div className="p-2.5 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-[11px] text-emerald-300 flex items-center gap-2">
               <Code2 className="w-4 h-4 shrink-0 text-emerald-400" />
-              <span>Kod düzenleme, sekmeler ve sözdizimi için aşağıdaki "Kod & Metin Ayarları" bölümünü kullanabilirsiniz.</span>
+              <span>Kod düzenleme, sekmeler ve sözdizimi için aşağıdaki &quot;Kod & Metin Ayarları&quot; bölümünü kullanabilirsiniz.</span>
             </div>
           )}
         </div>
@@ -1360,13 +1402,13 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
       >
         <div className="space-y-3">
           {/* Arka Plan Türü 4'lü Butonları */}
-          <div className="grid grid-cols-4 gap-1 bg-[#131b2a] p-1 rounded-xl border border-slate-800">
+          <div className="grid grid-cols-4 gap-1 bg-[#EAE5DC] p-1 rounded-xl border border-[#D6D0C4]">
             <button
               onClick={() => onChange({ bgType: "gradient" })}
               className={`py-1.5 rounded-lg text-[11px] font-medium transition-all ${
                 config.bgType === "gradient"
-                  ? "bg-emerald-600 text-white font-semibold shadow-sm"
-                  : "text-slate-400 hover:text-white"
+                  ? "bg-[#FF4F00] text-white font-semibold shadow-sm"
+                  : "text-[#57534E] hover:text-[#18181B]"
               }`}
             >
               Degrade
@@ -1375,8 +1417,8 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
               onClick={() => onChange({ bgType: "pattern" })}
               className={`py-1.5 rounded-lg text-[11px] font-medium transition-all ${
                 config.bgType === "pattern"
-                  ? "bg-emerald-600 text-white font-semibold shadow-sm"
-                  : "text-slate-400 hover:text-white"
+                  ? "bg-[#FF4F00] text-white font-semibold shadow-sm"
+                  : "text-[#57534E] hover:text-[#18181B]"
               }`}
             >
               Desen
@@ -1385,8 +1427,8 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
               onClick={() => onChange({ bgType: "custom" })}
               className={`py-1.5 rounded-lg text-[11px] font-medium transition-all ${
                 config.bgType === "custom"
-                  ? "bg-emerald-600 text-white font-semibold shadow-sm"
-                  : "text-slate-400 hover:text-white"
+                  ? "bg-[#FF4F00] text-white font-semibold shadow-sm"
+                  : "text-[#57534E] hover:text-[#18181B]"
               }`}
             >
               Resim
@@ -1395,8 +1437,8 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
               onClick={() => onChange({ bgType: "transparent" })}
               className={`py-1.5 rounded-lg text-[11px] font-medium transition-all ${
                 config.bgType === "transparent"
-                  ? "bg-emerald-600 text-white font-semibold shadow-sm"
-                  : "text-slate-400 hover:text-white"
+                  ? "bg-[#FF4F00] text-white font-semibold shadow-sm"
+                  : "text-[#57534E] hover:text-[#18181B]"
               }`}
             >
               Şeffaf
@@ -1407,13 +1449,13 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
           {config.bgType === "gradient" && (
             <div className="space-y-3">
               {/* Degrade Alt Sekmesi: Hazır vs Özel */}
-              <div className="flex rounded-lg bg-[#131b2a] p-0.5 border border-slate-800 text-[10px]">
+              <div className="flex rounded-lg bg-[#EAE5DC] p-0.5 border border-[#D6D0C4] text-[10px]">
                 <button
                   onClick={() => onChange({ useCustomGradient: false })}
                   className={`flex-1 py-1 rounded-md transition-all ${
                     !config.useCustomGradient
-                      ? "bg-emerald-600 text-white font-semibold shadow-sm"
-                      : "text-slate-400 hover:text-white"
+                      ? "bg-[#FF4F00] text-white font-semibold shadow-sm"
+                      : "text-[#57534E] hover:text-[#18181B]"
                   }`}
                 >
                   Hazır Paletler (12)
@@ -1422,20 +1464,20 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                   onClick={() => onChange({ useCustomGradient: true })}
                   className={`flex-1 py-1 rounded-md transition-all ${
                     config.useCustomGradient
-                      ? "bg-emerald-600 text-white font-semibold shadow-sm"
-                      : "text-slate-400 hover:text-white"
+                      ? "bg-[#FF4F00] text-white font-semibold shadow-sm"
+                      : "text-[#57534E] hover:text-[#18181B]"
                   }`}
                 >
-                  ✨ Çoklu Renk Stüdyosu
+                  Çoklu Renk Stüdyosu
                 </button>
               </div>
 
               {/* 1. Hazır 12 Tema */}
               {!config.useCustomGradient && (
                 <div className="space-y-1.5">
-                  <span className="text-[10px] text-slate-400 block font-medium">
+                  <span className="text-[10px] text-[#57534E] block font-medium">
                     Aktif Tema:{" "}
-                    <span className="text-white font-semibold">
+                    <span className="text-[#18181B] font-semibold">
                       {THEMES.find((t) => t.id === config.theme)?.name}
                     </span>
                   </span>
@@ -1989,7 +2031,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
 
           {/* ŞEFFAF BİLGİSİ */}
           {config.bgType === "transparent" && (
-            <div className="p-3 bg-slate-900/60 rounded-xl border border-slate-800 text-[11px] text-slate-400">
+            <div className="p-3 bg-[#FAF8F5] rounded-xl border border-[#D6D0C4] text-[11px] text-[#57534E]">
               Arka plan tamamen şeffaftır. İndirdiğin PNG dosyasında sadece kod kartı yer alır.
             </div>
           )}
@@ -1998,11 +2040,11 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
           <div className="pt-2.5 border-t border-slate-800/80 space-y-2">
             <div className="flex items-center justify-between">
               <div className="flex flex-col">
-                <span className="text-[11px] font-semibold text-slate-300 flex items-center gap-1.5">
-                  <Sparkles className="w-3 h-3 text-amber-400" />
+                <span className="text-[11px] font-semibold text-[#18181B] flex items-center gap-1.5">
+                  <Sparkles className="w-3 h-3 text-amber-500" />
                   <span>Film Grain / Kumlanma Dokusu</span>
                 </span>
-                <span className="text-[9px] text-slate-500">
+                <span className="text-[9px] text-[#57534E]">
                   Arka plana sinematik ve organik bir doku ekler
                 </span>
               </div>
@@ -2023,9 +2065,9 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
 
             {config.useGrainTexture && (
               <div className="space-y-1 pt-1 animate-in fade-in-50 duration-150">
-                <div className="flex items-center justify-between text-[10px] text-slate-400">
+                <div className="flex items-center justify-between text-[10px] text-[#57534E]">
                   <span>Doku Yoğunluğu</span>
-                  <span className="font-mono text-emerald-400">
+                  <span className="font-mono text-emerald-600 font-bold">
                     %{Math.round((config.grainOpacity ?? 0.18) * 100)}
                   </span>
                 </div>
@@ -2047,15 +2089,15 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
             <div className="flex items-center justify-between">
               <div>
                 <div className="flex items-center gap-1.5">
-                  <Waves className="w-3.5 h-3.5 text-cyan-400" />
-                  <span className="text-[11px] font-semibold text-slate-200">
+                  <Waves className="w-3.5 h-3.5 text-cyan-500" />
+                  <span className="text-[11px] font-semibold text-[#18181B]">
                     {config.uiLanguage === "en" ? "Animated Waves & Mesh" : "Hareketli Arka Plan Dalgaları"}
                   </span>
-                  <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 font-medium">
+                  <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-cyan-500/10 border border-cyan-500/30 text-cyan-700 font-semibold">
                     GPU
                   </span>
                 </div>
-                <span className="text-[10px] text-slate-400 block">
+                <span className="text-[10px] text-[#57534E] block">
                   {config.uiLanguage === "en"
                     ? "Ambient cinematic gradient wave mesh behind card"
                     : "Kart arkasında akıcı sinematik degrade dalga animasyonu"}
@@ -2392,7 +2434,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                 className="w-full bg-[#131b2a] border border-slate-700/70 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500 font-mono transition-all"
               />
               <p className="text-[10px] text-slate-500">
-                💡 İpucu: Tuvaldeki satır numarasına doğrudan tıklayarak da açıp kapatabilirsin.
+                İpucu: Tuvaldeki satır numarasına doğrudan tıklayarak da açıp kapatabilirsin.
               </p>
             </div>
           )}
@@ -2421,7 +2463,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
           {/* Sosyal Medya Hazır Formatları (Faz 7A) */}
           <div className="space-y-1.5">
             <div className="flex items-center justify-between text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
-              <span>📐 Sosyal Medya Boyutları</span>
+              <span>Sosyal Medya Boyutları</span>
               <span className="text-[10px] text-emerald-400 font-normal">Otomatik oran</span>
             </div>
             <div className="grid grid-cols-2 gap-1.5">
@@ -2458,7 +2500,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
               { id: "16:9", label: "Twitter / X (16:9)" },
               { id: "1:1", label: "Kare / IG (1:1)" },
               { id: "4:5", label: "LinkedIn (4:5)" },
-              { id: "custom", label: "⚙️ Özel Format" },
+              { id: "custom", label: "Özel Format" },
             ].map((item) => (
               <button
                 key={item.id}
@@ -2637,7 +2679,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                 <div className="flex items-center justify-between">
                   <div className="flex flex-col">
                     <span className="text-[11px] font-semibold text-slate-300">
-                      🎭 Özel Başlık Çubuğu Rengi
+                      Özel Başlık Çubuğu Rengi
                     </span>
                     <span className="text-[9px] text-slate-500">
                       Pencere başlık şeridinin arka planı
@@ -2811,7 +2853,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                           : "text-emerald-400 hover:text-emerald-300 bg-emerald-500/10 border border-emerald-500/20"
                       }`}
                     >
-                      🎨 Özel Renkler
+                      Özel Renkler
                     </button>
                   </div>
                 </div>
@@ -3146,7 +3188,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                     <button
                       key={pos.id}
                       type="button"
-                      onClick={() => onChange({ logoPosition: pos.id as any })}
+                      onClick={() => onChange({ logoPosition: pos.id as LogoPosition })}
                       className={`py-1 rounded-lg transition-all text-center ${
                         (config.logoPosition || "bottom-right") === pos.id
                           ? "bg-emerald-600 text-white font-bold"
@@ -3271,7 +3313,7 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
                     <button
                       key={pos.id}
                       type="button"
-                      onClick={() => onChange({ qrPosition: pos.id as any })}
+                      onClick={() => onChange({ qrPosition: pos.id as QrPosition })}
                       className={`py-1 rounded-lg transition-all text-center cursor-pointer ${
                         (config.qrPosition || "bottom-right") === pos.id
                           ? "bg-emerald-600 text-white font-semibold shadow-sm"
@@ -3423,4 +3465,24 @@ export const Controls: React.FC<ControlsProps> = ({ config, onChange }) => {
     </div>
   );
 };
+
+// Kod yazarken (code/tabs/slayt içerikleri) 3400+ satırlık paneli yeniden render etme;
+// Controls bu alanları göstermez (slaytlardan yalnızca sayısını kullanır).
+const CONTROLS_IGNORED_KEYS = new Set<string>(["code", "tabs", "slides"]);
+const areControlsPropsEqual = (prev: ControlsProps, next: ControlsProps): boolean => {
+  if (prev.onChange !== next.onChange) return false;
+  const a = prev.config as unknown as Record<string, unknown>;
+  const b = next.config as unknown as Record<string, unknown>;
+  if (a === b) return true;
+  if ((prev.config.slides?.length || 0) !== (next.config.slides?.length || 0)) return false;
+  const keys = new Set([...Object.keys(a), ...Object.keys(b)]);
+  for (const key of keys) {
+    if (CONTROLS_IGNORED_KEYS.has(key)) continue;
+    if (a[key] !== b[key]) return false;
+  }
+  return true;
+};
+
+export const Controls = React.memo(ControlsBase, areControlsPropsEqual);
+Controls.displayName = "Controls";
 

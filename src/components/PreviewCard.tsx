@@ -29,7 +29,7 @@ const XLogo = () => (
   </svg>
 );
 
-// Prism dilleri
+// Prism dilleri (20+ Programlama Dili Tam Desteği)
 import "prismjs/components/prism-c";
 import "prismjs/components/prism-cpp";
 import "prismjs/components/prism-csharp";
@@ -42,6 +42,19 @@ import "prismjs/components/prism-sql";
 import "prismjs/components/prism-json";
 import "prismjs/components/prism-markdown";
 import "prismjs/components/prism-css";
+import "prismjs/components/prism-go";
+import "prismjs/components/prism-java";
+import "prismjs/components/prism-kotlin";
+import "prismjs/components/prism-swift";
+import "prismjs/components/prism-php";
+import "prismjs/components/prism-ruby";
+import "prismjs/components/prism-yaml";
+import "prismjs/components/prism-docker";
+import "prismjs/components/prism-graphql";
+import "prismjs/components/prism-jsx";
+import "prismjs/components/prism-tsx";
+import "prismjs/components/prism-diff";
+import { computeLineDiff, computeSplitDiff } from "@/lib/diffUtils";
 
 interface PreviewCardProps {
   config: CardConfig;
@@ -50,6 +63,7 @@ interface PreviewCardProps {
   onSelectTab?: (tabId: string) => void;
   onAddTab?: () => void;
   onCloseTab?: (tabId: string) => void;
+  isExporting?: boolean;
 }
 
 export const PreviewCard: React.FC<PreviewCardProps> = ({
@@ -59,7 +73,10 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({
   onSelectTab,
   onAddTab,
   onCloseTab,
+  isExporting = false,
 }) => {
+  // Dışa aktarma sırasında animasyonlar durur (yakalanan kare tutarlı olsun)
+  const anim = (cls: string) => (isExporting ? "" : cls);
   const [mounted, setMounted] = useState(false);
   const [qrSvg, setQrSvg] = useState<string>("");
 
@@ -209,6 +226,40 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({
 
   const linesBefore = useMemo(() => (config.diffBeforeCode || "").split("\n"), [config.diffBeforeCode]);
   const linesAfter = useMemo(() => (config.diffAfterCode || "").split("\n"), [config.diffAfterCode]);
+
+  // Satır bazlı gerçek Git Diff hesaplaması
+  const diffLines = useMemo(() => {
+    return computeLineDiff(config.diffBeforeCode || "", config.diffAfterCode || "");
+  }, [config.diffBeforeCode, config.diffAfterCode]);
+
+  const splitDiffRows = useMemo(() => {
+    return computeSplitDiff(config.diffBeforeCode || "", config.diffAfterCode || "");
+  }, [config.diffBeforeCode, config.diffAfterCode]);
+
+  const diffStats = useMemo(() => {
+    let added = 0;
+    let removed = 0;
+    for (const line of diffLines) {
+      if (line.type === "added") added++;
+      if (line.type === "removed") removed++;
+    }
+    return { added, removed };
+  }, [diffLines]);
+
+  const highlightCodeLine = (codeLine: string, lang: string) => {
+    try {
+      const grammar = Prism.languages[lang] || Prism.languages.javascript;
+      if (grammar) {
+        return Prism.highlight(codeLine, grammar, lang);
+      }
+    } catch {}
+    return codeLine
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  };
 
   // 3D Perspektif için güvenli nefes payı sağlayan efektif padding
   const effectivePadding = useMemo(() => {
@@ -370,7 +421,7 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({
     if (config.bgType === "custom" && config.customBgUrl) {
       return {
         className: "bg-cover bg-center",
-        style: { backgroundImage: `url(${config.customBgUrl})` },
+        style: { backgroundImage: `url("${config.customBgUrl.replace(/["'()\\\s]/g, (c) => `%${c.charCodeAt(0).toString(16).padStart(2, "0")}`)}")` },
       };
     }
     // Varsayılan: Gradient
@@ -435,7 +486,7 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({
             />
             <div className="flex flex-col pr-1 select-none">
               <span className="text-[10px] font-bold text-white tracking-wide">SnapMark</span>
-              <span className="text-[9px] text-slate-400">Tara & İncele</span>
+              <span className="text-[9px] text-slate-400">{config.uiLanguage === "en" ? "Scan & View" : "Tara & İncele"}</span>
             </div>
           </div>
         )}
@@ -443,7 +494,7 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({
         {/* Slayt Sayacı Rozeti (Faz 5 Carousel Stüdyosu) */}
         {config.showSlideCounter && (
           <div className="absolute top-4 right-4 z-30 px-3 py-1 rounded-full bg-black/75 backdrop-blur-md border border-white/20 text-[11px] font-mono font-semibold text-white shadow-xl flex items-center gap-1.5 select-none">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span className={`w-1.5 h-1.5 rounded-full bg-emerald-400 ${anim("animate-pulse")}`} />
             <span>
               {(() => {
                 const slides = config.slides || [];
@@ -459,8 +510,8 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({
         {/* Kaydırma İpucu Rozeti (Faz 5 Carousel Stüdyosu) */}
         {config.showSwipeIndicator && (config.slides?.length || 0) > 1 && (
           <div className="absolute bottom-4 left-4 z-30 px-3 py-1 rounded-full bg-black/75 backdrop-blur-md border border-white/20 text-[11px] font-medium text-slate-200 shadow-xl flex items-center gap-1.5 select-none">
-            <span>Kaydır</span>
-            <span className="font-bold text-emerald-400 animate-bounce">➔</span>
+            <span>{config.uiLanguage === "en" ? "Swipe" : "Kaydır"}</span>
+            <span className={`font-bold text-emerald-400 ${anim("animate-bounce")}`}>➔</span>
           </div>
         )}
 
@@ -522,7 +573,9 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({
         {config.animatedBackground && (
           <div
             className={`absolute -inset-[30%] pointer-events-none opacity-65 filter blur-[65px] ${
-              config.animatedBackgroundSpeed === "slow"
+              isExporting
+                ? ""
+                : config.animatedBackgroundSpeed === "slow"
                 ? "animate-mesh-slow"
                 : config.animatedBackgroundSpeed === "fast"
                 ? "animate-mesh-fast"
@@ -565,7 +618,7 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({
           >
             {/* Asıl Kart İçeriği Katmanı */}
             <div
-              className={`w-full h-full rounded-[14px] ${currentCodeTheme.cardBg} ${
+              className={`w-full h-full rounded-[14px] ${currentCodeTheme.cardBg} text-[#F8FAFC] ${
                 !config.useGradientBorder ? `border ${currentCodeTheme.borderColor}` : ""
               } overflow-hidden transition-all duration-300 code-theme-${config.codeTheme || "onedark"} relative flex flex-col`}
               style={{
@@ -682,8 +735,11 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({
                     {config.tabs.map((tab) => {
                       const isActive = tab.id === config.activeTabId;
                       return (
-                        <div
+                        <button
+                          type="button"
                           key={tab.id}
+                          role="tab"
+                          aria-selected={isActive}
                           onClick={() => onSelectTab?.(tab.id)}
                           className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-mono transition-all cursor-pointer group shrink-0 ${
                             isActive
@@ -704,26 +760,36 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({
                           )}
                           <span className="truncate max-w-[130px]">{tab.name}</span>
                           {config.tabs.length > 1 && onCloseTab && (
-                            <button
-                              type="button"
+                            <span
+                              role="button"
+                              tabIndex={0}
+                              aria-label="Sekmeyi Kapat"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 onCloseTab(tab.id);
                               }}
-                              className="w-3.5 h-3.5 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 hover:bg-white/20 transition-all text-[9px] text-slate-300 shrink-0"
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter" || e.key === " ") {
+                                  e.stopPropagation();
+                                  onCloseTab(tab.id);
+                                }
+                              }}
+                              className="w-3.5 h-3.5 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 hover:bg-white/20 transition-all text-[9px] text-slate-300 shrink-0 cursor-pointer"
                               title="Sekmeyi Kapat"
                             >
                               ✕
-                            </button>
+                            </span>
                           )}
-                        </div>
+                        </button>
                       );
                     })}
                     {onAddTab && (
                       <button
                         type="button"
                         onClick={onAddTab}
-                        className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors shrink-0"
+                        data-export-ignore="true"
+                        aria-label="Yeni Sekme Ekle"
+                        className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors shrink-0 cursor-pointer"
                         title="Yeni Sekme Ekle"
                       >
                         <Plus className="w-3.5 h-3.5" />
@@ -764,7 +830,7 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({
                 {config.mode === "diff" && (
                   <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-lg border border-amber-500/30 bg-amber-500/10 text-amber-300 text-[11px] font-mono font-medium shadow-sm">
                     <GitCompare className="w-3.5 h-3.5 text-amber-400" />
-                    <span className="font-semibold">Diff Karşılaştırma</span>
+                    <span className="font-semibold">{config.uiLanguage === "en" ? "Diff Comparison" : "Diff Karşılaştırma"}</span>
                   </div>
                 )}
               </div>
@@ -792,11 +858,14 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({
                     const lineNum = idx + 1;
                     const isHighlighted = highlightedSet.has(lineNum);
                     return (
-                      <div
+                      <button
+                        type="button"
                         key={idx}
                         onClick={() => onToggleLineHighlight?.(lineNum)}
-                        title="Vurguyu aç/kapa"
-                        className={`transition-colors cursor-pointer hover:text-white flex items-center justify-end ${
+                        title={`Satır ${lineNum} vurgusunu aç/kapat`}
+                        aria-label={`Satır ${lineNum} vurgusunu aç/kapat`}
+                        aria-pressed={isHighlighted}
+                        className={`w-full transition-colors cursor-pointer hover:text-white flex items-center justify-end bg-transparent border-0 p-0 ${
                           isHighlighted ? "text-emerald-400 font-bold opacity-100" : "opacity-60"
                         }`}
                         style={{
@@ -805,7 +874,7 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({
                         }}
                       >
                         {lineNum}
-                      </div>
+                      </button>
                     );
                   })}
                 </div>
@@ -833,7 +902,7 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({
                 {/* Kod İçeriği (Tam Eşit Line Height & Ligatures) */}
                 <pre
                   suppressHydrationWarning
-                  className={`!bg-transparent !p-0 !m-0 !overflow-visible ${
+                  className={`!bg-transparent !p-0 !m-0 !overflow-visible text-[#F8FAFC] ${
                     config.fontLigatures ? "font-ligatures-on" : "font-ligatures-off"
                   }`}
                   style={{
@@ -843,7 +912,7 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({
                 >
                   <code
                     suppressHydrationWarning
-                    className={`language-${config.language} !bg-transparent !p-0 ${
+                    className={`language-${config.language} !bg-transparent !p-0 text-[#F8FAFC] ${
                       config.fontLigatures ? "font-ligatures-on" : "font-ligatures-off"
                     }`}
                     style={{
@@ -855,7 +924,7 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({
                   />
                   {config.typewriterPlaying && typewriterProgress < (config.code?.length || 0) && (
                     <span
-                      className="inline-block w-2 bg-emerald-400 animate-pulse ml-0.5 align-middle"
+                      className={`inline-block w-2 bg-emerald-400 ${anim("animate-pulse")} ml-0.5 align-middle`}
                       style={{ height: `${config.fontSize * 1.1}px` }}
                     />
                   )}
@@ -934,7 +1003,7 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({
                 <div className="pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400 select-none">
                   <div className="flex items-center gap-1.5 hover:text-emerald-400 transition-colors">
                     <MessageCircle className="w-4 h-4" />
-                    <span className="text-[11px] font-mono">124</span>
+                    <span className="text-[11px] font-mono">{config.tweetReplies || "42"}</span>
                   </div>
                   <div className="flex items-center gap-1.5 hover:text-emerald-400 transition-colors">
                     <Repeat2 className="w-4 h-4 text-emerald-400/90" />
@@ -993,7 +1062,7 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({
                 <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-6 shadow-inner space-y-4">
                   <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-xs font-semibold">
                     <QuoteIcon className="w-3.5 h-3.5" />
-                    <span>Alıntı</span>
+                    <span>{config.uiLanguage === "en" ? "Quote" : "Alıntı"}</span>
                   </div>
                   <p
                     className="text-slate-100 font-normal leading-relaxed whitespace-pre-wrap break-words"
@@ -1013,10 +1082,10 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({
                   </p>
                   <div className="pt-4 border-t border-white/10 flex items-center justify-between text-xs">
                     <span className="font-bold text-white">
-                      {config.quoteAuthor || config.authorName || "Steve Jobs"}
+                      {config.quoteAuthor || config.authorName || (config.uiLanguage === "en" ? "Alan Turing" : "Alan Turing")}
                     </span>
                     <span className="text-slate-400">
-                      {config.quoteTitle || config.authorHandle || "Apple Kurucusu"}
+                      {config.quoteTitle || config.authorHandle || (config.uiLanguage === "en" ? "Father of Modern Computing" : "Bilgisayar Biliminin Öncüsü")}
                     </span>
                   </div>
                 </div>
@@ -1042,10 +1111,10 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({
                   </p>
                   <div className="pt-2">
                     <h4 className="text-sm font-bold text-emerald-300">
-                      {config.quoteAuthor || config.authorName || "Steve Jobs"}
+                      {config.quoteAuthor || config.authorName || "Alan Turing"}
                     </h4>
                     <p className="text-xs text-slate-400 font-medium">
-                      {config.quoteTitle || config.authorHandle || "Apple Kurucusu"}
+                      {config.quoteTitle || config.authorHandle || (config.uiLanguage === "en" ? "Father of Modern Computing" : "Bilgisayar Biliminin Öncüsü")}
                     </p>
                   </div>
                 </div>
@@ -1053,76 +1122,179 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({
             </div>
           )}
 
-          {/* İçerik: Diff / Karşılaştırma Modu (Faz 5) */}
+          {/* İçerik: Diff / Karşılaştırma Modu (Satır Bazlı +/- Renklendirme) */}
           {config.mode === "diff" && (
             <div className="p-4 sm:p-5 space-y-4 select-text">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
-                {/* Sol Sütun: Önce (Kötü Pratik) */}
-                <div className="rounded-xl border border-rose-500/30 bg-rose-950/20 overflow-hidden flex flex-col shadow-inner">
-                  <div className="px-3 py-2 bg-rose-950/60 border-b border-rose-500/25 flex items-center justify-between">
-                    <div className="flex items-center gap-1.5 text-xs font-bold text-rose-300">
-                      <span className="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)]" />
-                      <span>{config.diffBeforeLabel || "Önce (Kötü Pratik)"}</span>
+              {config.diffViewMode === "split" ? (
+                /* Yan Yana Split Diff Modu (Satır Düzeyinde Vurgulu) */
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                  {/* Sol Sütun: Önce (Kötü Pratik / Silinenler) */}
+                  <div className="rounded-xl border border-rose-500/30 bg-rose-950/20 overflow-hidden flex flex-col shadow-inner">
+                    <div className="px-3 py-2 bg-rose-950/60 border-b border-rose-500/25 flex items-center justify-between">
+                      <div className="flex items-center gap-1.5 text-xs font-bold text-rose-300">
+                        <span className="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)]" />
+                        <span>{config.diffBeforeLabel || (config.uiLanguage === "en" ? "Before (Old Code)" : "Önce (Eski Kod)")}</span>
+                      </div>
+                      <span className="text-[10px] font-mono font-bold text-rose-400/90 bg-rose-500/10 px-2 py-0.5 rounded border border-rose-500/20">
+                        BEFORE (-{diffStats.removed})
+                      </span>
                     </div>
-                    <span className="text-[10px] font-mono font-bold text-rose-400/90 bg-rose-500/10 px-2 py-0.5 rounded border border-rose-500/20">
-                      BEFORE
-                    </span>
-                  </div>
-                  <div
-                    className="p-3.5 flex-1 overflow-x-auto"
-                    style={{
-                      fontFamily: currentFontFamily,
-                      fontSize: `${Math.max(12, config.fontSize - 1)}px`,
-                      lineHeight: `${Math.max(20, lineHeightPx - 2)}px`,
-                    }}
-                  >
-                    <pre
-                      suppressHydrationWarning
-                      className="!bg-transparent !p-0 !m-0 !overflow-visible"
-                      style={{ fontFamily: currentFontFamily }}
+                    <div
+                      className="p-3.5 flex-1 overflow-x-auto font-mono text-xs"
+                      style={{
+                        fontFamily: currentFontFamily,
+                        fontSize: `${Math.max(12, config.fontSize - 1)}px`,
+                        lineHeight: `${Math.max(20, lineHeightPx - 2)}px`,
+                      }}
                     >
-                      <code
-                        suppressHydrationWarning
-                        className={`language-${config.language} !bg-transparent !p-0`}
-                        dangerouslySetInnerHTML={{ __html: highlightedBeforeCode }}
-                      />
-                    </pre>
+                      {splitDiffRows.map((row, idx) => {
+                        const item = row.before;
+                        if (!item) {
+                          return (
+                            <div key={idx} className="opacity-15 select-none" style={{ height: `${Math.max(20, lineHeightPx - 2)}px` }}>
+                              &nbsp;
+                            </div>
+                          );
+                        }
+                        const isRemoved = item.type === "removed";
+                        return (
+                          <div
+                            key={idx}
+                            className={`flex items-start px-2 py-0.5 rounded-sm transition-colors ${
+                              isRemoved ? "bg-rose-500/20 text-rose-200 border-l-2 border-rose-500" : "text-slate-300"
+                            }`}
+                          >
+                            <span className="w-5 text-center shrink-0 font-bold select-none text-rose-400">
+                              {isRemoved ? "-" : " "}
+                            </span>
+                            <span className="w-6 text-right pr-2 shrink-0 select-none text-slate-500 text-[11px]">
+                              {item.lineNumber}
+                            </span>
+                            <span
+                              className="flex-1 whitespace-pre overflow-x-visible"
+                              dangerouslySetInnerHTML={{
+                                __html: highlightCodeLine(item.value, config.language),
+                              }}
+                            />
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
 
-                {/* Sağ Sütun: Sonra (Temiz Kod) */}
-                <div className="rounded-xl border border-emerald-500/30 bg-emerald-950/20 overflow-hidden flex flex-col shadow-inner">
-                  <div className="px-3 py-2 bg-emerald-950/60 border-b border-emerald-500/25 flex items-center justify-between">
-                    <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-300">
-                      <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
-                      <span>{config.diffAfterLabel || "Sonra (Temiz Kod)"}</span>
+                  {/* Sağ Sütun: Sonra (Temiz Kod / Eklenenler) */}
+                  <div className="rounded-xl border border-emerald-500/30 bg-emerald-950/20 overflow-hidden flex flex-col shadow-inner">
+                    <div className="px-3 py-2 bg-emerald-950/60 border-b border-emerald-500/25 flex items-center justify-between">
+                      <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-300">
+                        <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
+                        <span>{config.diffAfterLabel || (config.uiLanguage === "en" ? "After (Clean Code)" : "Sonra (Temiz Kod)")}</span>
+                      </div>
+                      <span className="text-[10px] font-mono font-bold text-emerald-400/90 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+                        AFTER (+{diffStats.added})
+                      </span>
                     </div>
-                    <span className="text-[10px] font-mono font-bold text-emerald-400/90 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-                      AFTER
+                    <div
+                      className="p-3.5 flex-1 overflow-x-auto font-mono text-xs"
+                      style={{
+                        fontFamily: currentFontFamily,
+                        fontSize: `${Math.max(12, config.fontSize - 1)}px`,
+                        lineHeight: `${Math.max(20, lineHeightPx - 2)}px`,
+                      }}
+                    >
+                      {splitDiffRows.map((row, idx) => {
+                        const item = row.after;
+                        if (!item) {
+                          return (
+                            <div key={idx} className="opacity-15 select-none" style={{ height: `${Math.max(20, lineHeightPx - 2)}px` }}>
+                              &nbsp;
+                            </div>
+                          );
+                        }
+                        const isAdded = item.type === "added";
+                        return (
+                          <div
+                            key={idx}
+                            className={`flex items-start px-2 py-0.5 rounded-sm transition-colors ${
+                              isAdded ? "bg-emerald-500/20 text-emerald-200 border-l-2 border-emerald-500" : "text-slate-300"
+                            }`}
+                          >
+                            <span className="w-5 text-center shrink-0 font-bold select-none text-emerald-400">
+                              {isAdded ? "+" : " "}
+                            </span>
+                            <span className="w-6 text-right pr-2 shrink-0 select-none text-slate-500 text-[11px]">
+                              {item.lineNumber}
+                            </span>
+                            <span
+                              className="flex-1 whitespace-pre overflow-x-visible"
+                              dangerouslySetInnerHTML={{
+                                __html: highlightCodeLine(item.value, config.language),
+                              }}
+                            />
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                /* Tek Gövdede Birleşik Git Diff Görünümü (Unified Line-by-Line Diff) */
+                <div className="rounded-xl border border-slate-700/60 bg-black/40 overflow-hidden flex flex-col shadow-inner">
+                  <div className="px-3.5 py-2 bg-slate-900/80 border-b border-slate-800 flex items-center justify-between text-xs">
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono text-emerald-400 font-bold bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20">
+                        +{diffStats.added}
+                      </span>
+                      <span className="font-mono text-rose-400 font-bold bg-rose-500/10 px-1.5 py-0.5 rounded border border-rose-500/20">
+                        -{diffStats.removed}
+                      </span>
+                      <span className="text-slate-300 font-mono text-[11px] truncate max-w-[200px] sm:max-w-none">
+                        {config.title || "git-diff.patch"}
+                      </span>
+                    </div>
+                    <span className="text-[10px] font-mono font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+                      GIT DIFF
                     </span>
                   </div>
                   <div
-                    className="p-3.5 flex-1 overflow-x-auto"
+                    className="p-2 sm:p-3 overflow-x-auto font-mono text-xs"
                     style={{
                       fontFamily: currentFontFamily,
-                      fontSize: `${Math.max(12, config.fontSize - 1)}px`,
-                      lineHeight: `${Math.max(20, lineHeightPx - 2)}px`,
+                      fontSize: `${Math.max(12, config.fontSize)}px`,
+                      lineHeight: `${Math.max(20, lineHeightPx)}px`,
                     }}
                   >
-                    <pre
-                      suppressHydrationWarning
-                      className="!bg-transparent !p-0 !m-0 !overflow-visible"
-                      style={{ fontFamily: currentFontFamily }}
-                    >
-                      <code
-                        suppressHydrationWarning
-                        className={`language-${config.language} !bg-transparent !p-0`}
-                        dangerouslySetInnerHTML={{ __html: highlightedAfterCode }}
-                      />
-                    </pre>
+                    {diffLines.map((line, idx) => {
+                      const isAdded = line.type === "added";
+                      const isRemoved = line.type === "removed";
+                      return (
+                        <div
+                          key={idx}
+                          className={`flex items-start px-2 py-0.5 rounded-sm transition-colors ${
+                            isAdded
+                              ? "bg-emerald-500/15 text-emerald-200 border-l-2 border-emerald-500"
+                              : isRemoved
+                              ? "bg-rose-500/15 text-rose-200 border-l-2 border-rose-500"
+                              : "text-slate-300 hover:bg-white/[0.02]"
+                          }`}
+                        >
+                          <span className={`w-5 text-center shrink-0 font-bold select-none ${isAdded ? "text-emerald-400" : isRemoved ? "text-rose-400" : "text-slate-600"}`}>
+                            {isAdded ? "+" : isRemoved ? "-" : " "}
+                          </span>
+                          <span className="w-8 text-right pr-2 shrink-0 select-none text-slate-500 text-[11px]">
+                            {line.newLineNumber || line.oldLineNumber || " "}
+                          </span>
+                          <span
+                            className="flex-1 whitespace-pre overflow-x-visible"
+                            dangerouslySetInnerHTML={{
+                              __html: highlightCodeLine(line.value, config.language),
+                            }}
+                          />
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
-              </div>
+              )}
             </div>
           )}
 
@@ -1137,7 +1309,7 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({
                 <span className="font-semibold text-white tracking-wide">
                   {config.terminalCommand || config.code || "npm install @snapmark/core"}
                 </span>
-                <span className="w-2 h-4 bg-emerald-400 inline-block animate-pulse ml-0.5" />
+                <span className={`w-2 h-4 bg-emerald-400 inline-block ${anim("animate-pulse")} ml-0.5`} />
               </div>
 
               {/* Terminal Çıktı Bloğu */}
@@ -1174,9 +1346,9 @@ export const PreviewCard: React.FC<PreviewCardProps> = ({
           {config.showWatermark && (
             <div className="px-5 py-2.5 border-t border-white/10 flex items-center justify-between text-xs select-none bg-black/25">
               <div className="flex items-center space-x-2 font-mono text-slate-300">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span className={`w-1.5 h-1.5 rounded-full bg-emerald-400 ${anim("animate-pulse")}`}></span>
                 <span className="text-[11px] font-medium text-slate-200">
-                  {config.watermarkText || "@keremdev"}
+                  {config.watermarkText || "@snapmark"}
                 </span>
               </div>
               <div className="text-[10px] text-slate-400 font-mono flex items-center gap-1.5">

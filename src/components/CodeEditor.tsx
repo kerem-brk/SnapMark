@@ -1,12 +1,12 @@
 "use client";
-import React, { useRef } from "react";
+import React, { useRef, useState, useMemo } from "react";
 import { CardConfig } from "@/types";
-import { FileCode, Sparkles, Plus, Wand2 } from "lucide-react";
+import { FileCode, Plus, Wand2, GitCompare, MessageSquare, Quote, Terminal } from "lucide-react";
 import { getT } from "@/lib/i18n";
 
 interface CodeEditorProps {
   config: CardConfig;
-  onChange: (code: string) => void;
+  onChange: (code: string, field?: "code" | "tweetContent" | "quoteContent" | "diffBeforeCode" | "diffAfterCode" | "terminalOutput") => void;
   onSelectTab?: (tabId: string) => void;
   onAddTab?: () => void;
   onCloseTab?: (tabId: string) => void;
@@ -22,17 +22,67 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   onRenameTab,
 }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [diffSubTab, setDiffSubTab] = useState<"before" | "after">("after");
+
+  const isEn = config.uiLanguage === "en";
+  const t = getT(config.uiLanguage);
+
+  // Modlara göre editörde görüntülenecek ve düzenlenecek asıl metin
+  const currentText = useMemo(() => {
+    switch (config.mode) {
+      case "tweet":
+        return config.tweetContent !== undefined ? config.tweetContent : config.code;
+      case "quote":
+        return config.quoteContent !== undefined ? config.quoteContent : config.code;
+      case "diff":
+        return diffSubTab === "before"
+          ? (config.diffBeforeCode || "")
+          : (config.diffAfterCode || "");
+      case "terminal":
+        return config.terminalOutput !== undefined ? config.terminalOutput : config.code;
+      case "code":
+      default:
+        return config.code;
+    }
+  }, [config.mode, config.tweetContent, config.quoteContent, config.diffBeforeCode, config.diffAfterCode, config.terminalOutput, config.code, diffSubTab]);
+
+  const handleTextChange = (newVal: string) => {
+    switch (config.mode) {
+      case "tweet":
+        onChange(newVal, "tweetContent");
+        break;
+      case "quote":
+        onChange(newVal, "quoteContent");
+        break;
+      case "diff":
+        onChange(newVal, diffSubTab === "before" ? "diffBeforeCode" : "diffAfterCode");
+        break;
+      case "terminal":
+        onChange(newVal, "terminalOutput");
+        break;
+      case "code":
+      default:
+        onChange(newVal, "code");
+        break;
+    }
+  };
 
   const handleFormatCode = () => {
-    const formatted = config.code
+    const formatted = currentText
       .split("\n")
       .map((line) => line.trimEnd())
       .join("\n")
       .trim();
-    onChange(formatted);
+    handleTextChange(formatted);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    // Esc tuşu textarea'dan odağı kaldırır (Klavye tuzağını önler - WCAG 2.1.2)
+    if (e.key === "Escape") {
+      textareaRef.current?.blur();
+      return;
+    }
+
     // Tab tuşuna basıldığında odak kaybolmasın, 2 boşluk girinti eklesin
     if (e.key === "Tab") {
       e.preventDefault();
@@ -44,7 +94,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
       const val = textarea.value;
 
       const updated = val.substring(0, start) + "  " + val.substring(end);
-      onChange(updated);
+      handleTextChange(updated);
 
       setTimeout(() => {
         textarea.selectionStart = textarea.selectionEnd = start + 2;
@@ -52,40 +102,126 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
     }
   };
 
-  const t = getT(config.uiLanguage);
-  const lineCount = config.code.split("\n").length;
+  const lineCount = (currentText || "").split("\n").length;
+
+  const modeIcon = useMemo(() => {
+    switch (config.mode) {
+      case "tweet":
+        return <MessageSquare className="w-4 h-4 text-[#FF4F00]" />;
+      case "quote":
+        return <Quote className="w-4 h-4 text-[#FF4F00]" />;
+      case "diff":
+        return <GitCompare className="w-4 h-4 text-[#FF4F00]" />;
+      case "terminal":
+        return <Terminal className="w-4 h-4 text-[#FF4F00]" />;
+      case "code":
+      default:
+        return <FileCode className="w-4 h-4 text-[#FF4F00]" />;
+    }
+  }, [config.mode]);
+
+  const modeTitle = useMemo(() => {
+    switch (config.mode) {
+      case "tweet":
+        return isEn ? "Tweet / X Content Editor" : "Tweet / X Gönderi Metni Editörü";
+      case "quote":
+        return isEn ? "Quote & Note Editor" : "Alıntı & Vecize Metni Editörü";
+      case "diff":
+        return isEn ? "Git Diff Code Editor" : "Git Diff Kod Karşılaştırma Editörü";
+      case "terminal":
+        return isEn ? "Terminal Output Editor" : "Terminal Konsol Çıktısı Editörü";
+      case "code":
+      default:
+        return t.editorTitleCode;
+    }
+  }, [config.mode, isEn, t.editorTitleCode]);
+
+  const placeholderText = useMemo(() => {
+    switch (config.mode) {
+      case "tweet":
+        return isEn ? "Write your tweet / post content here..." : "Buraya paylaşılacak tweet veya gönderi metnini yazın...";
+      case "quote":
+        return t.placeholderQuote;
+      case "diff":
+        return diffSubTab === "before"
+          ? (isEn ? "Paste 'Before' (original/buggy) code here..." : "Buraya 'Önce' (eski/hatalı) kod bloğunu yapıştırın...")
+          : (isEn ? "Paste 'After' (refactored/clean) code here..." : "Buraya 'Sonra' (temiz/refactor edilmiş) kod bloğunu yapıştırın...");
+      case "terminal":
+        return isEn ? "Enter terminal console output lines here..." : "Buraya terminal konsol satırlarını yazın...";
+      case "code":
+      default:
+        return t.placeholderCode;
+    }
+  }, [config.mode, diffSubTab, isEn, t.placeholderCode, t.placeholderQuote]);
 
   return (
-    <div className="bg-[#0f1523] border border-slate-800 rounded-2xl p-4 flex flex-col space-y-3 shadow-lg">
-      <div className="flex items-center justify-between border-b border-slate-800/80 pb-2.5">
-        <div className="flex items-center space-x-2 text-xs font-semibold text-slate-300">
-          <FileCode className="w-4 h-4 text-emerald-400" />
-          <span>{config.mode === "code" ? t.editorTitleCode : t.editorTitleQuote}</span>
+    <div className="bg-[#FAF8F5] border border-[#D6D0C4] rounded-2xl p-4 flex flex-col space-y-3 shadow-md">
+      <div className="flex items-center justify-between border-b border-[#D6D0C4] pb-2.5">
+        <div className="flex items-center space-x-2 text-xs font-semibold text-[#18181B]">
+          {modeIcon}
+          <span>{modeTitle}</span>
         </div>
-        <div className="flex items-center gap-3 text-[11px] text-slate-500 font-mono">
+        <div className="flex items-center gap-3 text-[11px] text-[#57534E] font-mono">
           <span>{lineCount} {t.lineLabel}</span>
-          <span>{config.code.length} {t.charLabel}</span>
+          <span>{(currentText || "").length} {t.charLabel}</span>
         </div>
       </div>
 
+      {/* Diff Modu İçin Alt Sekmeler: Önce / Sonra */}
+      {config.mode === "diff" && (
+        <div className="flex items-center gap-2 pb-1 border-b border-[#D6D0C4]">
+          <button
+            type="button"
+            onClick={() => setDiffSubTab("before")}
+            className={`px-3 py-1 rounded-lg text-xs font-mono font-semibold transition-all cursor-pointer flex items-center gap-1.5 ${
+              diffSubTab === "before"
+                ? "bg-rose-500/15 text-rose-600 border border-rose-500/30 shadow-sm"
+                : "bg-[#F4F1EA] text-[#57534E] border border-[#D6D0C4] hover:text-[#18181B]"
+            }`}
+          >
+            <span className="w-2 h-2 rounded-full bg-rose-500" />
+            <span>{isEn ? "Before Code (Old / Buggy)" : "Önce (Eski / Hatalı Kod)"}</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setDiffSubTab("after")}
+            className={`px-3 py-1 rounded-lg text-xs font-mono font-semibold transition-all cursor-pointer flex items-center gap-1.5 ${
+              diffSubTab === "after"
+                ? "bg-emerald-500/15 text-emerald-600 border border-emerald-500/30 shadow-sm"
+                : "bg-[#F4F1EA] text-[#57534E] border border-[#D6D0C4] hover:text-[#18181B]"
+            }`}
+          >
+            <span className="w-2 h-2 rounded-full bg-emerald-500" />
+            <span>{isEn ? "After Code (New / Clean)" : "Sonra (Yeni / Temiz Kod)"}</span>
+          </button>
+        </div>
+      )}
+
       {/* Çoklu Dosya Sekmeleri (Editör Üstü Hızlı Geçiş & İsim Düzenleme) */}
       {config.mode === "code" && config.tabs && config.tabs.length > 0 && (
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 border-b border-slate-800/60">
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 border-b border-[#D6D0C4]">
           {config.tabs.map((tab) => {
             const isActive = tab.id === config.activeTabId;
             return (
               <div
                 key={tab.id}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    onSelectTab?.(tab.id);
+                  }
+                }}
                 className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-mono transition-all cursor-pointer ${
                   isActive
-                    ? "bg-emerald-600/25 text-emerald-200 border border-emerald-500/40 shadow-sm"
-                    : "bg-slate-900/80 text-slate-400 border border-slate-800 hover:text-slate-200"
+                    ? "bg-[#FF4F00]/10 text-[#FF4F00] border border-[#FF4F00]/30 shadow-sm font-semibold"
+                    : "bg-[#F4F1EA] text-[#57534E] border border-[#D6D0C4] hover:text-[#18181B]"
                 }`}
                 onClick={() => onSelectTab?.(tab.id)}
               >
                 <span
                   className={`w-1.5 h-1.5 rounded-full ${
-                    isActive ? "bg-emerald-400 shadow-sm shadow-emerald-400/50" : "bg-slate-500"
+                    isActive ? "bg-[#FF4F00] shadow-sm shadow-orange-500/50" : "bg-stone-400"
                   }`}
                 />
                 <input
@@ -93,8 +229,8 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
                   value={tab.name}
                   onChange={(e) => onRenameTab?.(tab.id, e.target.value)}
                   onClick={(e) => e.stopPropagation()}
-                  className="bg-transparent text-inherit font-mono text-xs outline-none w-24 sm:w-28 focus:border-b focus:border-emerald-400"
-                  title="Dosya adını düzenlemek için tıkla"
+                  className="bg-transparent text-inherit font-mono text-xs outline-none w-24 sm:w-28 focus:border-b focus:border-[#FF4F00]"
+                  title={isEn ? "Click to rename file" : "Dosya adını düzenlemek için tıkla"}
                 />
                 {config.tabs.length > 1 && onCloseTab && (
                   <button
@@ -103,8 +239,8 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
                       e.stopPropagation();
                       onCloseTab(tab.id);
                     }}
-                    className="text-slate-500 hover:text-rose-400 ml-1 text-xs"
-                    title="Sekmeyi Sil"
+                    className="text-stone-400 hover:text-rose-500 ml-1 text-xs cursor-pointer"
+                    title={isEn ? "Delete Tab" : "Sekmeyi Sil"}
                   >
                     ✕
                   </button>
@@ -116,10 +252,10 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
             <button
               type="button"
               onClick={onAddTab}
-              className="px-2 py-1 rounded-lg text-xs font-medium bg-slate-800/70 hover:bg-slate-700 text-slate-300 border border-slate-700/50 flex items-center gap-1 transition-colors shrink-0"
+              className="px-2 py-1 rounded-lg text-xs font-medium bg-[#F4F1EA] hover:bg-[#EAE5DC] text-[#18181B] border border-[#D6D0C4] flex items-center gap-1 transition-colors shrink-0 cursor-pointer"
               title={t.newTab}
             >
-              <Plus className="w-3 h-3 text-emerald-400" />
+              <Plus className="w-3 h-3 text-[#FF4F00]" />
               <span className="hidden sm:inline">{t.newTab}</span>
             </button>
           )}
@@ -129,159 +265,37 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
       <div className="relative">
         <textarea
           ref={textareaRef}
-          value={config.code}
-          onChange={(e) => onChange(e.target.value)}
+          value={currentText}
+          onChange={(e) => handleTextChange(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder={
-            config.mode === "code"
-              ? t.placeholderCode
-              : t.placeholderQuote
-          }
+          placeholder={placeholderText}
           rows={10}
-          className="w-full bg-[#0a0d15] text-slate-200 font-mono text-xs p-3.5 rounded-xl border border-slate-800/80 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none leading-relaxed resize-y selection:bg-emerald-600 selection:text-white"
+          className="w-full bg-[#18181B] text-[#F4F1EA] font-mono text-xs p-3.5 rounded-xl border border-[#D6D0C4] focus:border-[#FF4F00] focus:ring-1 focus:ring-[#FF4F00] outline-none leading-relaxed resize-y selection:bg-[#FF4F00] selection:text-white"
           spellCheck={false}
         />
       </div>
 
       <div className="flex items-center justify-between text-[11px] text-slate-500 pt-1">
-        <span className="flex items-center gap-1">
-          <kbd className="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-[10px] text-slate-400 font-mono">Tab</kbd>
-          <span>{t.tabIndentTip}</span>
+        <span className="flex items-center gap-1.5 flex-wrap">
+          <span className="inline-flex items-center gap-1">
+            <kbd className="px-1.5 py-0.5 rounded bg-stone-200 border border-stone-300 text-[10px] text-stone-700 font-mono">Tab</kbd>
+            <span className="text-stone-600">{t.tabIndentTip}</span>
+          </span>
+          <span className="text-stone-300">|</span>
+          <span className="inline-flex items-center gap-1">
+            <kbd className="px-1.5 py-0.5 rounded bg-stone-200 border border-stone-300 text-[10px] text-stone-700 font-mono">Esc</kbd>
+            <span className="text-stone-600">{isEn ? "Release focus" : "Odağı bırak"}</span>
+          </span>
         </span>
         <div className="flex items-center gap-3">
           <button
             type="button"
             onClick={handleFormatCode}
-            className="text-slate-400 hover:text-white flex items-center gap-1 transition-all"
-            title={t.cleanCode}
+            className="text-stone-600 hover:text-stone-900 flex items-center gap-1 transition-all cursor-pointer font-medium"
+            title={isEn ? "Trim & format whitespace" : "Boşlukları temizle ve hizala"}
           >
-            <Wand2 className="w-3 h-3 text-cyan-400" />
-            <span>{t.cleanCode}</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => {
-              if (config.mode === "code") {
-                const samples: Record<string, string> = {
-                  csharp: `// C# 12 Primary Constructors & LINQ
-namespace SnapMark.Demo;
-
-public record Developer(string Name, string Role, int Level)
-{
-    public static IEnumerable<Developer> GetTeam() =>
-        [
-            new("Kerem", "Architect", 10),
-            new("Antigravity", "AI Partner", 99)
-        ];
-}
-
-var elite = Developer.GetTeam().Where(d => d.Level > 5);
-Console.WriteLine($"Ekip hazır: {string.Join(", ", elite)} 🚀");`,
-
-                  rust: `// Rust: Bellek Güvenli & Sıfır Maliyetli Soyutlama
-use std::collections::HashMap;
-
-#[derive(Debug)]
-pub struct CodeSnap {
-    pub title: String,
-    pub stars: u32,
-}
-
-fn main() {
-    let mut showcase = HashMap::new();
-    showcase.insert("SnapMark", CodeSnap {
-        title: "Faz 2 Studio".into(),
-        stars: 100,
-    });
-    
-    for (name, item) in &showcase {
-        println!("{}: {:?} 🚀", name, item);
-    }
-}`,
-
-                  cpp: `// C++20 Ranges & Modern Syntax
-#include <iostream>
-#include <vector>
-#include <ranges>
-
-int main() {
-    std::vector<int> numbers = {1, 2, 3, 4, 5, 6, 7, 8};
-    
-    auto even_squares = numbers 
-        | std::views::filter([](int n) { return n % 2 == 0; })
-        | std::views::transform([](int n) { return n * n; });
-
-    std::cout << "Kareler: ";
-    for (int v : even_squares) std::cout << v << " ";
-    std::cout << "🚀\\n";
-    return 0;
-}`,
-
-                  c: `// C11 Standart C Kod Örneği
-#include <stdio.h>
-#include <stdlib.h>
-
-typedef struct {
-    char username[32];
-    int score;
-} Player;
-
-int main(void) {
-    Player p = {"@keremdev", 999};
-    printf("SnapMark C Modu: %s (Skor: %d) 🚀\\n", p.username, p.score);
-    return 0;
-}`,
-
-                  python: `# Python 3.12 Pattern Matching & Dataclass
-from dataclasses import dataclass
-
-@dataclass
-class CodeCard:
-    username: str = "@keremdev"
-    theme: str = "Cyberpunk"
-
-def render_card(card: CodeCard) -> str:
-    match card.theme:
-        case "Cyberpunk":
-            return f"⚡ {card.username} için neon kart hazır!"
-        case _:
-            return f"🎨 {card.username} için standart kart hazır."
-
-print(render_card(CodeCard(username="@keremdev")))`,
-
-                  typescript: `// SnapMark: Kodunu 10/10 bir görsele dönüştür
-import { createSnap } from "snapmark";
-
-interface DeveloperCard {
-  username: string;
-  theme: "cyberpunk" | "sunset" | "candy";
-  exportQuality: "4K" | "Retina";
-}
-
-export function generateShowcase(): DeveloperCard {
-  return {
-    username: "@keremdev",
-    theme: "cyberpunk",
-    exportQuality: "4K",
-  };
-}
-
-console.log("Hazır! Tek tıkla PNG veya panoya kopyala 🚀");`,
-                };
-
-                onChange(samples[config.language] || samples.typescript);
-              } else {
-                onChange(`"Tasarım sadece nasıl göründüğü veya nasıl hissettirdiği değildir. 
-Tasarım, onun nasıl çalıştığıdır."
-
-— Steve Jobs`);
-              }
-            }}
-            className="text-emerald-400 hover:text-emerald-300 flex items-center gap-1 transition-all"
-          >
-            <Sparkles className="w-3 h-3" />
-            <span>Örnek Doldur ({config.language.toUpperCase()})</span>
+            <Wand2 className="w-3 h-3 text-[#FF4F00]" />
+            <span>{isEn ? "Format Whitespace" : "Boşlukları Düzenle"}</span>
           </button>
         </div>
       </div>

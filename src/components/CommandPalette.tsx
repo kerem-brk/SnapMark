@@ -132,7 +132,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
         category: catActions,
         title: isEn ? "Export PNG (High Quality)" : "PNG Görseli İndir (Yüksek Kalite)",
         description: isEn ? "Export current card as 2K/4K PNG" : "Mevcut kartı 2K/4K PNG olarak indir",
-        shortcut: "Ctrl+S",
+        shortcut: "Ctrl+Enter / Ctrl+S",
         icon: <Download className="w-4 h-4 text-emerald-400" />,
         action: () => {
           onExportPng();
@@ -144,7 +144,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
         category: catActions,
         title: isEn ? "Copy to Clipboard" : "Panoya Kopyala",
         description: isEn ? "Copy image directly to clipboard" : "Görseli doğrudan panoya kopyala",
-        shortcut: "Ctrl+Shift+C",
+        shortcut: "Ctrl+C / Alt+C",
         icon: <Copy className="w-4 h-4 text-emerald-400" />,
         action: () => {
           onCopyImage();
@@ -167,6 +167,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
         category: catActions,
         title: isEn ? "Download All Slides (ZIP)" : "Tüm Slaytları İndir (ZIP)",
         description: isEn ? "Pack all carousel slides in a single archive" : "Carousel'deki tüm slaytları tek arşivde paketle",
+        shortcut: "Ctrl+Shift+S / Alt+Z",
         icon: <Download className="w-4 h-4 text-amber-400" />,
         action: () => {
           onExportZip();
@@ -286,24 +287,11 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
         category: catModes,
         title: isEn ? "Diff (Comparison) Mode" : "Diff (Karşılaştırma) Modu",
         description: isEn ? "Before / After code comparison" : "Önce / Sonra kod kıyaslama görünümü",
-        shortcut: "Ctrl+4",
+        shortcut: "Ctrl+2",
         icon: <Sliders className="w-4 h-4 text-cyan-400" />,
         active: currentMode === "diff",
         action: () => {
           onModeChange("diff");
-          onClose();
-        },
-      },
-      {
-        id: "mode-tweet",
-        category: catModes,
-        title: isEn ? "Tweet / X Post Mode" : "Tweet / X Gönderi Modu",
-        description: isEn ? "Social media post card design" : "Sosyal medya gönderisi tasarımı",
-        shortcut: "Ctrl+2",
-        icon: <Share2 className="w-4 h-4 text-emerald-400" />,
-        active: currentMode === "tweet",
-        action: () => {
-          onModeChange("tweet");
           onClose();
         },
       },
@@ -321,10 +309,24 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
         },
       },
       {
+        id: "mode-tweet",
+        category: catModes,
+        title: isEn ? "Tweet / X Post Mode" : "Tweet / X Gönderi Modu",
+        description: isEn ? "Social media post card design" : "Sosyal medya gönderisi tasarımı",
+        shortcut: "Ctrl+4",
+        icon: <Share2 className="w-4 h-4 text-emerald-400" />,
+        active: currentMode === "tweet",
+        action: () => {
+          onModeChange("tweet");
+          onClose();
+        },
+      },
+      {
         id: "mode-terminal",
         category: catModes,
         title: isEn ? "Terminal / CLI Output Mode" : "Terminal / CLI Çıktı Modu",
         description: isEn ? "Console command and colored output" : "Konsol komutu ve renkli terminal çıktısı",
+        shortcut: "Ctrl+5",
         icon: <Terminal className="w-4 h-4 text-emerald-400" />,
         active: currentMode === "terminal",
         action: () => {
@@ -337,7 +339,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
       ...SOCIAL_PRESETS.map((preset) => ({
         id: `social-${preset.id}`,
         category: catFormats,
-        title: `${preset.icon} ${preset.name}`,
+        title: preset.icon ? `${preset.icon} ${preset.name}` : preset.name,
         description: preset.description,
         icon: <Layout className="w-4 h-4 text-violet-400" />,
         active: currentSocialPreset === preset.id,
@@ -523,6 +525,9 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
 
   return (
     <div
+      role="dialog"
+      aria-modal="true"
+      aria-label={isEn ? "Command Palette" : "Komut Paleti"}
       className="fixed inset-0 z-[100] flex items-start justify-center pt-20 px-4 bg-black/60 backdrop-blur-md animate-fade-in"
       onClick={onClose}
     >

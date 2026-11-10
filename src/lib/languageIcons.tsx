@@ -211,6 +211,131 @@ export const LANGUAGE_ICONS: Record<string, LanguageInfo> = {
       </svg>
     ),
   },
+  go: {
+    id: "go",
+    name: "Go",
+    color: "#00ADD8",
+    bgColor: "rgba(0, 173, 216, 0.15)",
+    icon: (
+      <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none">
+        <rect width="24" height="24" rx="4" fill="#00ADD8" />
+        <path d="M7 12a3 3 0 106 0 3 3 0 00-6 0zm10-3h-3v6h3v-2h-1.5v-1H17V9z" fill="#FFF" />
+      </svg>
+    ),
+  },
+  java: {
+    id: "java",
+    name: "Java",
+    color: "#ED8B00",
+    bgColor: "rgba(237, 139, 0, 0.15)",
+    icon: (
+      <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none">
+        <rect width="24" height="24" rx="4" fill="#ED8B00" />
+        <path d="M12 6c-2 2 1 3-1 5 3-1 4-3 1-5zm-3 7c1 0 3 .5 3 1.5s-2 1.5-3 1.5-3-.5-3-1.5 2-1.5 3-1.5z" fill="#FFF" />
+      </svg>
+    ),
+  },
+  kotlin: {
+    id: "kotlin",
+    name: "Kotlin",
+    color: "#7F52FF",
+    bgColor: "rgba(127, 82, 255, 0.15)",
+    icon: (
+      <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none">
+        <rect width="24" height="24" rx="4" fill="#7F52FF" />
+        <path d="M5 5h14L12 12 5 19V5z" fill="#FFF" />
+      </svg>
+    ),
+  },
+  swift: {
+    id: "swift",
+    name: "Swift",
+    color: "#F05138",
+    bgColor: "rgba(240, 81, 56, 0.15)",
+    icon: (
+      <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none">
+        <rect width="24" height="24" rx="4" fill="#F05138" />
+        <path d="M17 17C14 17 11 15 9 12c2 1 4 1 6 0-3-1-5-4-5-7 3 3 7 5 9 5-1 2 0 5-2 7z" fill="#FFF" />
+      </svg>
+    ),
+  },
+  php: {
+    id: "php",
+    name: "PHP",
+    color: "#777BB4",
+    bgColor: "rgba(119, 123, 180, 0.15)",
+    icon: (
+      <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none">
+        <rect width="24" height="24" rx="4" fill="#777BB4" />
+        <text x="4" y="16" fill="#FFF" fontSize="10" fontWeight="bold" fontFamily="sans-serif">PHP</text>
+      </svg>
+    ),
+  },
+  ruby: {
+    id: "ruby",
+    name: "Ruby",
+    color: "#CC342D",
+    bgColor: "rgba(204, 52, 45, 0.15)",
+    icon: (
+      <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none">
+        <rect width="24" height="24" rx="4" fill="#CC342D" />
+        <path d="M7 10l5-4 5 4-5 8-5-8z" fill="#FFF" />
+      </svg>
+    ),
+  },
+  yaml: {
+    id: "yaml",
+    name: "YAML",
+    color: "#CB171E",
+    bgColor: "rgba(203, 23, 30, 0.15)",
+    icon: (
+      <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none">
+        <rect width="24" height="24" rx="4" fill="#333" />
+        <text x="3" y="16" fill="#CB171E" fontSize="9" fontWeight="bold" fontFamily="sans-serif">YML</text>
+      </svg>
+    ),
+  },
+  docker: {
+    id: "docker",
+    name: "Dockerfile",
+    color: "#2496ED",
+    bgColor: "rgba(36, 150, 237, 0.15)",
+    icon: (
+      <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none">
+        <rect width="24" height="24" rx="4" fill="#2496ED" />
+        <path d="M5 13h14c0 3-3 5-7 5s-7-2-7-5zm3-5h2v2H8V8zm3 0h2v2h-2V8zm3 0h2v2h-2V8z" fill="#FFF" />
+      </svg>
+    ),
+  },
+  graphql: {
+    id: "graphql",
+    name: "GraphQL",
+    color: "#E10098",
+    bgColor: "rgba(225, 0, 152, 0.15)",
+    icon: (
+      <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none">
+        <rect width="24" height="24" rx="4" fill="#171E26" />
+        <circle cx="12" cy="6" r="2" fill="#E10098" />
+        <circle cx="6" cy="16" r="2" fill="#E10098" />
+        <circle cx="18" cy="16" r="2" fill="#E10098" />
+        <path d="M12 6L6 16h12z" stroke="#E10098" strokeWidth="1.5" />
+      </svg>
+    ),
+  },
+  tsx: {
+    id: "tsx",
+    name: "TSX / React",
+    color: "#61DAFB",
+    bgColor: "rgba(97, 218, 251, 0.15)",
+    icon: (
+      <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none">
+        <rect width="24" height="24" rx="4" fill="#20232A" />
+        <circle cx="12" cy="12" r="2" fill="#61DAFB" />
+        <ellipse cx="12" cy="12" rx="7" ry="2.5" stroke="#61DAFB" strokeWidth="1" transform="rotate(30 12 12)" />
+        <ellipse cx="12" cy="12" rx="7" ry="2.5" stroke="#61DAFB" strokeWidth="1" transform="rotate(-30 12 12)" />
+      </svg>
+    ),
+  },
 };
 
 export const getLanguageBadge = (language: string): LanguageInfo => {

@@ -11,16 +11,26 @@ import { ShortcutsModal } from "@/components/ShortcutsModal";
 import { CommandPalette } from "@/components/CommandPalette";
 import { PresentationMode } from "@/components/PresentationMode";
 import { SocialFeedPreviewModal } from "@/components/SocialFeedPreviewModal";
+import { ColorPaletteModal } from "@/components/ColorPaletteModal";
+import { CuratedGradient } from "@/lib/colorTable";
+import { decodeShareData, sanitizeConfig } from "@/lib/shareUtils";
 import {
   DEFAULT_CONFIG,
   updateFilenameExtension,
   detectLanguageFromFilename,
   LANG_TO_DEFAULT_EXT,
 } from "@/lib/constants";
-import { CardConfig, CarouselSlide, CardMode, ToastMessage, ToastType } from "@/types";
+import { CardConfig, CarouselSlide, CardMode, ToastMessage, ToastType, ThemeId, FontFamilyId } from "@/types";
 import { toPng, toBlob, toSvg } from "html-to-image";
 import { Eye, Edit3, Sliders, PanelLeftOpen, ZoomIn, ZoomOut } from "lucide-react";
 import JSZip from "jszip";
+import { exportSlidesToPdf } from "@/lib/pdfExport";
+
+// Dışa aktarma moduna geçişin (animasyonların durması) boyanmasını bekler
+const waitForPaint = () =>
+  new Promise<void>((resolve) =>
+    requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
+  );
 
 export default function Home() {
   const [config, setConfig] = useState<CardConfig>(DEFAULT_CONFIG);
@@ -28,18 +38,21 @@ export default function Home() {
   const [isVideoExporting, setIsVideoExporting] = useState<boolean>(false);
   const [isZipExporting, setIsZipExporting] = useState<boolean>(false);
   const [zipProgress, setZipProgress] = useState<string>("");
+  const [isPdfExporting, setIsPdfExporting] = useState<boolean>(false);
+  const [pdfProgress, setPdfProgress] = useState<string>("");
   const [copied, setCopied] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<"preview" | "controls" | "editor">("preview");
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
   const [isFeedModalOpen, setIsFeedModalOpen] = useState<boolean>(false);
+  const [isColorPaletteOpen, setIsColorPaletteOpen] = useState<boolean>(false);
   const cardRef = useRef<HTMLDivElement | null>(null);
 
   // Toast Bildirimleri (Faz 6)
-  const [toasts, setToasts] = useState<ToastMessage[]>([]);
   const showToast = useCallback((message: string, type: ToastType = "success", description?: string) => {
     const id = Date.now().toString() + Math.random().toString(36).substring(2, 6);
     setToasts((prev) => [...prev.slice(-4), { id, type, message, description }]);
   }, []);
+  const [toasts, setToasts] = useState<ToastMessage[]>([]);
   const handleDismissToast = useCallback((id: string) => {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   }, []);
@@ -62,9 +75,9 @@ export default function Home() {
       a.href = url;
       a.download = `snapmark-theme-${Date.now()}.json`;
       a.click();
-      URL.revokeObjectURL(url);
+      setTimeout(() => URL.revokeObjectURL(url), 2500);
       showToast("Tema JSON dosyası olarak indirildi", "success");
-    } catch (e) {
+    } catch {
       showToast("Tema dışa aktarılamadı", "error");
     }
   }, [config, showToast]);
@@ -76,10 +89,11 @@ export default function Home() {
         const text = e.target?.result as string;
         const parsed = JSON.parse(text);
         if (parsed && typeof parsed === "object") {
-          setConfig((prev) => ({ ...prev, ...parsed }));
+          const sanitized = sanitizeConfig(parsed);
+          setConfig((prev) => ({ ...prev, ...sanitized }));
           showToast("Tema başarıyla yüklendi", "success");
         }
-      } catch (err) {
+      } catch {
         showToast("Geçersiz JSON tema dosyası", "error");
       }
     };
@@ -98,43 +112,76 @@ export default function Home() {
 
   // Paylaşılan URL Hash'ini veya LocalStorage Kaydını Çöz ve Yükle
   useEffect(() => {
-    const loadInitialConfig = () => {
+    const loadSaved = () => {
+      const saved = localStorage.getItem(AUTOSAVE_KEY);
+      if (!saved) return;
       try {
-        if (typeof window !== "undefined") {
-          // Eski versiyonların bozuk veya fazla efektli durumlarını temizle
-          localStorage.removeItem("snapmark_autosave_v2");
-          localStorage.removeItem("snapmark_autosave_v3");
-          localStorage.removeItem("snapmark_autosave");
-
-          const hash = window.location.hash;
-          if (hash && hash.startsWith("#c=")) {
-            const encoded = hash.replace("#c=", "");
-            const decoded = decodeURIComponent(escape(atob(encoded)));
-            const parsed = JSON.parse(decoded);
-            if (parsed && typeof parsed === "object") {
-              setConfig((prev) => ({ ...prev, ...parsed }));
-              showToast("Paylaşılan kart yüklendi", "info");
-              return;
-            }
-          }
-
-          // Hash yoksa LocalStorage'dan geri yükle
-          const saved = localStorage.getItem(AUTOSAVE_KEY);
-          if (saved) {
-            const parsedSaved = JSON.parse(saved);
-            if (parsedSaved && typeof parsedSaved === "object") {
-              setConfig((prev) => ({ ...prev, ...parsedSaved }));
-            }
-          }
+        const parsedSaved = JSON.parse(saved);
+        if (parsedSaved && typeof parsedSaved === "object") {
+          const sanitized = sanitizeConfig(parsedSaved);
+          setConfig((prev) => ({ ...prev, ...sanitized }));
         }
       } catch (e) {
-        console.error("Ayarlar yüklenemedi:", e);
+        console.error("Otomatik kayıt okunamadı:", e);
       }
     };
 
-    loadInitialConfig();
-    window.addEventListener("hashchange", loadInitialConfig);
-    return () => window.removeEventListener("hashchange", loadInitialConfig);
+    // Paylaşım linkini yükler; yerel çalışma varsa kullanıcıya sorar. Yüklendiyse true döner.
+    const loadSharedFromHash = (): boolean => {
+      const hash = window.location.hash;
+      if (!hash || !hash.startsWith("#c=")) return false;
+
+      // Hash'i adres çubuğundan temizle ki yenilemede yerel çalışma tekrar ezilmesin
+      const clearHash = () =>
+        window.history.replaceState(null, "", window.location.pathname + window.location.search);
+
+      const decoded = decodeShareData(hash.slice(3));
+      const sanitized = decoded ? sanitizeConfig(decoded) : {};
+      if (Object.keys(sanitized).length === 0) {
+        clearHash();
+        showToast("Paylaşım linki geçersiz veya bozuk", "error");
+        return false;
+      }
+
+      const hasLocalWork = !!localStorage.getItem(AUTOSAVE_KEY);
+      if (
+        hasLocalWork &&
+        !window.confirm(
+          "Paylaşılan kart açılıyor. Mevcut yerel çalışmanızın yerine yüklensin mi?\n(İptal: yerel çalışmanız korunur)"
+        )
+      ) {
+        clearHash();
+        return false;
+      }
+
+      setConfig({ ...DEFAULT_CONFIG, ...sanitized });
+      clearHash();
+      showToast("Paylaşılan kart yüklendi", "info");
+      return true;
+    };
+
+    try {
+      // Eski versiyonların bozuk veya fazla efektli durumlarını temizle
+      localStorage.removeItem("snapmark_autosave_v2");
+      localStorage.removeItem("snapmark_autosave_v3");
+      localStorage.removeItem("snapmark_autosave");
+
+      if (!loadSharedFromHash()) {
+        loadSaved();
+      }
+    } catch (e) {
+      console.error("Ayarlar yüklenemedi:", e);
+    }
+
+    const handleHashChange = () => {
+      try {
+        loadSharedFromHash();
+      } catch (e) {
+        console.error("Paylaşım linki yüklenemedi:", e);
+      }
+    };
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
   }, [showToast]);
 
   // LocalStorage Otomatik Kaydetme (Faz 6)
@@ -142,11 +189,12 @@ export default function Home() {
     if (typeof window === "undefined") return;
     const timer = setTimeout(() => {
       try {
-        const { customBgUrl, tweetAvatar, ...safeConfig } = config;
+        const { customBgUrl, tweetAvatar, logoUrl, ...safeConfig } = config;
         const toSave = {
           ...safeConfig,
           customBgUrl: customBgUrl?.startsWith("http") ? customBgUrl : undefined,
           tweetAvatar: tweetAvatar?.startsWith("http") ? tweetAvatar : undefined,
+          logoUrl: logoUrl?.startsWith("http") ? logoUrl : undefined,
         };
         localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(toSave));
       } catch (e) {
@@ -227,7 +275,7 @@ export default function Home() {
     }
   }, [showToast]);
 
-  const handleConfigChange = (updates: Partial<CardConfig>) => {
+  const handleConfigChange = useCallback((updates: Partial<CardConfig>) => {
     setConfig((prev) => {
       const next = { ...prev, ...updates };
 
@@ -289,7 +337,7 @@ export default function Home() {
 
       return next;
     });
-  };
+  }, []);
 
   // Aktif Sekmeyi Değiştirme
   const handleSelectTab = useCallback((tabId: string) => {
@@ -405,16 +453,20 @@ export default function Home() {
     });
   }, []);
 
-  // Kod Değişikliği (Aktif Sekme ile Senkron)
+  // Kod Değişikliği (Aktif Sekme ve Aktif Slayt ile Senkron)
   const handleCodeChange = useCallback((newCode: string) => {
     setConfig((prev) => {
       const tabs = prev.tabs?.map((t) =>
         t.id === prev.activeTabId ? { ...t, code: newCode } : t
       );
+      const slides = prev.slides?.map((s) =>
+        s.id === prev.activeSlideId ? { ...s, code: newCode } : s
+      );
       return {
         ...prev,
         code: newCode,
         tabs: tabs || prev.tabs,
+        slides: slides || prev.slides,
       };
     });
   }, []);
@@ -491,17 +543,26 @@ export default function Home() {
     setIsExporting(true);
 
     try {
+      await waitForPaint();
       const scale = config.exportScale || 2;
-      const blob = await toBlob(cardRef.current, {
+      const exportFilter = (node: HTMLElement) => {
+        if (node?.dataset?.exportIgnore === "true") return false;
+        return true;
+      };
+
+      // Safari user-gesture uyumluluğu için Promise tabanlı ClipboardItem
+      const blobPromise = toBlob(cardRef.current, {
         pixelRatio: scale,
         cacheBust: true,
+        filter: exportFilter,
+      }).then((b) => {
+        if (!b) throw new Error("Görsel blobu üretilemedi");
+        return b;
       });
-
-      if (!blob) throw new Error("Görsel blobu üretilemedi");
 
       await navigator.clipboard.write([
         new ClipboardItem({
-          "image/png": blob,
+          "image/png": blobPromise,
         }),
       ]);
 
@@ -510,16 +571,19 @@ export default function Home() {
       showToast("Görsel panoya kopyalandı", "success", "Sosyal medyaya veya sohbete Ctrl+V ile yapıştırabilirsiniz");
     } catch (err) {
       console.error("Panoya kopyalama hatası:", err);
-      // Fallback: Data URL oluşturup bildir
+      // Fallback: Data URL oluşturup indir
       try {
         const scale = config.exportScale || 2;
-        const dataUrl = await toPng(cardRef.current, { pixelRatio: scale });
+        const dataUrl = await toPng(cardRef.current, {
+          pixelRatio: scale,
+          filter: (node: HTMLElement) => !node?.dataset?.exportIgnore,
+        });
         const link = document.createElement("a");
         link.download = `${config.title || "snapmark"}.png`;
         link.href = dataUrl;
         link.click();
         showToast("Panoya kopyalanamadı, PNG olarak indirildi", "info");
-      } catch (e) {
+      } catch {
         showToast("Görsel kopyalanırken bir sorun oluştu", "error");
       }
     } finally {
@@ -533,10 +597,12 @@ export default function Home() {
     setIsExporting(true);
 
     try {
+      await waitForPaint();
       const scale = config.exportScale || 2;
       const dataUrl = await toPng(cardRef.current, {
         pixelRatio: scale,
         cacheBust: true,
+        filter: (node: HTMLElement) => !node?.dataset?.exportIgnore,
       });
 
       const link = document.createElement("a");
@@ -558,8 +624,10 @@ export default function Home() {
     setIsExporting(true);
 
     try {
+      await waitForPaint();
       const dataUrl = await toSvg(cardRef.current, {
         cacheBust: true,
+        filter: (node: HTMLElement) => !node?.dataset?.exportIgnore,
       });
 
       const link = document.createElement("a");
@@ -582,7 +650,7 @@ export default function Home() {
       const targetSlide = slides.find((s) => s.id === targetSlideId);
       if (!targetSlide) return prev;
 
-      // Mevcut aktif slaytın son halini güncelle
+      // Mevcut aktif slaytın son halini (içerik + stil) güncelle
       const updatedSlides = slides.map((s) =>
         s.id === prev.activeSlideId
           ? {
@@ -597,6 +665,10 @@ export default function Home() {
               tweetContent: prev.tweetContent,
               diffBeforeCode: prev.diffBeforeCode,
               diffAfterCode: prev.diffAfterCode,
+              theme: prev.theme,
+              background: prev.customBgUrl || prev.theme,
+              padding: prev.padding,
+              fontFamily: prev.fontFamily,
             }
           : s
       );
@@ -615,6 +687,9 @@ export default function Home() {
         tweetContent: targetSlide.tweetContent ?? prev.tweetContent,
         diffBeforeCode: targetSlide.diffBeforeCode ?? prev.diffBeforeCode,
         diffAfterCode: targetSlide.diffAfterCode ?? prev.diffAfterCode,
+        theme: (targetSlide.theme as ThemeId) || prev.theme,
+        padding: targetSlide.padding ?? prev.padding,
+        fontFamily: (targetSlide.fontFamily as FontFamilyId) || prev.fontFamily,
       };
     });
   }, []);
@@ -632,6 +707,10 @@ export default function Home() {
         language: prev.language,
         mode: "code",
         code: `// Slayt #${newNum}\nexport function slideContent() {\n  return "SnapMark Carousel";\n}`,
+        theme: prev.theme,
+        background: prev.customBgUrl || prev.theme,
+        padding: prev.padding,
+        fontFamily: prev.fontFamily,
       };
 
       // Mevcut aktif slaytın içeriğini koru
@@ -649,6 +728,10 @@ export default function Home() {
               tweetContent: prev.tweetContent,
               diffBeforeCode: prev.diffBeforeCode,
               diffAfterCode: prev.diffAfterCode,
+              theme: prev.theme,
+              background: prev.customBgUrl || prev.theme,
+              padding: prev.padding,
+              fontFamily: prev.fontFamily,
             }
           : s
       );
@@ -668,7 +751,28 @@ export default function Home() {
   // 3. Slayt Çoğaltma (Faz 5)
   const handleDuplicateSlide = useCallback((slideId: string) => {
     setConfig((prev) => {
-      const slides = prev.slides || [];
+      // Aktif slaytın son durumunu güncelle
+      const slides = (prev.slides || []).map((s) =>
+        s.id === prev.activeSlideId
+          ? {
+              ...s,
+              title: prev.title,
+              code: prev.code,
+              language: prev.language,
+              mode: prev.mode,
+              quoteContent: prev.quoteContent,
+              quoteAuthor: prev.quoteAuthor,
+              quoteTitle: prev.quoteTitle,
+              tweetContent: prev.tweetContent,
+              diffBeforeCode: prev.diffBeforeCode,
+              diffAfterCode: prev.diffAfterCode,
+              theme: prev.theme,
+              background: prev.customBgUrl || prev.theme,
+              padding: prev.padding,
+              fontFamily: prev.fontFamily,
+            }
+          : s
+      );
       const target = slides.find((s) => s.id === slideId);
       if (!target) return prev;
 
@@ -678,6 +782,10 @@ export default function Home() {
         id: dupId,
         name: `${target.name} (Kopya)`,
         title: `${target.title} (Kopya)`,
+        theme: target.theme ?? prev.theme,
+        background: target.background ?? prev.customBgUrl,
+        padding: target.padding ?? prev.padding,
+        fontFamily: target.fontFamily ?? prev.fontFamily,
       };
 
       const updatedSlides = [...slides, dupSlide];
@@ -695,6 +803,9 @@ export default function Home() {
         tweetContent: dupSlide.tweetContent ?? prev.tweetContent,
         diffBeforeCode: dupSlide.diffBeforeCode ?? prev.diffBeforeCode,
         diffAfterCode: dupSlide.diffAfterCode ?? prev.diffAfterCode,
+        theme: (dupSlide.theme as ThemeId) || prev.theme,
+        padding: dupSlide.padding ?? prev.padding,
+        fontFamily: (dupSlide.fontFamily as FontFamilyId) || prev.fontFamily,
       };
     });
   }, []);
@@ -836,11 +947,17 @@ export default function Home() {
     if (slides.length === 0) return;
 
     setIsZipExporting(true);
+    isUndoRedoAction.current = true;
     const originalConfig = { ...config };
 
     try {
       const zip = new JSZip();
       const scale = config.exportScale || 2;
+
+      // Fontların hazır olmasını bekle
+      if (typeof document !== "undefined" && document.fonts?.ready) {
+        await document.fonts.ready;
+      }
 
       for (let i = 0; i < slides.length; i++) {
         const currentSlide = slides[i];
@@ -869,6 +986,7 @@ export default function Home() {
           const dataUrl = await toPng(cardRef.current, {
             pixelRatio: scale,
             cacheBust: true,
+            filter: (node: HTMLElement) => !node?.dataset?.exportIgnore,
           });
 
           // Base64 DataUrl'i ikili Blob'a dönüştür
@@ -885,10 +1003,11 @@ export default function Home() {
 
       // İndirmeyi başlat
       const link = document.createElement("a");
-      link.href = URL.createObjectURL(zipBlob);
+      const url = URL.createObjectURL(zipBlob);
+      link.href = url;
       link.download = `snapmark-carousel-${Date.now()}.zip`;
       link.click();
-      URL.revokeObjectURL(link.href);
+      setTimeout(() => URL.revokeObjectURL(url), 2500);
       showToast("Tüm slaytlar ZIP olarak indirildi", "success", `${slides.length} adet görsel başarıyla arşivlendi`);
     } catch (err) {
       console.error("ZIP Export Hatası:", err);
@@ -896,8 +1015,123 @@ export default function Home() {
     } finally {
       // Orijinal durumu geri yükle
       setConfig(originalConfig);
+      isUndoRedoAction.current = false;
       setIsZipExporting(false);
       setZipProgress("");
+    }
+  }, [config, showToast]);
+
+  // 8B. Stili Tüm Slaytlara Uygula (Faz 8)
+  const handleApplyStyleToAll = useCallback(() => {
+    setConfig((prev) => {
+      const slides = (prev.slides || []).map((s) => ({
+        ...s,
+        theme: prev.theme,
+        background: prev.customBgUrl || prev.theme,
+        padding: prev.padding,
+        fontFamily: prev.fontFamily,
+      }));
+      return {
+        ...prev,
+        slides,
+      };
+    });
+    showToast(
+      "Stil tüm slaytlara uygulandı",
+      "success",
+      "Aktif slaytın tema, boşluk ve yazı tipi stili tüm slaytlara eşitlendi."
+    );
+  }, [showToast]);
+
+  // 8C. Çok Slaytlı LinkedIn Carousel PDF Dışa Aktarma (Saf TS, Sıfır Dış Kütüphane) (Faz 8)
+  const handleExportCarouselPdf = useCallback(async () => {
+    if (!cardRef.current) return;
+    const slides = (config.slides || []).map((s) =>
+      s.id === config.activeSlideId
+        ? {
+            ...s,
+            title: config.title,
+            code: config.code,
+            language: config.language,
+            mode: config.mode,
+            quoteContent: config.quoteContent,
+            quoteAuthor: config.quoteAuthor,
+            quoteTitle: config.quoteTitle,
+            tweetContent: config.tweetContent,
+            diffBeforeCode: config.diffBeforeCode,
+            diffAfterCode: config.diffAfterCode,
+            theme: config.theme,
+            background: config.customBgUrl || config.theme,
+            padding: config.padding,
+            fontFamily: config.fontFamily,
+          }
+        : s
+    );
+
+    if (slides.length === 0) return;
+
+    setIsPdfExporting(true);
+    isUndoRedoAction.current = true;
+    const originalConfig = { ...config };
+
+    try {
+      const scale = config.exportScale || 2;
+      const slidesDataUrls: string[] = [];
+
+      if (typeof document !== "undefined" && document.fonts?.ready) {
+        await document.fonts.ready;
+      }
+
+      for (let i = 0; i < slides.length; i++) {
+        const currentSlide = slides[i];
+        setPdfProgress(`Slayt ${i + 1}/${slides.length} PDF için hazırlanıyor...`);
+
+        setConfig((prev) => ({
+          ...prev,
+          activeSlideId: currentSlide.id,
+          title: currentSlide.title || prev.title,
+          code: currentSlide.code ?? prev.code,
+          language: currentSlide.language || prev.language,
+          mode: currentSlide.mode || "code",
+          quoteContent: currentSlide.quoteContent ?? prev.quoteContent,
+          quoteAuthor: currentSlide.quoteAuthor ?? prev.quoteAuthor,
+          quoteTitle: currentSlide.quoteTitle ?? prev.quoteTitle,
+          tweetContent: currentSlide.tweetContent ?? prev.tweetContent,
+          diffBeforeCode: currentSlide.diffBeforeCode ?? prev.diffBeforeCode,
+          diffAfterCode: currentSlide.diffAfterCode ?? prev.diffAfterCode,
+          theme: (currentSlide.theme as ThemeId) || prev.theme,
+          padding: currentSlide.padding ?? prev.padding,
+          fontFamily: (currentSlide.fontFamily as FontFamilyId) || prev.fontFamily,
+        }));
+
+        await new Promise((resolve) => setTimeout(resolve, 250));
+
+        if (cardRef.current) {
+          const dataUrl = await toPng(cardRef.current, {
+            pixelRatio: scale,
+            cacheBust: true,
+            filter: (node: HTMLElement) => !node?.dataset?.exportIgnore,
+          });
+          slidesDataUrls.push(dataUrl);
+        }
+      }
+
+      setPdfProgress("PDF belgesi oluşturuluyor...");
+      const filename = `snapmark-carousel-${Date.now()}.pdf`;
+      await exportSlidesToPdf(slidesDataUrls, filename);
+      showToast(
+        "PDF başarıyla indirildi",
+        "success",
+        `${slides.length} sayfalık LinkedIn karusel dökümanı oluşturuldu.`
+      );
+    } catch (err) {
+      console.error("PDF Export Hatası:", err);
+      showToast("Slaytlar PDF olarak dışa aktarılırken bir hata oluştu", "error");
+    } finally {
+      setConfig(originalConfig);
+      isUndoRedoAction.current = false;
+      setIsPdfExporting(false);
+      setPdfProgress("");
     }
   }, [config, showToast]);
 
@@ -992,7 +1226,7 @@ export default function Home() {
       link.download = `${config.title || "snapmark"}-animation.webm`;
       link.href = url;
       link.click();
-      URL.revokeObjectURL(url);
+      setTimeout(() => URL.revokeObjectURL(url), 2500);
 
       showToast(
         config.uiLanguage === "en" ? "Animation video exported (.webm)" : "Animasyonlu video indirildi (.webm)",
@@ -1007,6 +1241,52 @@ export default function Home() {
     }
   }, [config.title, config.uiLanguage, showToast]);
 
+  // Canlı Tuvali Pencereye Sığdırma (Zoom Fit)
+  const handleFitZoom = useCallback(() => {
+    if (!cardRef.current) {
+      setZoomLevel(100);
+      return;
+    }
+    const cardWidth = cardRef.current.offsetWidth || 800;
+    const parentWidth = cardRef.current.parentElement?.parentElement?.clientWidth || window.innerWidth;
+    const availableWidth = Math.max(300, parentWidth - 64);
+    if (cardWidth > availableWidth) {
+      const ratio = Math.floor((availableWidth / cardWidth) * 100);
+      setZoomLevel(Math.max(50, Math.min(100, ratio)));
+    } else {
+      setZoomLevel(100);
+    }
+  }, []);
+
+  // Renk Paleti ve Degrade Seçici Fonksiyonları
+  const handleSelectPaletteColor = useCallback((hex: string) => {
+    const stops = [...(config.gradientStops || [
+      { color: hex, position: 0 },
+      { color: "#18181B", position: 100 },
+    ])];
+    if (stops.length > 0) {
+      stops[0] = { ...stops[0], color: hex };
+    }
+    handleConfigChange({
+      bgType: "gradient",
+      useCustomGradient: true,
+      gradientStops: stops,
+    });
+  }, [config.gradientStops, handleConfigChange]);
+
+  const handleApplyPaletteGradient = useCallback((preset: CuratedGradient) => {
+    handleConfigChange({
+      bgType: "gradient",
+      useCustomGradient: true,
+      gradientType: preset.type,
+      gradientAngle: preset.angle,
+      gradientStops: preset.stops.map((s) => ({
+        color: s.color,
+        position: s.position,
+      })),
+    });
+  }, [handleConfigChange]);
+
   // Klavye Kısayolları Motoru (Faz 6)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -1017,17 +1297,33 @@ export default function Home() {
           target.tagName === "TEXTAREA" ||
           target.isContentEditable);
 
-      // Ctrl + S / Cmd + S -> PNG İndir
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s" && !e.shiftKey) {
+      // Ctrl + S / Cmd + S veya Ctrl + Enter -> PNG İndir
+      if (
+        ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s" && !e.shiftKey) ||
+        ((e.ctrlKey || e.metaKey) && e.key === "Enter")
+      ) {
         e.preventDefault();
         handleDownloadImage();
         return;
       }
 
-      // Ctrl + Shift + C / Cmd + Shift + C -> Panoya Kopyala
-      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === "c") {
+      // Alt + C veya Ctrl + Shift + C -> Panoya Kopyala
+      if (
+        ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === "c") ||
+        (e.altKey && e.key.toLowerCase() === "c")
+      ) {
         e.preventDefault();
         handleCopyImage();
+        return;
+      }
+
+      // Alt + Z veya Ctrl + Shift + S -> Carousel ZIP İndir
+      if (
+        ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === "s") ||
+        (e.altKey && e.key.toLowerCase() === "z")
+      ) {
+        e.preventDefault();
+        handleZipExport();
         return;
       }
 
@@ -1051,7 +1347,7 @@ export default function Home() {
         return;
       }
 
-      // Ctrl + 1/2/3/4 -> Mod Değiştir
+      // Ctrl + 1/2/3/4/5 -> Mod Değiştir
       if ((e.ctrlKey || e.metaKey) && e.key === "1") {
         e.preventDefault();
         handleConfigChange({ mode: "code" });
@@ -1129,16 +1425,18 @@ export default function Home() {
   }, [
     handleDownloadImage,
     handleCopyImage,
+    handleZipExport,
     handleUndo,
     handleRedo,
     handleSelectSlide,
+    handleConfigChange,
     config.slides,
     config.activeSlideId,
     showToast,
   ]);
 
   return (
-    <div className="h-screen flex flex-col bg-[#090d14] overflow-hidden">
+    <div className="h-screen flex flex-col bg-[#F4F1EA] text-[#18181B] overflow-hidden">
       {/* Üst Çubuk */}
       <Header
         config={config}
@@ -1162,17 +1460,20 @@ export default function Home() {
         onImportThemeJson={handleImportThemeJson}
         onExportVideo={handleExportVideo}
         isVideoExporting={isVideoExporting}
+        onExportCarouselPdf={handleExportCarouselPdf}
+        isPdfExporting={isPdfExporting}
         onOpenFeedPreview={() => setIsFeedModalOpen(true)}
+        onOpenColorPalette={() => setIsColorPaletteOpen(true)}
       />
 
       {/* Mobil Sekme Çubuğu (Yalnızca küçük ekranlarda görünür) */}
-      <div className="flex md:hidden items-center justify-around bg-[#0d131f] border-b border-slate-800 p-2 z-20 shrink-0">
+      <div className="flex md:hidden items-center justify-around bg-[#FAF8F5] border-b border-[#D6D0C4] p-2 z-20 shrink-0">
         <button
           onClick={() => setActiveTab("preview")}
           className={`flex-1 py-1.5 rounded-lg text-xs font-medium flex items-center justify-center gap-1.5 transition-all ${
             activeTab === "preview"
-              ? "bg-emerald-600 text-white shadow-sm font-semibold"
-              : "text-slate-400 hover:text-white"
+              ? "bg-[#FF4F00] text-white shadow-sm font-semibold"
+              : "text-[#57534E] hover:text-[#18181B]"
           }`}
         >
           <Eye className="w-3.5 h-3.5" />
@@ -1182,8 +1483,8 @@ export default function Home() {
           onClick={() => setActiveTab("controls")}
           className={`flex-1 py-1.5 rounded-lg text-xs font-medium flex items-center justify-center gap-1.5 transition-all ${
             activeTab === "controls"
-              ? "bg-emerald-600 text-white shadow-sm font-semibold"
-              : "text-slate-400 hover:text-white"
+              ? "bg-[#FF4F00] text-white shadow-sm font-semibold"
+              : "text-[#57534E] hover:text-[#18181B]"
           }`}
         >
           <Sliders className="w-3.5 h-3.5" />
@@ -1193,8 +1494,8 @@ export default function Home() {
           onClick={() => setActiveTab("editor")}
           className={`flex-1 py-1.5 rounded-lg text-xs font-medium flex items-center justify-center gap-1.5 transition-all ${
             activeTab === "editor"
-              ? "bg-emerald-600 text-white shadow-sm font-semibold"
-              : "text-slate-400 hover:text-white"
+              ? "bg-[#FF4F00] text-white shadow-sm font-semibold"
+              : "text-[#57534E] hover:text-[#18181B]"
           }`}
         >
           <Edit3 className="w-3.5 h-3.5" />
@@ -1221,7 +1522,7 @@ export default function Home() {
 
         {/* Sağ Çalışma Alanı: Canlı Tuval & Editör */}
         <main
-          className={`flex-1 min-w-0 h-full overflow-y-auto p-4 md:p-8 flex flex-col items-center justify-start space-y-6 pb-16 relative ${
+          className={`flex-1 min-w-0 h-full overflow-y-auto p-4 md:p-8 flex flex-col items-center justify-start space-y-6 pb-16 relative bg-engineering-mat ${
             activeTab !== "controls" ? "flex" : "hidden md:flex"
           }`}
         >
@@ -1229,10 +1530,10 @@ export default function Home() {
           {!isSidebarOpen && (
             <button
               onClick={() => setIsSidebarOpen(true)}
-              className="hidden md:flex absolute top-4 left-4 z-20 px-3 py-1.5 rounded-xl bg-[#121827]/95 hover:bg-emerald-600 border border-slate-700 hover:border-emerald-500 text-slate-300 hover:text-white shadow-xl backdrop-blur-md transition-all items-center gap-2 text-xs font-semibold group"
+              className="hidden md:flex absolute top-4 left-4 z-20 px-3 py-1.5 rounded-xl bg-[#FAF8F5]/95 hover:bg-[#FF4F00] border border-[#D6D0C4] hover:border-[#FF4F00] text-[#18181B] hover:text-white shadow-lg backdrop-blur-md transition-all items-center gap-2 text-xs font-semibold group cursor-pointer"
               title="Ayarlar Menüsünü Aç"
             >
-              <PanelLeftOpen className="w-4 h-4 text-emerald-400 group-hover:text-white" />
+              <PanelLeftOpen className="w-4 h-4 text-[#FF4F00] group-hover:text-white" />
               <span>Menüyü Aç</span>
             </button>
           )}
@@ -1252,6 +1553,10 @@ export default function Home() {
               onZipExport={handleZipExport}
               isZipExporting={isZipExporting}
               zipProgress={zipProgress}
+              onExportCarouselPdf={handleExportCarouselPdf}
+              isPdfExporting={isPdfExporting}
+              pdfProgress={pdfProgress}
+              onApplyStyleToAll={handleApplyStyleToAll}
             />
           </div>
 
@@ -1272,15 +1577,16 @@ export default function Home() {
                 onSelectTab={handleSelectTab}
                 onAddTab={handleAddTab}
                 onCloseTab={handleCloseTab}
+                isExporting={isExporting}
               />
             </div>
 
             {/* Tuval Yakınlaştırma (Canvas Zoom) Çubuğu (Faz 7A) */}
-            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-xs text-slate-400 select-none shadow-lg">
+            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#FAF8F5]/90 backdrop-blur-md border border-[#D6D0C4] text-xs text-[#57534E] select-none shadow-md">
               <button
                 type="button"
                 onClick={() => setZoomLevel((z) => Math.max(50, z - 10))}
-                className="p-1 rounded hover:bg-white/10 hover:text-white transition-colors"
+                className="p-1 rounded hover:bg-[#EAE5DC] hover:text-[#18181B] transition-colors"
                 title="Uzaklaştır"
               >
                 <ZoomOut className="w-3.5 h-3.5" />
@@ -1288,7 +1594,7 @@ export default function Home() {
               <button
                 type="button"
                 onClick={() => setZoomLevel(100)}
-                className="font-mono text-[11px] font-semibold text-slate-300 hover:text-emerald-400 px-1"
+                className="font-mono text-[11px] font-semibold text-[#18181B] hover:text-[#FF4F00] px-1"
                 title="Varsayılan Boyut (%100)"
               >
                 %{zoomLevel}
@@ -1296,17 +1602,17 @@ export default function Home() {
               <button
                 type="button"
                 onClick={() => setZoomLevel((z) => Math.min(200, z + 10))}
-                className="p-1 rounded hover:bg-white/10 hover:text-white transition-colors"
+                className="p-1 rounded hover:bg-[#EAE5DC] hover:text-[#18181B] transition-colors"
                 title="Yakınlaştır"
               >
                 <ZoomIn className="w-3.5 h-3.5" />
               </button>
-              <span className="text-slate-700">|</span>
+              <span className="text-[#D6D0C4]">|</span>
               <button
                 type="button"
-                onClick={() => setZoomLevel(100)}
-                className="text-[10px] text-slate-400 hover:text-emerald-400 font-medium px-1.5 py-0.5 rounded hover:bg-white/5"
-                title="Ölçeği Sıfırla"
+                onClick={handleFitZoom}
+                className="text-[10px] text-[#57534E] hover:text-[#FF4F00] font-medium px-1.5 py-0.5 rounded hover:bg-[#EAE5DC]"
+                title="Pencereye Sığdır"
               >
                 Sığdır
               </button>
@@ -1330,8 +1636,8 @@ export default function Home() {
           </div>
 
           {/* Alt Bilgi */}
-          <footer className="text-center text-[11px] text-slate-500 py-2">
-            ⚡ SnapMark Pro Studio • Faz 6 Pro Studio Güç Paketi Aktif (Auto-Save, Undo/Redo & Shortcuts)
+          <footer className="text-center text-[11px] text-[#78716C] py-2">
+            ⚡ SnapMark Pro Studio • Teenage Engineering & Dieter Rams Warm Alabaster Edition
           </footer>
         </main>
 
@@ -1340,7 +1646,7 @@ export default function Home() {
           <button
             type="button"
             onClick={() => setActiveTab(activeTab === "controls" ? "preview" : "controls")}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs shadow-2xl shadow-emerald-500/50 border border-emerald-400/30 backdrop-blur-md active:scale-95 transition-all cursor-pointer"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#FF4F00] hover:bg-[#EA580C] text-white font-semibold text-xs shadow-2xl shadow-orange-500/50 border border-orange-400/30 backdrop-blur-md active:scale-95 transition-all cursor-pointer"
           >
             <Sliders className="w-4 h-4" />
             <span>{activeTab === "controls" ? "Kartı Gör" : "Ayarlar Menüsü"}</span>
@@ -1399,7 +1705,7 @@ export default function Home() {
         uiLanguage={config.uiLanguage}
       />
 
-      {/* Sunum & Tam Ekran Modu (Faz 7A) */}
+      {/* Sunum & Tam Ekran Modu (Faz 7A - unmount bug çözümü: cardRef={undefined}) */}
       <PresentationMode
         isOpen={isPresentationOpen}
         onClose={() => setIsPresentationOpen(false)}
@@ -1426,9 +1732,18 @@ export default function Home() {
       >
         <PreviewCard
           config={config}
-          cardRef={cardRef}
+          cardRef={undefined}
         />
       </PresentationMode>
+
+      {/* Açık Kaynak Renk Tablosu & Degrade Stüdyosu Modalı (Faz 7B) */}
+      <ColorPaletteModal
+        isOpen={isColorPaletteOpen}
+        onClose={() => setIsColorPaletteOpen(false)}
+        activeColor={config.gradientStops?.[0]?.color || "#FF4F00"}
+        onSelectColor={handleSelectPaletteColor}
+        onApplyPreset={handleApplyPaletteGradient}
+      />
     </div>
   );
 }

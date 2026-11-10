@@ -199,7 +199,7 @@ export const LandingShowcase: React.FC = () => {
                   <div className="px-2 py-1 bg-emerald-500/15 border-l-2 border-emerald-500 text-emerald-300">
                     + const result = items.reduce((acc, x) =&gt; x.active ? (acc.push(x.value), acc) : acc, []);
                   </div>
-                  <p className="text-slate-500 text-[11px] pt-1">// 🚀 Bellek tahsisatını 4 kat azalttık</p>
+                  <p className="text-slate-500 text-[11px] pt-1">{"// 🚀 Bellek tahsisatını 4 kat azalttık"}</p>
                 </div>
               </div>
             )}

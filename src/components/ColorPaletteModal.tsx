@@ -54,6 +54,9 @@ export const ColorPaletteModal: React.FC<ColorPaletteModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200">
       <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="color-palette-title"
         className="bg-[#0e1422] border border-slate-700/80 rounded-2xl shadow-2xl w-full max-w-2xl max-h-[85vh] flex flex-col overflow-hidden text-slate-200"
         onClick={(e) => e.stopPropagation()}
       >
@@ -64,7 +67,7 @@ export const ColorPaletteModal: React.FC<ColorPaletteModalProps> = ({
               <Palette className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-white flex items-center gap-2">
+              <h3 id="color-palette-title" className="text-sm font-semibold text-white flex items-center gap-2">
                 <span>Açık Kaynak Renk Tablosu & Degrade Stüdyosu</span>
                 <span className="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-1.5 py-0.5 rounded-full font-normal">
                   Durak #{activeStopIndex + 1}

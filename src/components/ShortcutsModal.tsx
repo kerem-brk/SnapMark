@@ -20,16 +20,30 @@ interface ShortcutItem {
 
 const SHORTCUTS: ShortcutItem[] = [
   {
-    keys: ["Ctrl", "S"],
-    descriptionTr: "Yüksek çözünürlüklü PNG indir",
-    descriptionEn: "Download high-resolution PNG",
+    keys: ["Ctrl", "Enter"],
+    descriptionTr: "Yüksek çözünürlüklü PNG dışa aktar",
+    descriptionEn: "Export high-resolution PNG",
     categoryTr: "Dışa Aktarma",
     categoryEn: "Export",
   },
   {
-    keys: ["Ctrl", "Shift", "C"],
+    keys: ["Ctrl", "S"],
+    descriptionTr: "PNG olarak kaydet / indir",
+    descriptionEn: "Save / download as PNG",
+    categoryTr: "Dışa Aktarma",
+    categoryEn: "Export",
+  },
+  {
+    keys: ["Ctrl", "C / Alt+C"],
     descriptionTr: "Görseli doğrudan panoya kopyala",
     descriptionEn: "Copy image directly to clipboard",
+    categoryTr: "Dışa Aktarma",
+    categoryEn: "Export",
+  },
+  {
+    keys: ["Ctrl", "Shift", "S"],
+    descriptionTr: "Carousel tüm slaytları ZIP indir",
+    descriptionEn: "Download all carousel slides (ZIP)",
     categoryTr: "Dışa Aktarma",
     categoryEn: "Export",
   },
@@ -137,6 +151,9 @@ export const ShortcutsModal: React.FC<ShortcutsModalProps> = ({
 
   return (
     <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="shortcuts-modal-title"
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200"
       onClick={onClose}
     >
@@ -151,7 +168,7 @@ export const ShortcutsModal: React.FC<ShortcutsModalProps> = ({
               <Keyboard className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-white tracking-tight">
+              <h3 id="shortcuts-modal-title" className="text-sm font-bold text-white tracking-tight">
                 {isEn ? "Keyboard Shortcuts Guide" : "Klavye Kısayolları Rehberi"}
               </h3>
               <p className="text-[11px] text-slate-400">

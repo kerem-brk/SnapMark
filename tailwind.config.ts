@@ -13,6 +13,20 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        alabaster: {
+          DEFAULT: "#FAF8F5",
+          surface: "#FAF8F5",
+          bg: "#F4F1EA",
+          mat: "#E6E1D6",
+          border: "#D6D0C4",
+          text: "#18181B",
+          subtext: "#57534E",
+        },
+        flame: {
+          DEFAULT: "#FF4F00",
+          hover: "#EA580C",
+          dark: "#C2410C",
+        },
         vercel: {
           black: "#000000",
           surface: "#0A0A0A",

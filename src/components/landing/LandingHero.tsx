@@ -90,7 +90,7 @@ export const LandingHero: React.FC = () => {
                   {"  "}quality: <span className="text-amber-400">&quot;Ultra-HD 4K&quot;</span>;{"\n"}
                   {"}"}
                   {"\n\n"}
-                  <span className="text-slate-500">// 🚀 Tek tıkla panoya kopyala veya sosyal medya boyutunda indir</span>{"\n"}
+                  <span className="text-slate-500">{"// 🚀 Tek tıkla panoya kopyala veya sosyal medya boyutunda indir"}</span>{"\n"}
                   <span className="text-purple-400">export async function</span> <span className="text-blue-400">createImpact</span>() {"{\n"}
                   {"  "}<span className="text-purple-400">const</span> card = <span className="text-purple-400">await</span> SnapMark.<span className="text-blue-400">render</span>({"{\n"}
                   {"    "}theme: <span className="text-emerald-400">&quot;cyberpunk&quot;</span>,{"\n"}
